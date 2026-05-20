@@ -1,0 +1,339 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{soul}
+\usepackage{multicol}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\rg}{rg}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Спит родимый аквариум...}
+\fancyhead[R]{\href{https://t.me/lost_luna}{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 20. Числовые ряды. \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Ещё чуть-чуть интегральчиков}
+
+\begin{example}
+    Исследуем на сходимость следующий интеграл: \[\int_{1}^{+\infty}\frac{\sin\left(\frac{2 + \cos x}{x}\right)}{x^\alpha}\,dx\]
+    Заметим, что \[\frac{1}{x} \leq \frac{2 + \cos x}{x} \leq \frac{3}{x}\]
+    А значит, мы имеем интеграл от знакопостоянной функции, тогда
+    \[\sin\left(\frac{2 + \cos x}{x}\right) \ \overset{\text{сх}}{\sim} \ \frac{2 + \cos x}{x} \ \overset{\text{сх}}{\sim} \ \frac{1}{x}, \quad x \to +\infty\]
+    Следовательно, \[ \frac{\sin\left(\frac{2 + \cos x}{x}\right)}{x^\alpha} \ \overset{\text{сх}}{\sim} \ \frac{1}{x^{\alpha + 1}}, \quad x \to +\infty\]
+    $\displaystyle \int_{1}^{+\infty} \frac{1}{x^{\alpha + 1}}\,dx$ --- это шаблонный интеграл, он сходится при $\alpha > 0$.
+\end{example}
+
+\section{Числовые ряды}
+
+\begin{definition}
+    Пусть дана последовательность $\{a_n\}_{n = 1}^{\infty}$. Тогда последовательность
+    \[S_n := \sum_{k = 1}^{n} a_k, \quad n \in \mathbb{N}\] будем называть последовательностью
+    частичных сумм.
+\end{definition}
+
+\begin{definition}
+    Рядом будем называть пару последовательностей $\{a_n\}_{n = 1}^{\infty}$ и 
+    $\{S_n\}_{n = 1}^{\infty}$, где \[\{a_n\}_{n = 1}^{\infty} \text{ --- члены ряда,}\]
+    \[\{S_n\}_{n = 1}^{\infty} \text{ --- частичные суммы ряда}\]
+    Обозначать ряд будем следующим образом: $\displaystyle \sum_{k = 1}^{\infty} a_k$.
+\end{definition}
+
+\begin{definition}
+    Если $\displaystyle \exists \lim_{n \to \infty} S_n \in \mathbb{R}$, то говорят,
+    что ряд $\displaystyle \sum_{k = 1}^{\infty} a_k$ сходится. В противном случае говорят,
+    что ряд $\displaystyle \sum_{k = 1}^{\infty} a_k$ расходится. \\ 
+    Если ряд сходится, то число $\displaystyle S := \lim_{n \to \infty} S_n \in \mathbb{R}$
+    называют суммой ряда.
+\end{definition}
+
+\begin{theorem}[Критерий Коши сходимости числового ряда]
+    Пусть дан ряд $\displaystyle \sum_{k = 1}^{\infty} a_k$. Он сходится $\Longleftrightarrow$
+    выполнено условие Коши сходимости числового ряда, то есть:
+    \[\forall \varepsilon > 0 \ \exists N(\varepsilon) \in \mathbb{N}: \ \forall n 
+    \geq N(\varepsilon), \ \forall p \in \mathbb{N} \hookrightarrow \left| \sum_{k = m + 1}^{m + p}
+    a_k \right| < \varepsilon\]    
+\end{theorem}
+
+\begin{proof}
+    По определеню, $\displaystyle \sum_{k = 1}^{\infty} a_k$ сходится $\Longleftrightarrow$
+    $\displaystyle \exists \lim_{n \to \infty} S_n \in \mathbb{R}$. Тогда по критерию 
+    Коши для последовательностей: \[\exists \lim_{n \to \infty} S_n \in \mathbb{R}
+    \Longleftrightarrow \forall \varepsilon > 0 \ \exists N(\varepsilon) \in \mathbb{N}:
+     \ \forall m, l (l > m) \geq N(\varepsilon) \hookrightarrow \left|S_l - S_m\right| = 
+    \left|\sum_{k = m + 1}^{l} a_k\right| < \varepsilon\]
+    Положив $p := l - m$ получаем требуемое.
+\end{proof}
+
+\begin{theorem}[Необходимое условие сходимости числового ряда]
+    Если ряд $\displaystyle \sum_{k = 1}^{\infty} a_k$ сходится, 
+    то $\displaystyle \exists \lim_{k \to \infty} a_k = 0$.
+\end{theorem}
+
+\begin{proof}
+    В силу критерия Коши из сходимости числового ряда следует выполнение условия Коши.
+    Тогда запишем условие Коши в частном случае при $p = 1$:
+    \[\forall \varepsilon > 0 \ \exists N(\varepsilon) \in \mathbb{N}: \forall m 
+    \geq N(\varepsilon) \hookrightarrow |a_{m + 1}| < \varepsilon \Longleftrightarrow
+    \exists \lim_{m \to \infty} a_m = 0\]
+\end{proof}
+
+\begin{example}
+    Почувствуем себя философами и зададимся вопросом, а чему равна сумма ряда \[(-1) + 1 + (-1) + 1 + \dots ?\]
+    В чем же загвоздка? Мы можем сгруппировать слагаемые попарно, начиная с первого,
+    и уверенно заявить, что сумма ряда равна 0. А можем начать группировать со второго
+    слагаемого и не менее уверенно утверждать, что сумма ряда равна 1. Что же делать? \\
+    А мы вспомним предыдущую теорему и скажем, что последовательность \[a_n = (-1)^n 
+    \nrightarrow 0, \quad n \to \infty\] Следовательно, ряд расходится и ему нельзя
+    приписать никакую сумму.
+\end{example}
+
+\begin{theorem}[Принцип локализации]
+    Пусть $k_0 \in \mathbb{N}$. Ряд $\displaystyle \sum_{k = k_0 + 1}^{\infty} a_k$
+    сходится $\Longleftrightarrow$ $\displaystyle \sum_{k = 1}^{\infty} a_k$
+    сходится.
+\end{theorem}
+
+\begin{proof}
+    Определим \[\widetilde{a_k} = a_{k + k_0}, \quad k \in \mathbb{N}\] Тогда 
+    $\displaystyle \sum_{k = k_0 + 1}^{\infty} a_k$ --- ряд, который нужно
+    интерпретировать как $\displaystyle \sum_{k = 1}^{\infty} \widetilde{a_k}$.
+    По определению, \[\sum_{k = 1}^{\infty} a_k \text{ сходится } \Longleftrightarrow
+    \ \exists \lim_{n \to \infty} S_n \in \mathbb{R}, \quad \text{где } S_n = 
+    \sum_{k = 1}^{n} a_k\]
+    \[\sum_{k = 1}^{\infty} \widetilde{a_k} \text{ сходится } \Longleftrightarrow
+    \ \exists \lim_{n \to \infty} \widetilde{S_n} \in \mathbb{R}, \quad \text{где } 
+    \widetilde{S_n} = \sum_{k = k_0 + 1}^{k_0 + n} a_k\]
+    Тогда \[S_{n + k_0} = \widetilde{S_n} + \sum_{k = 1}^{k_0} a_k\]
+    Отсюда легко следует, что \[\exists \lim_{n \to \infty} S_n \in \mathbb{R} 
+    \Longleftrightarrow \exists \lim_{n \to \infty} \widetilde{S_n} \in \mathbb{R}\]
+\end{proof}
+
+\begin{theorem}[Линейность]
+    Пусть $\displaystyle \sum_{k = 1}^{\infty} a_k$ сходится, и
+    $\displaystyle \sum_{k = 1}^{\infty} b_k$ сходится. Тогда \[\forall \alpha, \beta
+    \in \mathbb{R} \hookrightarrow \sum_{k = 1}^{\infty} (\alpha \cdot a_k + \beta
+    \cdot b_k) \text{ сходится }\] 
+    При этом, если $S_1$ --- сумма ряда $\displaystyle \sum_{k = 1}^{\infty} a_k$,
+    а $S_2$ --- сумма ряда $\displaystyle \sum_{k = 1}^{\infty} b_k$, то сумма ряда 
+    $\displaystyle \sum_{k = 1}^{\infty} (\alpha \cdot a_k + \beta \cdot b_k)$ есть 
+    $\alpha \cdot S_1 + \beta \cdot S_2$.
+\end{theorem}
+
+\begin{proof}
+    Для доказательства достаточно воспользоваться теоремами о пределах линейных комбинаций 
+    сходящихся числовых последовательностей :).
+\end{proof}
+
+\section{Ряды с неотрицательными членами}
+
+\begin{theorem}[Критерий сходимости для рядов с неотрицательными членами]  \label{theorem:3.1}
+    \mbox{} Пусть \[\{a_k\}_{k = 1}^{\infty}: \ a_k \geq 0 \ \forall k \in \mathbb{N}\]
+    Тогда $\displaystyle \sum_{k = 1}^{\infty} a_k \text{ сходится } \Longleftrightarrow
+    \ \sup_{n \in \mathbb{N}} \sum_{k = 1}^{n} a_k < +\infty$.
+\end{theorem}
+
+\begin{proof}
+    Так как $a_k \geq 0 \ \forall k \in \mathbb{N}$, то $S_{n + 1} \geq S_n \ \forall n \in \mathbb{N}$, 
+    то есть последовательность $\{S_n\}_{n = 1}^{\infty}$ монотонно неубывает. Тогда по теореме
+    Вейерштраса: \[\exists \lim_{n \to \infty} S_n = \sup_{n \in \mathbb{N}} S_n\]
+    При этом, по определению, ряд $\displaystyle \sum_{k = 1}^{\infty} a_k$ сходится 
+    $\displaystyle \Longleftrightarrow \ \exists \lim_{n \to \infty} S_n \in \mathbb{R} \ \Longleftrightarrow
+    \ \sup_{n \in \mathbb{N}} S_n < +\infty$.
+\end{proof}
+
+\begin{theorem}[Первый признак сравнения]
+    Пусть $\{a_k\}$ и $\{b_k\}$ --- две неотрицательные последовательности. Пусть 
+    \[\exists k_0 \in \mathbb{N}: \ a_k \leq b_k \quad \forall k \geq k_0\] Тогда 
+    \begin{enumerate}
+        \item если $\displaystyle \sum_{k = 1}^{\infty} b_k$ сходится, то и 
+        $\displaystyle \sum_{k = 1}^{\infty} a_k$ сходится.
+        \item если $\displaystyle \sum_{k = 1}^{\infty} a_k$ расходится, то и 
+        $\displaystyle \sum_{k = 1}^{\infty} b_k$ расходится.
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    В силу $a_k \leq b_k \quad \forall k \geq k_0$ получаем, что \[\widetilde{S_n} :=
+    \sum_{k = k_0 + 1}^{n} a_k \ \leq \ \widetilde{\Sigma_n} := \sum_{k = k_0 + 1}^n b_k \quad 
+    \forall n > k_0 \label{eq:star1} \tag{*}\]
+    Если $\displaystyle \sup_{n > k_0} \widetilde{\Sigma_n} < +\infty$, то в силу (\ref{eq:star1})
+    $\displaystyle \sup_{n > k_0} \widetilde{S_n} < +\infty$. И наоборот, если 
+    $\displaystyle \sup_{n > k_0} \widetilde{S_n} = +\infty$, то $\displaystyle \sup_{n > k_0} 
+    \widetilde{\Sigma_n} = +\infty$. Так как \[\Sigma_{n + k_0} = \widetilde{\Sigma_n} + \sum_{k = 1}^{k_0} b_k,
+    \quad S_{n + k_0} = \widetilde{S_n} + \sum_{k = 1}^{k_0} a_k,\] то \[\Sigma_{n} < +\infty \Longleftrightarrow
+    \widetilde{\Sigma_n} < +\infty, \quad \Sigma_{n} = +\infty \Longleftrightarrow \widetilde{\Sigma_n} = +\infty\]
+    \[S{n} < +\infty \Longleftrightarrow \widetilde{S_n} < +\infty, \quad S_{n} = +\infty \Longleftrightarrow \widetilde{S_n} = +\infty\]
+    А значит, если $\displaystyle \sup_{n} \Sigma_n < +\infty$, то и $\displaystyle \sup_{n} S_n < +\infty$. Если 
+    $\displaystyle \sup_{n} S_n = +\infty$, то и $\displaystyle \sup_{n} \Sigma_n = +\infty$. Отсюда в силу теоремы 
+    (\ref{theorem:3.1}) получаем требуемое.
+\end{proof}
+
+\begin{definition}
+    Пусть $\{a_k\}$ и $\{b_k\}$ --- две неотрицательные последовательности. Будем писать $\displaystyle a_k 
+    \overset{\text{сх}}{\sim} b_k, \quad k \to \infty$, если \[\exists m, M > 0 \text{ и } \exists k_0 \in  
+    \mathbb{N}: \ \forall k \geq k_0 \hookrightarrow m \cdot b_k \leq a_k \leq M \cdot b_k\]
+\end{definition}
+
+\begin{remark}
+    Аналогично тому, как это было сделано для функций, можно доказать, что $\overset{\text{сх}}{\sim}$
+    есть отношение эквивалентности на множестве неотрицательных последовательностей.
+\end{remark}
+
+\begin{theorem}[Второй признак сравнения]
+    Пусть $\{a_k\}$ и $\{b_k\}$ --- две неотрицательные последовательности, $\displaystyle a_k 
+    \overset{\text{сх}}{\sim} b_k, \quad k \to \infty$. Тогда ряды $\displaystyle \sum_{k = 1}^{\infty} a_k$ и 
+    $\displaystyle \sum_{k = 1}^{\infty} b_k$ сходятся или расходятся одновременно.
+\end{theorem}
+
+\begin{proof}
+    Доказательство сразу следует из первого признака сравнения, определения эквивалентности в смысле
+    сходимости и принципа локализации.
+\end{proof}
+
+\begin{theorem}[Интегральный признак сходимости числового ряда]
+    Пусть $f: \ [1, +\infty) \to \mathbb{R}, \\ f$ --- \textbf{монотонна}. Тогда \[\sum_{k = 1}^{\infty} f(k)
+    \text{ сходится } \Longleftrightarrow \ \int_{1}^{+\infty} f(x)\,dx \text{ сходится}\]
+\end{theorem}
+
+\begin{proof}
+    В силу монотонности, по теореме Вейерштрасса, \[\exists \lim_{x \to +\infty} f(x) = A \in \overline{\mathbb{R}}\] 
+    Если $A \neq 0$, то $\displaystyle \exists \lim_{k \to +\infty} f(k) = A \neq 0$. Следовательно, не выполнено 
+    необходимое условие сходимости ряда $\displaystyle \sum_{k = 1}^{\infty} f(k) \Longrightarrow$ ряд расходится.
+    При этом $\displaystyle \int_{1}^{+\infty} f(x)\,dx$ тоже расходится по признаку сравнения. Действительно,
+    если $\displaystyle \exists 
+    \lim_{x \to +\infty} f(x) = A \neq 0$, то \[\exists C > 0: \ \forall x \geq C \hookrightarrow
+    \left\{ \begin{array}{l}
+        \displaystyle f(x) > \min \left\{1, \frac{A}{2}\right\}, \ A > 0 \\ 
+        \displaystyle f(x) < \max \left\{-1, \frac{A}{2}\right\}, \ A < 0
+    \end{array}\right.\ \]
+    Пусть теперь $A = 0$. Без ограничения общности считаем, что $f(x) \geq 0 \ \forall x \in [1, +\infty)$.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\textwidth]{pictures/Картинка_к_интегральному_признаку.png}
+        \caption{картиночка для понимания}
+    \end{figure}
+    В силу монотонного убывания: \[f(n) \geq f(x) \geq f(n + 1) \quad \forall x \in [n, n + 1]\] Тогда 
+    \[ f(n) \geq \int_{n}^{n + 1} f(t)\, dt \geq f(n + 1)\] Просуммируем эти неравенства по $n$ от $1$ до $N$:
+    \[S_N := \sum_{n = 1}^{N} f(n) \geq \int_{1}^{N + 1} f(t)\,dt \geq \sum_{n = 1}^{N + 1} f(n) - f(1) = S_{N + 1} - S(1) \label{eq:star2} \tag{*}\]
+    \[\text{Из (\ref{eq:star2}) } \Longrightarrow \ \sup_{N \in \mathbb{N}} S_N < +\infty \Longleftrightarrow \left\{\begin{array}{l}
+        \displaystyle \sum_{N = 1}^{\infty} f(N) \text{ сходится} \\ \displaystyle \sup_{N \in \mathbb{N}} \int_{1}^{N + 1} f(t)\,dt < +\infty
+        \ \Longleftrightarrow \ \int_{1}^{+\infty} f(t)\,dt \text{ сходится}        
+    \end{array}\right.\] 
+\end{proof}
+
+\begin{remark}
+    Монотонность в интегральном признаке отбросить нельзя! \\ Действительно, рассмотрим следующие функции:
+    \begin{enumerate}
+        \item 
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.5\textwidth]{pictures/Интегральный признак - пример 1.png}
+            \caption{вот такая прелесть}
+        \end{figure}
+        $\displaystyle f(n) = 0 \ \forall n \in \mathbb{N} \ \Longrightarrow \ \sum_{n = 1}^{\infty} f(n)$ сходится \\
+        Но $\displaystyle \int_{1}^{n} f(t)\,dt = \frac{n - 1}{2} \ \to +\infty, \ n \to \infty \Longrightarrow \int_{1}^{+\infty} 
+        f(t)\,dt$ расходится
+        \item 
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.5\textwidth]{pictures/Интегральный признак - пример 2.png}
+            \caption{и вот такая прелесть}
+        \end{figure}
+        $\displaystyle f(n) = 1 \ \forall n \in \mathbb{N} \ \Longrightarrow \ \sum_{n = 1}^{\infty} f(n)$ расходится \\
+        Но $\displaystyle \int_{1}^{n} f(t)\,dt = \sum_{k = 1}^{n}\frac{2^{1-k}}{2} = 2^{-k} \ \to 1, \ n \to \infty \Longrightarrow \int_{1}^{+\infty}
+        f(t)\,dt$ сходится
+    \end{enumerate}
+\end{remark}
+
+\begin{theorem}[Признак Даламбера]
+    Пусть $\{a_k\}$ --- неотрицательная последовательность. Пусть \[\exists k_0 \in \mathbb{N}: \ a_{k + 1} \leq q \cdot a_k \ \forall k \geq k_0\]
+    Тогда, если $q \in [0, 1)$, то ряд $\displaystyle \sum_{k = 1}^{\infty} a_k$ сходится. Если же \[\exists k_0 \in \mathbb{N}: \ a_{k+1} \geq 
+    a_k > 0 \ \forall k \geq k_0\] то ряд $\displaystyle \sum_{k = 1}^{\infty} a_k$ расходится.
+\end{theorem}
+
+\begin{proof}
+    Во втором случае не выполнено необходимое условие сходимости числового ряда: \[a_n \geq a_{k_0} > 0 \ \forall n > k_0 \Longrightarrow
+    a_n \nrightarrow 0, \ n \to \infty \ \Longrightarrow \sum_{k = 1}^{\infty} a_k \text{ расходится}\]
+    В первом случае: \[a_n \leq q \cdot a_{n - 1} \leq q^2 \cdot a_{n - 2} \leq ... \leq q^{n - k_0} \cdot a_{k_0} \Longrightarrow
+    a_n \leq q^{n - k_0} \cdot a_{k_0} \ \forall n \geq k_0\] В силу сходимости ряда $\displaystyle \sum_{n = k_0}^{\infty} q^{n - k_0} \cdot a_{k_0}$
+    \bigg( сходимость этого ряда следует из формулы суммы геометрической прогрессии: $\displaystyle S_{n + k_0} = \frac{a_{k_0} \cdot (q^{n - k_0} -1)}{q - 1} + 
+    \sum_{k = 1}^{k_0} a_k$ \st{это великолепие имеет конечный предел, поверьте, пожалуйста} \bigg). Тогда по признаку сравнения получаем, что ряд 
+    $\displaystyle \sum_{k = k_0}^{\infty} a_k$ сходится $\Longrightarrow$ в силу принципа локализации, $\displaystyle \sum_{k = 1}^{\infty} a_k$ сходится.
+\end{proof}
+
+\begin{theorem}[Признак Коши]
+    Пусть $\{a_k\}$ --- неотрицательная последовательность. Тогда 
+    \begin{enumerate}
+        \item если $\exists q \in [0, 1), \ \exists k_0 \in \mathbb{N}: \ \sqrt[k]{a_k} \leq q  \ \forall k \geq k_0$, то $\displaystyle \sum_{k = 1}^{\infty} a_k$ сходится
+        \item если же $\exists k_0 \in \mathbb{N}: \sqrt[k]{a_k} \geq 1 \ \forall k \geq k_0$, то $\displaystyle \sum_{k = 1}^{\infty} a_k$ расходится
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    \begin{enumerate}
+        \item $\forall k \geq k_0 \hookrightarrow a_k \leq q^k \ \Longrightarrow$ в силу признака сравнения и сходимости $\displaystyle \sum_{k = k_0}^{\infty} q^k$  
+        получаем, что $\displaystyle \sum_{k = k_0}^{\infty} a_k$ сходится. Тогда по принципу локализации $\displaystyle \sum_{k = 1}^{\infty} a_k$ сходится.
+        \item $a_k \nrightarrow 0, \ k \to \infty \ \Longrightarrow$ не выполнено необходимое условие. Следовательно, $\displaystyle \sum_{k = 1}^{\infty} a_k$ расходится.
+    \end{enumerate}
+\end{proof}
+
+\begin{theorem}[Признак Даламбера в предельной форме]
+    Пусть $\{a_k\}$ --- неотрицательная последовательность. Пусть \[\exists q \geq 0: \ \exists \lim_{k \to \infty} \frac{a_{k + 1}}{a_k} = q\] Тогда:
+    \begin{enumerate}
+        \item если $q \in [0, 1)$, то $\displaystyle \sum_{k = 1}^{\infty} a_k$ сходится
+        \item если $q > 1$, то $\displaystyle \sum_{k = 1}^{\infty} a_k$ расходится
+        \item если $q = 1$, то ничего сказать нельзя
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    \begin{enumerate}
+        \item $0 \leq q < 1 \ \Longrightarrow$ по определению предела последовательности, \[\exists k_0 \in \mathbb{N}: \frac{a_{k + 1}}{a_k} \leq \frac{q + 1}{2} < 1 
+        \quad \forall k \geq k_0\] Тогда, воспользовавшись признаком Даламбера в непредельной форме, получим сходимость ряда.
+        \item $q > 1 \ \Longrightarrow$ по определению предела последовательности, \[\exists k_0 \in \mathbb{N}: \frac{a_{k + 1}}{a_k} \geq \frac{q + 1}{2} > 1 
+        \quad \forall k \geq k_0\] Тогда по признаку Даламбера в непредельной форме, ряд расходится.
+        \item $q = 1$. Рассмотрим следующие ряды: \[\sum_{k = 1}^{\infty} \frac{1}{n} \text{ --- расходится по интегральному признаку: } \int_{1}^{+\infty} \frac{1}{x}\,dx 
+        \text{  расходится}\]
+        \[\sum_{k = 1}^{\infty} \frac{1}{n^2} \text{ --- сходится по интегральному признаку: } \int_{1}^{+\infty} \frac{1}{x^2}\,dx \text{  сходится}\]
+        При этом: \[\frac{1}{n + 1} \bigg/ \frac{1}{n} = \frac{n}{n + 1} \to 1, \ n \to \infty\]
+        \[\frac{1}{(n + 1)^2} \bigg/ \frac{1}{n^2} = \left(\frac{n}{n + 1}\right)^2 \to 1, \ n \to \infty\]
+    \end{enumerate}
+\end{proof}
+
+\begin{theorem}[Признак Коши в предельной форме]
+    Пусть $\{a_k\}$ --- неотрицательная последовательность. Пусть \[\exists q \geq 0: \ \exists \lim_{k \to \infty} \sqrt[k]{a_k} = q\] Тогда:
+    \begin{enumerate}
+        \item если $q \in [0, 1)$, то $\displaystyle \sum_{k = 1}^{\infty} a_k$ сходится
+        \item если $q > 1$, то $\displaystyle \sum_{k = 1}^{\infty} a_k$ расходится
+        \item если $q = 1$, то ничего сказать нельзя
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    Аналогично доказательству признака Даламбера в предельной форме.
+\end{proof}
+\end{document}

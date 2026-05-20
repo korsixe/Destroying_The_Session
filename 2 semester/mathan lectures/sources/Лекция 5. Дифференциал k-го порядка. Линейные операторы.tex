@@ -1,0 +1,328 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\DIF}{DIF}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Автор выполнил свою работу. Начинается полная акуна матата}
+\fancyhead[R]{\href{https://t.me/sol_m_07}{Соля}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 5. Дифференциал $k$-го порядка. Линейные операторы
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Замечание по последней теореме с прошлой лекции}
+
+\begin{remark}
+    Если мы не требуем непрерывность вторых частных производных, то они могут оказаться не равными.
+    В самом деле, рассмотрим функцию \[f(x, y) = 
+    \begin{cases}
+        \displaystyle xy \cdot \frac{x^2 - y^2}{x^2 + y^2}, & x^2 + y^2 > 0 \\
+        0, & x^2 + y^2 = 0
+    \end{cases}\]
+    Покажем, что \[\frac{\partial^2f}{\partial x \partial y}(0, 0) \neq 
+    \frac{\partial^2f}{\partial y \partial x}(0, 0)\]
+    Вычислим для этого частные производные первого порядка в точке $(x, y) \neq (0, 0):$ 
+    \[\frac{\partial f}{\partial x}(x, y) = y \cdot \frac{x^2 - y^2}
+    {x^2 + y^2} + xy \cdot \left( \frac{2x}{x^2 + y^2} - \frac{(x^2 - y^2) 
+    \cdot 2x}{(x^2 + y^2)^2} \right)\]
+    \[\frac{\partial f}{\partial y}(x, y) = x \cdot \frac{x^2 - y^2}
+    {x^2 + y^2} + xy \cdot \left( \frac{-2y}{x^2 + y^2} - \frac{(x^2 - y^2) 
+    \cdot 2y}{(x^2 + y^2)^2} \right)\] \\
+    Заметим, что $f(x, 0) = f(0, y) = 0 \ \ \forall x, y \in \mathbb{R}$ 
+    (функция на осях тождественно равна нулю). \\
+    Тогда по определению \[\frac{\partial f}{\partial x}(0, 0) = \lim_{t \to 0} 
+    \frac{f(t, 0) - f(0, 0)}{t} = 0\] 
+    \[\frac{\partial f}{\partial y}(0, 0) = \lim_{t \to 0} \frac{f(0, t) 
+    - f(0, 0)}{t} = 0\] \\
+    Используем это и получим: 
+    \[\frac{\partial^2 f}{\partial y \partial x}(0, 0) = 
+    \lim_{y \to 0} \frac{\displaystyle \frac{\partial f}{\partial x}(0, y) - 
+    \frac{\partial f}{\partial x}(0, 0)}{y} = -1\]
+    \[\frac{\partial^2 f}{\partial x \partial y}(0, 0) = 
+    \lim_{x \to 0} \frac{\displaystyle \frac{\partial f}{\partial y}(x, 0) - 
+    \frac{\partial f}{\partial y}(0, 0)}{x} = 1\] \\
+    Легко видеть, что вторые частные производные не совпали.
+\end{remark}
+
+\section{Дифференциал $k$-го порядка}
+
+\begin{definition}
+    Пусть $k > 1$, $f \colon B_{\delta}(x^0) \to \mathbb{R}$. Будем говорить, 
+    что $f$ является $k$ раз дифференцируемой в точке $x^0$, если существуют 
+    \textbf{все} частные производные функции $f$ в $B_{\delta}(x^0)$ до порядка $k - 1$, и все они 
+    являются дифференцируемыми функциями в точке $x^0$.
+\end{definition}
+
+\begin{remark}
+    На самом деле в определении достаточно требовать только дифференцируемость 
+    в точке $x^0$ всех частных производных порядка $k - 1$, так как 
+    все младшие будут автоматически дифференцируемы.
+\end{remark}
+
+\begin{proof}
+    Подробного доказательства лектор не привёл, но обозначил суть: \\
+    Если все частные производные порядка $k - 1$ дифференцируемы, то они 
+    и непрерывны. Тогда по достаточному условию дифференцируемости 
+    все частные производные порядка $k - 2$ дифференцируемы. Далее можем 
+    продолжать по индукции.
+\end{proof}
+
+\begin{definition}
+    Пусть $\Omega \subset \mathbb{R}^n$ -- открытое множество, $k \in 
+    \mathbb{N}_0$. Тогда $\DIF^k(\Omega)$ -- множество всех $k$ раз дифференцируемых 
+    функций в каждой точке множества $\Omega$.
+\end{definition}
+
+\begin{remark}
+    По договорённости дифференциал нулевого порядка полагают исходной функцией.
+\end{remark}
+
+\begin{definition}
+    Пусть $f \colon \Omega \to \mathbb{R}$ является $k$ раз дифференцируемой в точке $x^0$ -- внутренней 
+    точке $\Omega$. Если $k = 1$, то 
+    $\mathrm{d}_{x^0}f$ был определён ранее. Если же $k > 1$, то 
+    \[\mathrm{d}^k_{x^0}f := \mathrm{d}(\mathrm{d}^{k - 1}_{x}f) \Bigr|_{x = x^0}\]
+    При вычислении $\mathrm{d}(\mathrm{d}^{k - 1}_{x^0}f)$ все 
+    $\mathrm{d}x_i$ считаются фиксированными.
+\end{definition}
+
+\begin{lemma}
+    Пусть $f \colon \Omega \to \mathbb{R}$, $x^0$ -- внутренняя точка 
+    $\Omega$, $k \in \mathbb{N}$. Пусть функция $f$ является $k$ раз дифференцируемой в точке 
+    $x^0$. Тогда 
+    \[\mathrm{d}^k_{x^0}f(\mathrm{d}x) = \sum_{i_1 = 1}^{n} \dots \sum_{i_k 
+    = 1}^{n} \left(\frac{\partial^k f}{\partial x_{i_1} \dots \partial 
+    x_{i_k}}(x^0) \cdot \mathrm{d}x_{i_1} \dots \mathrm{d}x_{i_k}\right), \quad \mathrm{d}x = (\mathrm{d}x_1, \dots, \mathrm{d}x_n) \tag{$\ast$}\label{eq:star1}\]
+    Заметим, что получился полином от переменных $\mathrm{d}x_1, \dots, 
+    \mathrm{d}x_n$ степени не выше $k$.
+\end{lemma}
+
+\begin{proof}
+    Докажем по индукции: \\
+    \underline{\textit{База}}. При $k = 1$: 
+    \[\mathrm{d}_{x^0}f(\mathrm{d}x) = \sum_{i = 1}^n \frac{\partial f}{\partial x_i}(x^0) \mathrm{d}x_i\] 
+    Легко видеть, что полученное совпадает с определением, данным ранее (простое следствие третьего необходимого условия дифференцируемости).
+    \\
+    \underline{\textit{Шаг}}. Предположим, что \text{(\ref{eq:star1})} доказана при 
+    $k = l$. Докажем при $k = l + 1$: \\
+    \[\mathrm{d}^{l + 1}_{x^0}f(\mathrm{d}x) := 
+    \mathrm{d}(\mathrm{d}^l_{x}f(\mathrm{d}x)) \Bigr|_{x = x^0} = 
+    \mathrm{d}\left(\sum_{i_1 = 1}^{n}\dots\sum_{i_l = 1}^{n} 
+    \frac{\partial^l f}{\partial x_{i_1}\dots\partial x_{i_l}}(x) 
+    \mathrm{d}x_{i_1}\dots\mathrm{d}x_{i_l}\right)\Biggr|_{x = x^0}\]
+    Далее воспользуемся линейностью дифференциала и получим 
+    \[\sum_{i_1 = 1}^{n}\dots\sum_{i_l = 1}^{n}\mathrm{d}
+    \left(\frac{\partial^l f}{\partial x_{i_1}\dots\partial x_{i_l}}(x)
+    \right)\Biggr|_{x = x^0}\mathrm{d}x_{i_1}\dots\mathrm{d}x_{i_l}\]
+    Рассмотрим отдельно \[\mathrm{d}\left(\frac{\partial^l f}{\partial 
+    x_{i_1}\dots\partial x_{i_l}}(x)\right)\Biggr|_{x = x^0} = 
+    \sum_{i_{l + 1} = 1}^{n} \frac{\partial^{l + 1} f}{\partial x_{i_{l + 1}} 
+    \partial x_{i_1} \dots \partial x_{i_l}}(x^0) \mathrm{d}x_{i_{l + 1}}\]
+    Загружаем полученное представление в предыдущее и размораживаем все приращения: \[\sum_{i_1 = 1}^{n}\dots\sum_{i_l = 1}^{n}
+    \sum_{i_{l + 1} = 1}^{n} \frac{\partial^{l + 1} f}{\partial x_{i_{l + 1}} 
+    \partial x_{i_1} \dots \partial x_{i_l}}(x^0) \mathrm{d}x_{i_{l + 1}}
+    \mathrm{d}x_{i_1}\dots\mathrm{d}x_{i_l}\]
+    Так как все индексы свободные и пробегают один и тот же диапазон, то все возможные комбинации $\partial 
+    x_{i_1} \dots \partial x_{i_{l + 1}}$ будут выписаны в любом случае, независимо от обозначений переменных. Тогда переобозначим 
+    индексы: \[\widetilde{i}_1 = i_{l + 1}, \widetilde{i}_2 = i_1, \dots, 
+    \widetilde{i}_{l + 1} = i_l\]
+    Переставим знак суммы по $\widetilde{i}_1$ в начало и получим окончательно:
+    \[\mathrm{d}^{l + 1}_{x^0}f(\mathrm{d}x) = \sum_{\widetilde{i}_1 = 1}^{n}\dots\sum_{\widetilde{i}_{l + 1} = 1}^{n} 
+    \frac{\partial^{l + 1} f}{\partial x_{\widetilde{i}_1} \dots \partial 
+    x_{\widetilde{i}_{l + 1}}}(x^0) \mathrm{d}x_{\widetilde{i}_1}\dots\mathrm{d}
+    x_{\widetilde{i}_{l + 1}}\]
+    Нетрудно видеть, что получено нужное представление, а значит индукционный шаг выполнен и требуемое доказано. 
+\end{proof}
+
+\begin{definition}
+    Введём \textbf{мультииндекс}: 
+    \[\alpha = (\alpha_1, \dots, \alpha_n), \ \alpha_i \in \mathbb{N}_0\]
+    \[\left\lvert \alpha \right\rvert := \sum_{i = 1}^{n} \alpha_i\]
+    Введём также следующее обозначение:
+    \[\mathcal{D}^{\alpha} f(x) := \frac{\partial^{\left\lvert \alpha \right\rvert}f}
+    {\partial x^{\alpha_1}_1 \dots \partial x^{\alpha_n}_n}(x)\]
+\end{definition}
+
+\begin{definition}
+    Пусть $k \in \mathbb{N}, \ x^0 \in \Omega$ -- внутренняя точка $\Omega$. Функция $f \colon \Omega 
+    \to \mathbb{R}$ называется $k$ раз непрерывно дифференцируемой в точке $x^0$, если 
+    все частные производные вплоть до порядка $k$ существуют в некоторой окрестности точки $x^0$ 
+    и они непрерывны в точке $x^0$.
+\end{definition}
+
+\begin{definition}
+    Множество всех $k$ раз непрерывно дифференцируемых функций в каждой точке открытого множества $\Omega$ будем 
+    обозначать $C^k(\Omega)$.
+\end{definition}
+
+\begin{lemma}
+    Если функция $f$ является $k$ раз непрерывно дифференцируемой в точке $x^0 \in \Omega$ -- 
+    внутренней точке $\Omega$, $k \in \mathbb{N}$, то:
+    \[\mathrm{d}^k_{x^0}f(\mathrm{d}x) = \sum_{\left\lvert \alpha \right\rvert = k} 
+    C_{\alpha} \mathcal{D}^{\alpha} f(x^0) \mathrm{d} x^{\alpha}, \quad \mathrm{d} x^{\alpha} := (\mathrm{d} x_1)^{\alpha_1}\dots(\mathrm{d} x_n)^{\alpha_n}, \quad C_{\alpha} := \frac{k!}{\alpha_1!\dots\alpha_n!}\]
+    Здесь использована коммутативность частных производных порядка $k$.
+\end{lemma}
+
+\begin{proof}
+    Смекалистый читатель без труда докажет эту лемму самостоятельно. Достаточно лишь вспомнить, сколько 
+    есть способов разложить на столе $k$ карандашей $\alpha_1, \ldots, \alpha_n$ цветов, а также увидеть, что 
+    для любой перестановки $\sigma$ индексов $i_1, \ldots, i_k$ в силу того, что $f$ непрерывно дифференцируема в точке $x^0$, выполнено: 
+    \[\frac{\partial^k f}{\partial x_{i_1} \dots \partial x_{i_k}}(x^0) = 
+    \frac{\partial^k f}{\partial x_{\sigma(i_1)} \dots \partial x_{\sigma(i_k)}}(x^0)\]
+\end{proof}
+
+\section{Линейные отображения}
+
+\begin{definition}
+    Пусть $E_1, E_2$ -- линейные пространства. Тогда $A \colon E_1 \to E_2$ называется 
+    линейным отображением (линейным оператором), если \[\forall x, y \in E_1 \ \forall 
+    \alpha, \beta \in \mathbb{R} \hookrightarrow A(\alpha x + \beta y) = \alpha A(x) + \beta A(y)\]
+\end{definition}
+
+\begin{definition}
+    Пусть $(E_1, \left\lVert \; \cdot \; \right\rVert_1)$ и $(E_2, \left\lVert \; \cdot \;
+    \right\rVert_2)$ --- линейные нормированные пространства, $A$ -- линейное отображение из $E_1$ в $E_2$. Тогда 
+    нормой оператора $A$ будем называть следующее: \[\left\lVert A \right\rVert := \sup_{x \neq 0} 
+    \frac{\left\lVert A(x) \right\rVert_2}{\left\lVert x \right\rVert_1} \in [0, +\infty]\] 
+    Геометрический смысл нормы линейного оператора -- максимальный коэффициент растяжения векторов при линейном 
+    отображении.
+\end{definition}
+
+\begin{lemma}
+    Пусть $(E_1, \left\lVert \; \cdot \; \right\rVert_1)$ и $(E_2, \left\lVert \; \cdot \;
+    \right\rVert_2)$ --- линейные нормированные пространства, $A$ -- линейное отображение из $E_1$ в $E_2$. Тогда:
+    \[\left\lVert A 
+    \right\rVert = \sup_{\left\lVert x \right\rVert_1 = 1} \left\lVert A(x) \right\rVert_2\]
+\end{lemma}
+
+\begin{proof}
+    Для $x \neq 0$ определим \[\widetilde{x} = \frac{x}{\left\lVert x \right\rVert_1} 
+    \implies \left\lVert \widetilde{x} \right\rVert_1 = 1\]
+    Далее будем вносить и выносить константу $\frac{1}{\left\lVert x \right\rVert_1}$ по свойствам нормы и линейного оператора: 
+    \[\sup_{x \neq 0} \frac{\left\lVert A(x) \right\rVert_2}{\left\lVert x 
+    \right\rVert_1} = \sup_{x \neq 0} \left\lVert \frac{1}{\left\lVert x \right\rVert_1} 
+    A(x) \right\rVert_2 = \sup_{x \neq 0} \left\lVert A\left(\frac{x}{\left\lVert x 
+    \right\rVert_1}\right) \right\rVert_2 = \sup_{\left\lVert \widetilde{x} 
+    \right\rVert_1 = 1} \left\lVert A(\widetilde{x}) \right\rVert_2\]
+\end{proof}
+
+\begin{definition}
+    Пусть $(E_1, \left\lVert \; \cdot \; \right\rVert_1)$ и $(E_2, \left\lVert \; \cdot \;
+    \right\rVert_2)$ --- линейные нормированные пространства. Линейный оператор $A \colon E_1 \to E_2$ называется 
+    \textbf{ограниченным}, если \[\left\lVert A \right\rVert < +\infty\]
+    В противном случае он называется \textbf{неограниченным}.
+\end{definition}
+
+\begin{definition}
+    Пусть $(E_1, \left\lVert \; \cdot \; \right\rVert_1)$ и $(E_2, \left\lVert \; \cdot \;
+    \right\rVert_2)$ --- линейные нормированные пространства. Тогда $\mathcal{L}(E_1, E_2)$ -- множество всех линейных 
+    ограниченных операторов из $E_1$ в $E_2$.
+\end{definition}
+
+\begin{lemma}
+    Множество $\mathcal{L}(E_1, E_2)$ является линейным пространством. При этом сложение операторов и их 
+    умножение на число понимается поточечно.
+\end{lemma}
+
+\begin{proof}
+    Пусть $A_1, A_2 \in \mathcal{L}(E_1, E_2)$. Тогда 
+    \[(\alpha A_1 + \beta A_2)(x) := \alpha A_1(x) + \beta A_2(x) \ \ \forall x \in E_1\]
+    Покажем сначала, что $\alpha A_1 + \beta A_2$, где $\alpha, \beta \in \mathbb{R}$, -- линейный оператор. Возьмём 
+    произвольно $c_1, c_2 \in \mathbb{R}$ и $x, y \in E_1$ и рассмотрим выражение: 
+    \[(\alpha A_1 + \beta A_2)(c_1x + c_2y) = [\text{определение}] = \alpha A_1(c_1x + c_2y) + \beta A_2(c_1x + c_2y) =\]
+    \[= [\text{линейность операторов}] = \alpha c_1A_1(x) + \alpha c_2A_1(y) + \beta c_1A_2(x) + \beta c_2A_2(y) =\]
+    \[= c_1\left(\alpha A_1(x) + \beta A_2(x)\right) + c_2\left(\alpha A_1(y) + \beta A_2(y)\right) = [\text{определение}] =\]
+    \[= c_1(\alpha A_1 + \beta A_2)(x) + c_2(\alpha A_1 + \beta A_2)(y)\]
+    Легко видеть, что линейность доказана. Осталось показать ограниченность, имея ограниченность линейных операторов $A_1$ и $A_2$, то есть $\left\lVert A_1 \right\rVert < +\infty$ и 
+    $\left\lVert A_2 \right\rVert < +\infty$. Оценим норму линейного оператора $\alpha A_1 + \beta A_2$:
+    \[\left\lVert \alpha A_1 + \beta A_2 \right\rVert = \sup_{\left\lVert x \right\rVert_1 = 1} \left\lVert \alpha A_1(x) + \beta A_2(x) \right\rVert_2 \leq \sup_{\left\lVert x \right\rVert_1 = 1} (\left\lvert \alpha \right\rvert \left\lVert A_1(x) \right\rVert_2 + \left\lvert \beta \right\rvert \left\lVert A_2(x) \right\rVert_2) \leq\]
+    \[\leq \left\lvert \alpha \right\rvert \sup_{\left\lVert x \right\rVert_1 = 1} \left\lVert A_1(x) \right\rVert_2 + \left\lvert \beta \right\rvert \sup_{\left\lVert x \right\rVert_1 = 1} \left\lVert A_2(x) \right\rVert_2 = \left\lvert \alpha \right\rvert \left\lVert A_1 \right\rVert + \left\lvert \beta \right\rvert \left\lVert A_2 \right\rVert < +\infty\]
+    Пробежав глазками цепочку неравенств с радостью по определению заключаем, что $\alpha A_1 + \beta A_2$ -- линейный ограниченный оператор, что и требовалось.
+\end{proof}
+
+\begin{remark}
+    Множество $\mathcal{L}(E_1, E_2)$ получает естественную структуру линейного нормированного пространства, где в качестве 
+    нормы берётся операторная норма.
+\end{remark}
+
+\begin{proof}
+    Пройдёмся по аксиомам:
+    \begin{enumerate}
+        \item Неравенство треугольника вытекает из доказательства предыдущей леммы при $\alpha = \beta = 1$.
+        \item $\left\lVert \alpha A \right\rVert = \left\lvert \alpha \right\rvert \cdot \left\lVert A \right\rVert$ доказывается аналогично.
+        \item Остаётся показать, что $A \equiv 0$ (то есть все точки переводит в 0) $\Longleftrightarrow \left\lVert A \right\rVert = 0$
+    \end{enumerate}
+    $(\Longrightarrow):$ Пусть $A \equiv 0$. Тогда по определению $\left\lVert A \right\rVert = 0$. \\
+    $(\Longleftarrow):$ Пусть $\left\lVert A \right\rVert = 0$. Тогда 
+    \[\forall x \in E_1: \left\lVert x \right\rVert_1 = 1 \hookrightarrow 0 \leq \left\lVert A(x) \right\rVert_2 \leq \left\lVert A \right\rVert = 0 \implies \left\lVert A(x) \right\rVert_2 = 0 \ \ \forall x \in E_1: \left\lVert x \right\rVert_1 = 1\]
+    Пусть $\widetilde{x} = \frac{x}{\left\lVert x \right\rVert_1}$. Выше мы уже обсуждали, что 
+    $\left\lVert \widetilde{x} \right\rVert_1 = 1$ и $\left\lVert A(\widetilde{x}) \right\rVert_2 = 0$. 
+    Воспользуемся этим и получим, что 
+    \[\forall x \neq 0 \hookrightarrow \left\lVert A(x) \right\rVert_2 = \left\lVert x \right\rVert_1 \cdot \left\lVert A(\widetilde{x}) \right\rVert_2 = \left\lVert x \right\rVert_1 \cdot 0 = 0\]
+    Но тогда 
+    \[\forall x \in E_1 \hookrightarrow  A(x)  = 0 \implies A \equiv 0\]
+\end{proof}
+
+\begin{lemma}
+    Если $A \in \mathcal{L}(E_1, E_2)$, то 
+    \[\forall x \in E_1 \hookrightarrow \left\lVert A(x) \right\rVert_2 \leq \left\lVert A \right\rVert \cdot \left\lVert x \right\rVert_1\]
+\end{lemma}
+
+\begin{proof}
+    Если $x = 0$, то это очевидно. Далее $x \neq 0$. Помним про линейность $A$ и потихоньку выносим норму:
+    \[\left\lVert A(x) \right\rVert_2 = \left\lVert A\left(\frac{x \cdot \left\lVert x \right\rVert_1}{\left\lVert x \right\rVert_1}\right)\right\rVert_2 = 
+    \left\lVert \left\lVert x \right\rVert_1 \cdot A \left(\frac{x}{\left\lVert x \right\rVert_1}\right)\right\rVert_2 = \left\lVert x \right\rVert_1 \cdot 
+    \left\lVert A\left(\frac{x}{\left\lVert x \right\rVert_1}\right) \right\rVert_2\]
+    Но $\left\lVert A \right\rVert$ по определению супремум (более явно мы это показали в лемме 3.1), следовательно, получаем 
+    \[\left\lVert x \right\rVert_1 \cdot \left\lVert A\left(\frac{x}{\left\lVert x \right\rVert_1}\right) \right\rVert_2 \leq 
+    \left\lVert x \right\rVert_1 \cdot \left\lVert A \right\rVert\]
+\end{proof}
+
+\begin{example}
+    Приведём пример неограниченного линейного оператора. Пусть 
+    \[E_1 = C^1\left([a, b]\right), \quad E_2 = C\left([a, b]\right)\]
+    \[\left\lVert f \right\rVert_1 = \max_{x \in [a, b]}\left\lvert f(x) \right\rvert \quad  \text{ и } \quad \left\lVert f \right\rVert_2 = \max_{x \in [a, b]}\left\lvert f(x) \right\rvert\]
+    Далее определим линейный оператор $A[f](x) = f'(x)$. Он действительно линеен из линейности производной (свойства дифференцирования суммы и функции, умноженной на константу).
+    Подставим теперь в оператор функции вида: 
+    \[f_n(x) = \sin nx \quad \forall n \in \mathbb{N}\]    
+    Заметим, что \[\left\lVert f_n \right\rVert_1 = 1 \quad \text{ и } \quad \left\lVert A(f_n) \right\rVert_2 = n\]
+    Тогда \[\left\lVert A \right\rVert \geq \sup_{n \in \mathbb{N}} \frac{\left\lVert A(f_n) \right\rVert_2}
+    {\left\lVert f_n \right\rVert_1} = \sup_{n \in \mathbb{N}} n = +\infty\]
+    Полученное по определению и означает, что оператор $A$ является неограниченным.
+\end{example}
+
+\section{Разбавляем ужасы смешными картинками}
+
+Автор на каждой лекции по матану, когда не спит: 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{pictures/Тимон.jpg}
+\end{figure}
+
+\end{document}

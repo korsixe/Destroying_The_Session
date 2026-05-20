@@ -1,0 +1,281 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{soul}
+\usepackage{multicol}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\rg}{rg}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Спасите, пожалуйста}
+\fancyhead[R]{\href{https://t.me/lost_luna}{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 11. Квадратичная форма. \\ Достаточное условие безусловного 
+    экстремума. Необходимое условие относительного экстремума.
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Квадратичная форма}
+
+\begin{definition}
+    Пусть $B_\delta(x^0) \subset \mathbb{R}^n, \ f \colon B_\delta(x^0) \to \mathbb{R}$.
+    Если \[\exists \frac{\partial f}{\partial x_1}(x^0), \ldots, \exists \frac{\partial f}{\partial x_n}(x^0) \quad \text{ и } \quad \frac{\partial f}{\partial x_1}(x^0) = \ldots = \frac{\partial f}{\partial x_n}(x^0) = 0,\]
+    то $x^0$ называется \textbf{стационарной точкой} функции $f$.
+\end{definition}
+
+\begin{definition}[Адаптированное под цели маэстро]
+    Квадратичной формой $K$ в $\mathbb{R}^n$ назовем функцию вида 
+    \[K(h) = \sum_{i, j = 1}^n = a_{ij} \cdot h_i \cdot h_j, \quad \text{при этом }
+    a_{ij} = a_{ji} \; \; \forall i \in \{1, \dots, n\}\]
+    Здесь $h = (h_1, \ldots, h_n) \in \mathbb{R}^n$.
+\end{definition}
+
+\begin{example}
+    Если $f \in C^2(B_\delta(x^0))$, то \[\frac{\partial^2 f}{\partial x_i \cdot 
+    \partial x_j}(x^0) = \frac{\partial^2 f}{\partial x_j \cdot \partial x_i}(x^0)
+    = a_{ij} = a_{ji}\]
+    \[d^2_{x^0}f(dx) = \sum_{i, j = 1}^n \frac{\partial^2 f}{\partial x_j \cdot \partial x_i} (x^0) \cdot dx_i \cdot dx_j\]
+\end{example}
+
+\begin{remark}
+    Задать квадратичную форму $\Longleftrightarrow$ задать симметричную матрицу
+    \[ A =
+    \begin{pmatrix}
+        a_{11}  & \dots & a_{1n} \\ \vdots & \ddots & \vdots \\ a_{n1} & \dots & a_{nn}
+    \end{pmatrix}
+    \]
+\end{remark}
+
+\begin{definition}
+    Квадратичная форма $K$ называется \textbf{положительно определенной}, если \[K(h) > 0 \ \forall h \ne 0\]
+    $K$ называется \textbf{отрицательно определенной}, если \[K(h) < 0 \ \forall h \ne 0\]
+    $K$ называется \textbf{знаконеопределенной}, если \[\exists h_1, h_2 \in \mathbb{R}^n: \ K(h_1) > 0, \; K(h_2) < 0\]
+\end{definition}
+
+\begin{theorem}[Критерий Сильвестра]
+    Квадратичная форма $K$ положительно определена $\Longleftrightarrow$ все главные
+    миноры $A$ положительны.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\textwidth]{pictures/Главные миноры.png}
+    \end{figure} \leavevmode
+    \\
+    Квадратичная форма $K$ отрицательно определена $\Longleftrightarrow$ знаки 
+    главных миноров $A$ чередуются, начиная с отрицательного.
+\end{theorem}
+
+\section{Безусловный экстремум}
+
+\begin{definition}
+    Матрица вторых частных производных называется \textbf{матрицей Гессе}
+    \[\mathcal{H}f (x^0) = 
+    \begin{pmatrix}
+        \displaystyle \frac{\partial^2 f}{\partial x_1 \cdot \partial x_1} (x^0) & \displaystyle \dots & \displaystyle \frac{\partial^2 f}{\partial x_1 \cdot \partial x_n} (x^0) \\
+        \displaystyle \vdots & \displaystyle \ddots & \displaystyle \vdots \\ 
+        \displaystyle \frac{\partial^2 f}{\partial x_n \cdot \partial x_1} (x^0) & \displaystyle \dots & \displaystyle \frac{\partial^2 f}{\partial x_n \cdot \partial x_n} (x^0)
+    \end{pmatrix}\]
+\end{definition}
+
+\begin{lemma} \label{lemma:2.1}
+    Пусть $K$ -- положительно определенная квадратичная форма. Тогда 
+    \[\exists m > 0: \ K(h) \geq m \cdot \left|\left|h\right|\right|^2\]    
+\end{lemma}
+
+\begin{proof}
+    Заметим, что функция $K = K(h)$ непрерывна в $\mathbb{R}^n$. Рассмотрим ее сужение
+    на $S^{n-1}_1(0)$ -- компакт. Следовательно, в силу непрерывности $K$ и компактности 
+    $S^{n-1}_1(0)$, по теореме Вейерштрасса немедленно получаем, что 
+    \[\exists \min_{h \in S^{n-1}_1(0)}K(h) =: m\]
+    Теперь чуть-чуть пошаманим с нашей прекрасной $K(h)$, будем рассматривать $h \ne 0$, 
+    так как в случае $h = 0$ неравенство, очевидно, выпоняется:
+    \[K(h) = \sum_{i, j = 1}^n a_{ij} \cdot h_i \cdot h_j = \left|\left|h\right|\right|^2
+    \cdot \sum_{i, j = 1}^n a_{ij} \cdot \frac{h_i}{\left|\left|h\right|\right|} \cdot 
+    \frac{h_j}{\left|\left|h\right|\right|} = \left[\widetilde{h} := \frac{h}
+    {\left|\left|h\right|\right|}\right] =\]
+    \[= \left|\left|h\right|\right|^2 \cdot K(\widetilde{h}) \geq \left|\left|h\right|\right|^2
+    \cdot \min_{\widetilde{h} \in S_1^{n-1}(0)} K(\widetilde{h}) = m \cdot \left|\left|h\right|\right|^2\]
+\end{proof}
+
+\begin{theorem}[Достаточное условие безусловного экстремума]
+    Пусть $f \in C^2(B_\delta(x^0))$. Пусть $x^0$ --- стационарная точка функции $f$, тогда
+    \begin{enumerate}
+        \item Если $d^2_{x^0}f(dx)$ -- положительно определенная квадратичная форма,
+        то $x^0$ -- строгий локальный минимум
+        \item Если $d^2_{x^0}f(dx)$ -- отрицательно определенная квадратичная форма,
+        то $x^0$ -- строгий локальный максимум
+        \item Если $d^2_{x^0}f(dx)$ -- знаконеопределенная квадратичная форма,
+        то экстремума нет 
+    \end{enumerate}
+    В остальных случаях ничего сказать нельзя.
+\end{theorem}
+
+\begin{proof}
+    Так как $f \in C^2(B_\delta(x^0))$, то по формуле Тейлора с остаточным членом в форме Пеано:
+    \[f(x) = f(x^0) + d_{x^0}f(dx) + \frac{d^2_{x^0}f(dx)}{2} + o\left(\left|\left|x-x^0
+    \right|\right|^2\right), \ \ x \to x^0\]
+    Заметим, что $d_{x^0}f(dx) = 0$, так как $x^0$ -- стационарная точка.
+    \begin{enumerate}
+        \item Рассмотрим случай положительно определенной квадратичной формы $d^2_{x^0}f(dx)$.
+        Тогда, в силу леммы \ref{lemma:2.1}:
+        \[\exists m > 0: \ d^2_{x^0}f(dx) \geq m \cdot \left|\left|x - x^0\right|
+        \right|^2 \ \ \forall x \in \mathbb{R}^n\]
+        Так как $o\left(\left|\left|x-x^0\right|\right|^2\right) = \varepsilon_{x^0}(x) \cdot 
+        \left|\left|x-x^0\right|\right|^2$, где $\varepsilon_{x^0}(x) \to 0, \ x \to x^0$,
+        то, очевидно, \[\exists \widetilde{\delta} \in (0, \delta):
+        \left|o\left(\left|\left|x-x^0\right|\right|^2\right)\right| \leq \frac{m}{4} \cdot \left|\left|
+        x-x^0\right|\right|^2 \quad \forall x \in B_{\widetilde{\delta}}(x^0)\]
+        Суммируя сказанное, $\forall x \in B_{\widetilde{\delta}}(x^0)$ выполнено:
+        \[f(x) - f(x^0) = \frac{d^2_{x^0}f(dx)}{2} + o\left(\left|\left|x-x^0\right|\right|^2\right)
+        \geq \frac{m}{2} \cdot \left|\left|x-x^0\right|\right|^2 - \frac{m}{4} \cdot 
+        \left|\left|x-x^0\right|\right|^2 = \frac{m}{4} \cdot \left|\left|x-x^0\right|\right|^2\]
+        Следовательно, $x^0$ -- строгий локальный минимум.
+
+        \item Случай отрицательно определенной квадратичной формы рассматривается
+        аналогично, \\ $x^0$ -- строгий локальный максимум.
+
+        \item Рассмотрим случай знаконеопределенной квадратичной формы $d^2_{x^0}f(dx)$, то есть 
+        \[\exists dx^1 = x^1 - x^0, \; \exists dx^2 = x^2 - x^0: \ d^2_{x^0}f(dx^1) \cdot d^2_{x^0}f(dx^2) < 0\]
+        Рассмотрим \[f(x^0 + t \cdot dx^1) - f(x^0) = \frac{t^2 \cdot d^2_{x^0}f(dx^1)}{2} +
+        o\left(t^2 \cdot \left|\left|dx^1\right|\right|^2\right), \ t \to +0 \quad (dx^1 \text{ зафиксирован})\]
+        \[f(x^0 + t \cdot dx^2) - f(x^0) = \frac{t^2 \cdot d^2_{x^0}f(dx^2)}{2} +
+        o\left(t^2 \cdot \left|\left|dx^2\right|\right|^2\right), \ t \to +0 \quad (dx^2 \text{ зафиксирован})\]
+        Так как \[o\left(t^2 \cdot \left|\left|dx^1\right|\right|^2\right) = w_1(t) \cdot t^2 \cdot 
+        \left|\left|dx^1\right|\right|^2, \text{ где } w_1(t) \to 0, \ t \to +0,\]
+        \[o\left(t^2 \cdot \left|\left|dx^2\right|\right|^2\right) = w_2(t) \cdot t^2 \cdot 
+        \left|\left|dx^2\right|\right|^2, \text{ где } w_2(t) \to 0, \ t \to +0,\] 
+        то заметим чудесный факт: 
+        \[\exists \delta_1, \in (0, \delta): \sign\left[f(x^0 + t \cdot dx^1) - f(x^0)\right] =
+        \sign d^2_{x^0}f(t \cdot dx^1) \quad \forall t \in (0, \delta_1)\]
+        \[\exists \delta_2, \in (0, \delta): \sign\left[f(x^0 + t \cdot dx^2) - f(x^0)\right] =
+        \sign d^2_{x^0}f(t \cdot dx^2) \quad \forall t \in (0, \delta_2)\]
+        Теперь $\forall \delta' \in (0, \delta)$ положим 
+        \[\bar{\delta} (\delta') = \min \left\{\delta_1, \delta_2, \frac{\delta'}{\left\lVert dx^1 \right\rVert}, 
+        \frac{\delta'}{\left\lVert dx^2 \right\rVert}\right\}\]
+        Тогда для любого $\delta' \in (0, \delta)$, если $t \in (0, \bar{\delta}(\delta'))$, то \[\sign\left[f\left(x^0 + t \cdot 
+        dx^1\right) - f\left(x^0\right)\right] \cdot \sign \left[f\left(x^0 + t \cdot 
+        dx^2\right) - f\left(x^0\right)\right] = \]
+        \[= \sign d^2_{x^0}f(t \cdot dx^1) \cdot \sign d^2_{x^0}f(t \cdot dx^2) = 
+        \left[\text{выносим } t^4, \text{ но на знак он не влияет}\right] =\] 
+        \[\sign d^2_{x^0}f(dx^1) \cdot \sign d^2_{x^0}f(dx^2) < 0\]
+        Следовательно, \[\forall \delta' > 0 \ \ \exists y^1 = x^0 + \frac{\bar{\delta}(\delta')}{2}
+        \cdot dx^1, \ \exists y^2 = x^0 + \frac{\bar{\delta}(\delta')}{2} \cdot dx^2: \ y_1, y_2
+        \in B_{\delta'}(x^0) \text{ и }\]
+        \[\left(f(y^1) - f(x^0)\right) \cdot \left(f(y^2) - f(x^0)\right) < 0\]
+        Значит, экстремума нет, и победа нас настигла!
+
+        \item Если не реализуются случаи 1, 2, 3, то, вообще говоря, у нас может быть
+        все, что угодно:
+        \begin{itemize}
+            \item Рассмотрим $f(x_1, x_2) = x_1^4$. Тогда 
+            \[\mathcal{H}f(0) = \begin{pmatrix}
+                0 & 0 \\ 0 & 0
+            \end{pmatrix}\]
+            Но $0$ -- точка нестрогого локального минимума.
+
+            \item Рассмотрим $f(x_1, x_2) = x^3_1$. Тогда 
+            \[\mathcal{H}f(0) = \begin{pmatrix}
+                0 & 0 \\ 0 & 0
+            \end{pmatrix}\]
+            Но экстремума в точке $0$ нет.
+        \end{itemize}
+    \end{enumerate}
+\end{proof}
+
+\section{Условный экстремум}
+
+\subsection*{Базовые предположения ($\ast$)}
+\mbox{} Пусть работаем в $\mathbb{R}^n, \ 1 \leq k < n$.
+\begin{enumerate}
+    \item Пусть $\varphi_1, \dots, \varphi_{n-k} \in C^1(\Omega)$, где $\Omega$ --
+    область в $\mathbb{R}^n$.
+    \item Пусть $M = \left\{x \in \Omega: \ \varphi_1(x) = ... = \varphi_{n-k}
+    (x) = 0\right\} \subset \Omega$
+    \item Пусть $\forall p \in M \hookrightarrow \nabla\varphi_1(p), \dots, \nabla\varphi_{n-k}(p)$ -- ЛНЗ
+    \item Пусть $f \in C^1(\Omega)$
+\end{enumerate}
+
+\begin{definition}
+    При условиях 1-4 точка $p \in M$ называется точкой \textbf{относительного экстремума} функции $f$ на $M$, 
+    если $p$ является экстремумом функции $f|_M$, то есть 
+    \[ \exists \delta > 0: \ \left[
+        \begin{array}{c}
+            \forall q \in B_\delta(p) \cap M \hookrightarrow f(q) \leq f(p) \\
+            \forall q \in B_\delta(p) \cap M \hookrightarrow f(q) \geq f(p)
+        \end{array}
+    \right.\]
+\end{definition}
+
+\begin{definition}
+    Пусть выполнены предположения $(\ast)$. Определим \textbf{функцию Лагранжа}: \[\mathcal{L}(x, \lambda) := f(x) - \lambda_1 \cdot \varphi_1(x) - ... -
+    \lambda_{n-k} \cdot \varphi_{n-k}(x), \quad x \in \mathbb{R}^n, \ \lambda \in \mathbb{R}^{n-k}\]
+\end{definition}
+
+\begin{theorem}[Необходимое условие относительного экстремума]
+    Пусть выполнены базовые предположения $(\ast)$. Пусть $p \in M$ -- точка относительного экстремума $f$ на $M$.
+    Тогда $\exists \lambda_1^0, \dots, \lambda_{n-k}^0: (p, \lambda^0)$ -- стационарная точка 
+    функции Лагрнажа.
+\end{theorem}
+
+\begin{proof}\hfill\break
+    \underline{Шаг 1:} $(p, \lambda^0)$ -- стационарная точка функции Лагрнажа $\Longleftrightarrow$
+    \[\Longleftrightarrow \left\{\begin{array}{c}
+       \displaystyle \frac{\partial \mathcal{L}}{\partial x_1}(p, \lambda^0) = 0 \\ \vdots \\  
+       \displaystyle \frac{\partial \mathcal{L}}{\partial x_n}(p, \lambda^0) = 0 \\ \\
+       \displaystyle \frac{\partial \mathcal{L}}{\partial \lambda_1}(p, \lambda^0) = 0 \\ \vdots \\
+       \displaystyle \frac{\partial \mathcal{L}}{\partial \lambda_{n-k}}(p, \lambda^0) = 0
+    \end{array}\right.\]
+    \[\left\{\begin{array}{c}
+       \displaystyle \frac{\partial \mathcal{L}}{\partial \lambda_1} (p, \lambda^0) = \varphi_1 (p) = 0 \\ \vdots \\
+       \displaystyle \frac{\partial \mathcal{L}}{\partial \lambda_{n-k}} (p, \lambda^0) = \varphi_{n-k} (p) = 0
+    \end{array}\right. \text{ означает, что  } p \text{ находится на } M\]
+    \[ \forall i \in \left\{1, \dots, n\right\} \hookrightarrow \ \frac{\partial \mathcal{L}}{\partial x_i}(p, \lambda^0) =
+    \frac{\partial f}{\partial x_i}(p) - \lambda_1^0 \cdot \frac{\partial \varphi_1}{\partial x_i}
+    (p) - \dotsc - \lambda_{n-k}^0 \cdot \frac{\partial \varphi_{n-k}}{\partial x_i}
+    (p) = 0 \Longleftrightarrow\]
+    \[\Longleftrightarrow \nabla f(p) = \sum_{i = 1}^{n-k}\lambda_i^0 \cdot \nabla \varphi_i(p)\]
+    \underline{Шаг 2:} для доказательства теоремы достаточно показать, что $\nabla f (p)$
+    является некоторой линейной комбинацией $\nabla \varphi_1(p), \dots, \nabla \varphi_{n-k}(p)$.\\
+    Предположим противное, что $\nabla f(p), \nabla \varphi_1(p), \dots, \nabla \varphi_{n-k}(p)$ --
+    ЛНЗ. Так как \[\nabla f, \nabla \varphi_1, \dots, \nabla \varphi_{n-k}\] непрерывны в 
+    $\Omega$, то $\exists$ малая окрестность $B_\delta(p)$ такая, что 
+    \[\nabla f(q), \nabla \varphi_1(q), \dots, \nabla \varphi_{n-k}(q) \text{ -- ЛНЗ }
+    \quad \forall q \in B_\delta(p)\]
+    Рассмотрим отображение \[\Phi: q \to \left(\varphi_1(q), \dots, \varphi_{n-k}(q), f(q)-f(p)\right)\]
+    Заметим, что $\Phi \in C^1(B_\delta(p), \mathbb{R}^{n-k+1})$ и $\rg D\Phi = n-k+1$
+    в шаре $B_\delta(p)$. Следовательно, по обобщению теоремы об открытом отображении, 
+    $\Phi(B_\delta(p))$ --- открытое множество в $\mathbb{R}^{n-k+1}$. Тогда 
+    \[ \exists B_\varepsilon(\Phi(p)) = B_\varepsilon(0) \subset \Phi(B_\delta(p))\]
+    Следовательно, \[\forall \delta > 0 \text{ в } \Phi(B_\delta(p)) \text{ есть точки вида }
+    (\underbrace{0, \dots, 0}_{n - k \text{ нулей}}, t), \ t \in (-\varepsilon, \varepsilon)\]
+    Эти точки являются образами точек с многообразия $M$, значит, 
+    \[ \forall \delta > 0 \ \exists q_1, q_2 \in B_\delta(p) \cap M: \ (f(q_1) -
+    f(p)) \cdot (f(q_2) - f(p)) < 0 \]
+    Следовательно, в любой окрестности точки $p$, пересечённой с $M$, найдутся две точки, в одной и из которых значение больше $f(p)$, a в другой --- меньше,
+    то есть в точке $p$ нет относительного экстремума. Получили противоречие, значит, наше предположение неверно
+    и $\nabla f (p)$ является линейной комбинацией $\nabla \varphi_1(p), 
+    \dots, \nabla \varphi_{n-k}(p)$. Таким образом, теорема доказана.
+\end{proof}
+\end{document}

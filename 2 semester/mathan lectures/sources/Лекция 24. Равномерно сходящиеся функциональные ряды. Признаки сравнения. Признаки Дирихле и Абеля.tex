@@ -1,0 +1,276 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{ulem}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\DIF}{DIF}
+\DeclareMathOperator{\rg}{rg}
+\DeclareMathOperator{\dist}{dist}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Ничто так на соединяет людей, как улыбка}
+\fancyhead[R]{\href{https://t.me/ceagest}{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 24. Равномерно сходящиеся функциональные ряды. Признаки сравнения. Признаки Дирихле и Абеля.
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Признаки сравнения}
+
+\begin{theorem}[Обобщённый признак сравения]
+    Пусть $X$ --- абстрактное множество. Пусть $\{u_k\}$ и $\{v_k\}$ --- две последовательности функций на $X$. Пусть 
+    \begin{equation} \label{eq:1:1}
+        \left\lvert u_k(x) \right\rvert \leq v_k(x) \; \; \forall k \in \mathbb{N} \; \; \forall x \in X
+    \end{equation}
+    Тогда, если ряд  
+    $\displaystyle  \sum_{k = 1}^{\infty} v_k $
+    равномерно сходится на $X,$ то ряд 
+    $\displaystyle \sum_{k = 1}^{\infty} u_k $
+    тоже равномерно сходится на $X$. 
+\end{theorem}
+
+\begin{proof}
+    Так как ряд $\displaystyle \sum_{k = 1}^{\infty} v_k $ равномерно сходится на $X$, то по критерию Коши для этого ряда справедливо условие Коши:
+    \begin{equation} \label{eq:1:2}
+        \forall \varepsilon > 0 \; \; \exists N(\varepsilon) \in \mathbb{N}: \forall n \geq N(\varepsilon) \; \; \forall p \in \mathbb{N} \; \; \forall x \in X \hookrightarrow \left\lvert \sum_{k = n + 1}^{n + p} v_k(x) \right\rvert < \varepsilon
+    \end{equation}
+    Из неравенства треугольника и условий (\ref{eq:1:1}) и (\ref{eq:1:2}) тривиально вытекают оценки:
+    \[\left\lvert \sum_{k = n + 1}^{n + p} u_k (x) \right\rvert \leq \sum_{k = n + 1}^{n + p} \left\lvert u_k (x) \right\rvert \leq \sum_{k = n + 1}^{n + p} v_k (x) = \left\lvert \sum_{k = n + 1}^{n + p} v_k(x) \right\rvert < \varepsilon\]
+    Таким образом,
+    \[\forall \varepsilon > 0 \; \; \exists N(\varepsilon) \in \mathbb{N}: \forall n \geq N(\varepsilon) \; \; \forall p \in \mathbb{N} \; \; \forall x \in X \hookrightarrow \left\lvert \sum_{k = n + 1}^{n + p} u_k (x) \right\rvert < \varepsilon\]
+    Получили, что для ряда $\displaystyle \sum_{k = 1}^{\infty} u_k$ выполнено условие Коши, а значит по критерию Коши этот ряд равномерно сходится на $X$, что и требовалось.
+\end{proof}
+
+\begin{consequence}
+    Пусть $X$ --- абстрактное множество. Пусть $\{u_k\}$ --- функциональная последовательность на $X$. Если ряд $\displaystyle \sum_{k = 1}^{\infty} \left\lvert u_k \right\rvert$ равномерно сходится на $X$, то ряд $\displaystyle \sum_{k = 1}^{\infty} u_k$ также равномерно сходится на $X$.
+\end{consequence}
+
+\begin{proof}
+    Доказательство состоит в применении предыдущей теоремы при 
+    \[v_k (x) = \left\lvert u_k (x) \right\rvert \; \; \forall k \in \mathbb{N} \; \; \forall x \in X\]
+\end{proof}
+
+\begin{theorem}[Признак Вейерштрасса]
+    Пусть $\{a_k\}_{k = 1}^{\infty} \subset [0, +\infty)$ --- числовая последовательность, $X$ --- абстрактное множество. Пусть $\{u_k\}_{k = 1}^{\infty}$ --- последовательность функций на $X$. Пусть 
+    \[\left\lvert u_k (x) \right\rvert \leq a_k \; \; \forall k \in \mathbb{N} \; \; \forall x \in X\]
+    Тогда, если числовой ряд $\displaystyle \sum_{k = 1}^{\infty} a_k$ сходится, то функциональный ряд $\displaystyle \sum_{k = 1}^{\infty} u_k$ равномерно сходится на множестве $X$.
+\end{theorem}
+
+\begin{proof}
+    Доказательство очевидно следует из обобщённого признака сравнения, если положить 
+    \[v_k (x) \equiv a_k \; \; \forall k \in \mathbb{N}\]
+\end{proof}
+
+\section{Признаки Дирихле и Абеля}
+
+\begin{theorem}[Признак Дирихле для функционального ряда]
+    Пусть $X$ --- абстрактное множество. Пусть $\{a_k\}$ и $\{b_k\}$ --- две последовательности функций на $X$ таких, что выполнены следующие условия:
+    \begin{enumerate}
+        \item Последовательность частичных сумм 
+        \[A_n (x) := \sum_{k = 1}^{n} a_k (x) \; \; \forall n \in \mathbb{N} \; \; \forall x \in X\]
+        \textbf{равномерно ограниченна} на $X$, то есть
+        \[\exists C > 0: \left\lvert \sum_{k = 1}^n a_k (x) \right\rvert = \left\lvert A_n (x) \right\rvert \leq C \; \; \forall n \in \mathbb{N} \; \; \forall x \in X \]
+        \item $b_k \underset{X}{\rightrightarrows} 0, \; k \to \infty$
+        \item $\forall x \in X \; \; \forall k \in \mathbb{N} \hookrightarrow b_{k + 1} (x) \leq b_k (x)$
+    \end{enumerate}
+    Тогда функциональный ряд $\displaystyle \sum_{k = 1}^{\infty} a_k b_k$ равномерно сходится на $X$.
+\end{theorem}
+
+\begin{proof}
+    Для начала заметим, что
+    \[a_k (x) = A_k (x) - A_{k - 1} (x) \; \; \forall k \in \mathbb{N} \; \; \forall x \in X\]
+    Здесь по определению полагается, что $A_0 (x) \equiv 0$. Зафиксируем далее $n \in \mathbb{N}$ и $x \in X$. Выполним \textbf{преобразование Абеля}, то есть
+    \[\sum_{k = 1}^n a_k (x) b_k (x) = \sum_{k = 1}^n \left(A_k (x) - A_{k - 1} (x)\right) b_k (x) = \sum_{k = 1}^n A_k (x) b_k (x) - \sum_{k = 1}^n A_{k - 1} (x) b_k (x) = \]
+    \[= [\text{сдвиг индекса суммирования}] = \sum_{k = 1}^n A_k (x) b_k (x) - \sum_{k = 0}^{n - 1} A_{k} (x) b_{k + 1} (x) = \]
+    \[= A_n (x) b_n (x) + \underbrace{A_0 (x) b_1 (x)}_{=0} + \sum_{k = 1}^{n - 1} A_k (x) \left(b_k (x) - b_{k + 1} (x)\right)\]
+    Таким образом,
+    \begin{equation} \label{eq:1:3}
+        \sum_{k = 1}^n a_k (x) b_k (x) = A_n (x) b_n (x) + \sum_{k = 1}^{n - 1} A_k (x) \left(b_k (x) - b_{k + 1} (x)\right)
+    \end{equation}
+    Заметим, что из свойств телескопических сумм вытекает
+    \[\sum_{k = 1}^{n} (b_k (x) - b_{k + 1} (x)) = b_1 (x) - b_{n + 1} (x)\]
+    Тогда, учитывая второе условие в формулировке теоремы, получаем
+    \[\sum_{k = 1}^n (b_k - b_{k + 1}) \underset{X}{\rightrightarrows} b_1, \; n \to \infty\]
+    Но функциональная последовательность \[\displaystyle \left\{\sum_{k = 1}^n (b_k - b_{k + 1})\right\}_{n = 1}^{\infty}\] является последовательностью частичных сумм функционального ряда $\displaystyle \sum_{k = 1}^{\infty} (b_k - b_{k + 1})$, а значит по определению этот функциональный ряд равномерно сходится на $X$. Следовательно, функциональный ряд $\displaystyle \sum_{k = 1}^{\infty} C (b_k - b_{k + 1})$ тоже равномерно сходится на $X$, так как домножение на положительную константу не влияет на равномерную сходимость.
+    Кроме того, в силу первого условия в формулировке теоремы имеем
+    \[\left\lvert A_k (x) \left(b_k (x) - b_{k + 1} (x)\right) \right\rvert \leq C \left\lvert b_k (x) - b_{k + 1} (x) \right\rvert = \]
+    \[= [\text{третье условие в формулировке теоремы}] = C (b_k (x) - b_{k + 1} (x)) \; \; \forall k \in \mathbb{N} \; \; \forall x \in X\]
+    Тогда, учитывая сходимость ряда $\displaystyle \sum_{k = 1}^{\infty} C (b_k - b_{k + 1})$ и полученное выше неравенство, применим обобщённый признак сравнения при
+    \[u_k = A_k \left(b_k - b_{k + 1} \right), \; \; v_k = C \left(b_k - b_{k + 1} \right) \; \; \forall k \in \mathbb{N},\]
+    и получим, что функциональный ряд $\displaystyle \sum_{k = 1}^{\infty} A_k \left(b_k - b_{k + 1}\right)$ равномерно сходится на $X$. Это по определению означает, что
+    \begin{equation} \label{eq:1:4}
+        \exists S \colon X \to \mathbb{R}: \; \sum_{k = 1}^{n - 1} A_k \left(b_k - b_{k + 1}\right) \underset{X}{\rightrightarrows} S, \; n \to \infty
+    \end{equation}
+    Более того, функциональная последовательность $\{A_n\}$ равномерно ограниченна на $X$, а функциональная последовательность $\{b_n\}$ равномерно сходится к нулю на $X$, откуда их произведение $\{A_n b_n\}$ также равномерно сходится к нулю на $X$, то есть
+    \begin{equation} \label{eq:1:5}
+        A_n b_n \underset{X}{\rightrightarrows} 0, \; n \to \infty
+    \end{equation}
+    Итак, суммируя результаты (\ref{eq:1:3}), (\ref{eq:1:4}) и (\ref{eq:1:5}), окончательно получаем:
+    \[\sum_{k = 1}^n a_k b_k \underset{X}{\rightrightarrows} S, \; n \to \infty\]
+    Но функциональная последовательность 
+    \[\displaystyle \left\{\sum_{k = 1}^n a_k b_k \right\}_{n = 1}^{\infty}\] 
+    является последовательностью частичных сумм функционального ряда $\displaystyle \sum_{k = 1}^{\infty} a_k b_k$, а значит по определению этот функциональный ряд равномерно сходится на $X$. Таким образом, теорема доказана.
+\end{proof}
+
+\begin{consequence}[Признак Лейбница]
+    Пусть $X$ --- абстрактное множество. Пусть $\{b_k\}$ --- функциональная последовательность на $X$ такая, что
+    \begin{enumerate}
+        \item $b_k \underset{X}{\rightrightarrows} 0, \; k \to \infty$
+        \item $\forall k \in \mathbb{N} \; \; \forall x \in X \hookrightarrow b_{k + 1} (x) \leq b_k (x)$
+    \end{enumerate}
+    Тогда функциональный ряд $\displaystyle \sum_{k = 1}^{\infty} (-1)^k b_k$ равномерно сходится на $X$.
+\end{consequence}
+
+\begin{proof}
+    Действительно, положим
+    \[a_k (x) \equiv (-1)^k \; \; \forall k \in \mathbb{N}\]
+    Теперь заметим, что
+    \[\exists C = 1 > 0: \left\lvert \sum_{k = 1}^n a_k (x) \right\rvert = \left\lvert \sum_{k = 1}^n (-1)^k \right\rvert \leq 1 = C \; \; \forall n \in \mathbb{N} \; \; \forall x \in X\]
+    Таким образом, последовательность частичных сумм функциональной последовательности $\{a_k\}$ равномерно ограниченна на $X$, а значит, применяя признак Дирихле для функциональных последовательностей $\{a_k\}$ и $\{b_k\}$, получаем то, что и требовалось.
+\end{proof}
+
+\begin{theorem}[Признак Абеля для функционального ряда]
+    Пусть $X$ --- абстрактное множество. Пусть $\{a_k\}$ и $\{b_k\}$ --- две последовательности функций на $X$, удовлетворяющих следующим условиям:
+    \begin{enumerate}
+        \item Ряд $\displaystyle \sum_{k = 1}^{\infty} a_k$ равномерно сходится на $X$.
+        \item Последовательность $\{b_k\}$ равномерно ограниченна на $X$
+        \item $\forall k \in \mathbb{N} \; \; \forall x \in X \hookrightarrow b_{k + 1} (x) \leq b_k (x)$
+    \end{enumerate}
+    Тогда функциональный ряд $\displaystyle \sum_{k = 1}^{\infty} a_k b_k$ равномерно сходится на $X$.
+\end{theorem}
+
+\begin{proof}
+    Так как ряд $\displaystyle \sum_{k = 1}^{\infty} a_k$ равномерно сходится на $X$, то по определению
+    \[\exists S \colon X \to \mathbb{R} : S_n = \sum_{k = 1}^n a_k \underset{X}{\rightrightarrows} S, \; n \to \infty\]
+    Для каждого $n \in \mathbb{N}$ положим по определению
+    \[R_n := S - S_n =: \sum_{k = n + 1}^{\infty} a_k\]
+    Заметим, что
+    \[R_{n - 1} (x) - R_n (x) = a_n (x) \; \; \forall n \in \mathbb{N} \; \; \forall x \in X\]
+    Тогда мы готовы выполнить преобразование Абеля:
+    \[\sum_{k = n + 1}^{n + p} a_k (x) b_k (x) = \sum_{k = n + 1}^{n + p} \left(R_{k - 1} (x) - R_k (x) \right) b_k (x) = \sum_{k = n + 1}^{n + p} R_{k - 1} (x) b_k (x) - \sum_{k = n + 1}^{n + p} R_k (x) b_k (x) = \]
+    \[= [\text{сдвиг индекса суммирования}] = \sum_{k = n}^{n + p - 1} R_{k} (x) b_{k + 1} (x) - \sum_{k = n + 1}^{n + p} R_k (x) b_k (x) = \]
+    \[= R_n (x) b_{n + 1} (x) - R_{n + p} (x) b_{n + p + 1} (x) + \sum_{k = n + 1}^{n + p} R_k (x) \left(b_{k + 1} (x) - b_k (x)\right) \; \; \forall x \in X \; \; \forall n \in \mathbb{N} \; \; \forall p \in \mathbb{N}\]
+    Таким образом, $\forall x \in X \; \; \forall n \in \mathbb{N} \; \; \forall p \in \mathbb{N}$ выполнено
+    \begin{equation} \label{eq:1:6}
+        \sum_{k = n + 1}^{n + p} a_k (x) b_k (x) = R_n (x) b_{n + 1} (x) - R_{n + p} (x) b_{n + p + 1} (x) + \sum_{k = n + 1}^{n + p} R_k (x) \left(b_{k + 1} (x) - b_k (x)\right)
+    \end{equation}
+    Далее для каждого $n \in \mathbb{N}$ положим по определению
+    \[M_n := \sup_{x \in X} \sup_{k \geq n} \left\lvert R_k (x) \right\rvert\]
+    Вспоминая вновь, что ряд $\displaystyle \sum_{k = 1}^{\infty} a_k$ равномерно сходится на $X$, имеем
+    \[R_n = (S - S_n) \underset{X}{\rightrightarrows} 0, \; n \to \infty\]
+    Из условия выше и определения равномерной сходимости сразу следует, что $M_n \to 0, \; n \to \infty$. Кроме того, очевидно следующее наблюдение:
+    \[\left\lvert R_k (x) \right\rvert \leq M_n \; \; \forall k \geq n \; \; \forall x \in X\]
+    Тогда, пользуясь чудесным фактом выше, неравенством треугольника и установленным равенством (\ref{eq:1:6}), получаем
+    \[\left\lvert \sum_{k = n + 1}^{n + p} a_k (x) b_k (x) \right\rvert = \left\lvert R_n (x) b_{n + 1} (x) - R_{n + p} (x) b_{n + p + 1} (x) + \sum_{k = n + 1}^{n + p} R_k (x) \left(b_{k + 1} (x) - b_k (x)\right) \right\rvert \leq \]
+    \[\leq \left\lvert R_n (x) b_{n + 1} (x) \right\rvert + \left\lvert R_{n + p} (x) b_{n + p + 1} (x) \right\rvert + \sum_{k = n + 1}^{n + p} \left\lvert R_k (x) \left(b_{k + 1} (x) - b_k (x)\right) \right\rvert \leq \]
+    \begin{equation} \label{eq:1:7}
+        \leq M_n \left\lvert b_{n + 1} (x) \right\rvert + M_n \left\lvert b_{n + p + 1} (x) \right\rvert + M_n \sum_{k = n + 1}^{n + p} \left\lvert b_{k + 1} (x) - b_k (x) \right\rvert \; \; \forall n \in \mathbb{N} \; \; \forall p \in \mathbb{N} \; \; \forall x \in X
+    \end{equation}
+    Более того, из второго условия в формулировке теоремы имеем равномерную ограниченность на $X$ функциональной последовательности $\{b_k\}$, то есть
+    \[\exists C > 0: \left\lvert b_n (x) \right\rvert \leq C \; \; \forall n \in \mathbb{N} \; \; \forall x \in X\]
+    Тогда, учитывая равномерную ограниченность, а также монотонность $\{b_k\}$ из третьего условия в формулировке теоремы, продолжаем оценку (\ref{eq:1:7}):
+    \[\left\lvert \sum_{k = n + 1}^{n + p} a_k (x) b_k (x) \right\rvert \leq M_n \left\lvert b_{n + 1} (x) \right\rvert + M_n \left\lvert b_{n + p + 1} (x) \right\rvert + M_n \sum_{k = n + 1}^{n + p} \left\lvert b_{k + 1} (x) - b_k (x) \right\rvert \leq\]
+    \[\leq M_n \cdot C + M_n \cdot C + M_n \sum_{k = n + 1}^{n + p} (b_k (x) - b_{k + 1} (x)) = [\text{телескопическая сумма}] =\]
+    \[= 2 C M_n + M_n \left(b_{n + 1} (x) - b_{n + p + 1} (x)\right) \leq 2 C M_n + M_n \left(\left\lvert b_{n + 1} (x) \right\rvert + \left\lvert b_{n + p + 1} (x) \right\rvert \right) \leq 4 C M_n\]
+    Таким образом,
+    \begin{equation} \label{eq:1:8}
+      \left\lvert \sum_{k = n + 1}^{n + p} a_k (x) b_k (x) \right\rvert \leq 4C M_n \; \; \forall n \in \mathbb{N} \; \; \forall p \in \mathbb{N} \; \; \forall x \in X  
+    \end{equation}
+    Но вспомним же, что $M_n \to 0, \; n \to \infty$. Следовательно, по определению предела
+    \begin{equation} \label{eq:1:9}
+        \forall \varepsilon > 0 \; \; \exists N(\varepsilon) \in \mathbb{N} : \forall n \geq N(\varepsilon) \hookrightarrow M_n < \frac{\varepsilon}{4C}
+    \end{equation}
+    В итоге, используя (\ref{eq:1:9}) в оценке (\ref{eq:1:8}), имеем
+    \[\forall \varepsilon > 0 \; \; \exists N(\varepsilon) \in \mathbb{N} : \forall n \geq N(\varepsilon) \; \; \forall p \in \mathbb{N} \; \; \forall x \in X \hookrightarrow \left\lvert \sum_{k = n + 1}^{n + p} a_k (x) b_k (x) \right\rvert \leq 4C M_n < 4C \cdot \frac{\varepsilon}{4C} = \varepsilon\] 
+    Теперь смекалистый читатель наверняка приметил, что перед нами в чистом виде условие Коши, записанное для функционального ряда $\displaystyle \sum_{k = 1}^{\infty} a_k b_k$, а значит из критерия Коши немедленно получаем равномерную сходимость этого ряда на $X$. Таким образом, теорема доказана.
+\end{proof}
+
+\begin{consequence}
+    Пусть $X$ --- абстрактное множество. Пусть на $X$ есть две последовательности функций $\{a_k\}$ и $\{b_k\}$. Пусть 
+    \begin{enumerate}
+        \item $\exists m > 0 \; \; \exists M > 0 : m \leq b_k (x) \leq M \; \; \forall k \in \mathbb{N} \; \; \forall x \in X$
+        \item $b_{k + 1} (x) \leq b_k (x) \; \; \forall k \in \mathbb{N} \; \; \forall x \in X$
+    \end{enumerate}
+    Тогда функциональный ряд $\displaystyle \sum_{k = 1}^{\infty} a_k b_k$ равномерно сходится на $X$, если и только если функциональный ряд $\displaystyle \sum_{k = 1}^{\infty} a_k$ равномерно сходится на $X$.
+\end{consequence}
+
+\begin{proof}
+    $(\Longrightarrow):$ Так как 
+    \[b_k (x) \geq m > 0 \; \; \forall k \in \mathbb{N} \; \; \forall x \in X,\]
+    то можем ввести в рассмотрение функциональную последовательность $\left\{\frac{1}{b_k}\right\}$. Заметим, что такая последовательность будет равномерно ограниченна и равномерно монотонна. В самом деле,
+    \[\frac{1}{M} \leq \frac{1}{b_k (x)} \leq \frac{1}{m} \; \; \forall k \in \mathbb{N} \; \; \forall x \in X\]
+    \[\frac{1}{b_{k + 1} (x)} \geq \frac{1}{b_k (x)} \; \; \forall k \in \mathbb{N} \; \; \forall x \in X\]
+    Тогда в силу равномерной сходимости ряда $\displaystyle \sum_{k = 1}^{\infty} a_k b_k$ на $X$ имеем возможность применить признак Абеля для функциональных последовательностей $\left\{a_k b_k\right\}$ и $\left\{\frac{1}{b_k}\right\}$. Сделав это, получаем равномерную сходимость на $X$ функционального ряда 
+    \[\sum_{k = 1}^{\infty} \left( a_k \cdot b_k \cdot \frac{1}{b_k} \right) = \sum_{k = 1}^{\infty} a_k\]
+    $(\Longleftarrow):$ Если ряд $\displaystyle \sum_{k = 1}^{\infty} a_k$ равномерно сходится на $X$, то просто сразу применяем признак Абеля для функциональных последовательностей $\{a_k\}$ и $\{b_k\}$ (как легко видеть, все условия на последовательности выполнены). Таким образом, следствие показано.
+\end{proof}
+
+\begin{example}
+    Исследовать на сходимость и равномерную сходимость при всех значениях параметра $\alpha \in \mathbb{R}$ функциональный ряд
+    \[\sum_{k = 1}^{\infty} \frac{\sin(kx)}{k^{\alpha}}\]
+    на отрезке $a) \; [\delta, \pi], \; \delta \in (0, \pi);$ $\; b) \; [0, \pi]$.
+\end{example}
+
+\paragraph{Решение}
+\begin{enumerate}
+    \item Заметим, что при $\alpha \leq 0$ выполнено
+    \[\frac{\sin (kx)}{k^{\alpha}} \underset{[\delta, \pi]}{\not \to} 0, \; k \to \infty\]
+    Действительно, для всякого $\delta \in (0, \pi)$ возьмём 
+    \[x = \frac{\pi + [2\delta - \pi] + 1}{2} \in [\delta, \pi]\] 
+    и протестируем полученную числовую последовательность на номерах $k = 1 + 4n, \; n \in \mathbb{N}:$
+    \[\frac{\sin (kx)}{k^{\alpha}} = \frac{\sin \left(\displaystyle \frac{\pi + [2\delta - \pi] + 1}{2}\right)}{(1 + 4n)^{\alpha}} \not \to 0, \; n \to \infty\]
+    Таким образом, при $\alpha \leq 0$ для всякого $\delta \in (0, \pi)$ нашёлся такой $x \in [\delta, \pi]$, что на некоторой подпоследовательности предел отличен от нуля, а значит предел всей последовательности также отличен от нуля, откуда и следует требуемое условие.
+    Следовательно, при $\alpha \leq 0$ функциональный ряд $\displaystyle \sum_{k = 1}^{\infty} \frac{\sin (kx)}{k^{\alpha}}$ даже поточечно не сходится ни на $[\delta, \pi]$, ни, уж тем более, на $[0, \pi]$.
+    \item Если $\alpha > 1$, то известно, что числовой ряд $\displaystyle \sum_{k = 1}^{\infty} \frac{1}{k^{\alpha}}$ сходится по интегральному признаку. При этом очевидна оценка:
+    \[\left\lvert \frac{\sin (kx)}{k^{\alpha}} \right\rvert \leq \frac{1}{k^{\alpha}} \; \; \forall k \in \mathbb{N} \; \; \forall x \in [0, \pi]\]
+    Следовательно, по признаку Вейерштрасса функциональный ряд $\displaystyle \sum_{k = 1}^{\infty} \frac{\sin (kx)}{k^{\alpha}}$ равномерно сходится на $[0, \pi]$, а в силу $[\delta, \pi] \subset [0, \pi]$  этот ряд также равномерно сходится и на $[\delta, \pi]$.
+    \item Если $\alpha \in (0, 1]$, то для любого $x \in (0, \pi)$ числовой ряд $\displaystyle \sum_{k = 1}^{\infty} \frac{\sin (kx)}{k^{\alpha}}$ сходится по признаку Дирихле для числовых рядов.
+    В самом деле, зафиксируем $x \in (0, \pi)$ и выполним следующий трюк:
+    \[\sum_{k = 1}^n \sin (kx) = \sum_{k = 1}^n \frac{\sin (kx) \sin\left(\displaystyle \frac{x}{2}\right)}{\sin \left(\displaystyle \frac{x}{2}\right)} = - \frac{1}{2 \sin \left(\displaystyle \frac{x}{2}\right)} \sum_{k = 1}^{\infty} \left( \cos\left(\left(k + \frac{1}{2}\right) x\right) - \cos \left( \left(k - \frac{1}{2}\right) x \right) \right) = \]
+    \[= [\text{телескопическая сумма}] = - \frac{1}{2 \sin \left(\displaystyle \frac{x}{2}\right)} \left( \cos \left( \left( n + \frac{1}{2} \right) x \right) - \cos \left(\frac{x}{2} \right) \right)\]
+    Следовательно,
+    \[\left\lvert \sum_{k = 1}^n \sin (kx) \right\rvert = \left\lvert \frac{1}{2 \sin \left(\displaystyle \frac{x}{2}\right)} \left( \cos \left( \left( n + \frac{1}{2} \right) x \right) - \cos \left(\frac{x}{2} \right) \right) \right\rvert \leq \frac{1}{\displaystyle \sin \left(\frac{x}{2}\right)} \; \; \forall x \in (0, \pi) \; \; \forall n \in \mathbb{N}\]
+    Значит при каждом $x \in (0, \pi)$ частичные суммы числового ряда $\displaystyle \sum_{k = 1}^{\infty} \sin (kx)$ ограниченны \textbf{своей, зависящей от $x$,} положительной константой. Более того, легко видеть, что $\displaystyle \frac{1}{k^{\alpha}}$ монотонно стремится к нулю при $\alpha \in (0, 1]$. Таким образом, по признаку Дирихле для числовых рядов числовой ряд $\displaystyle \sum_{k = 1}^{\infty} \frac{\sin (kx)}{k^{\alpha}}$ сходится для любого $x \in (0, \pi)$, что и требовалось (при $x = 0$ или $x = \pi$ этот числовой ряд, очевидно, тоже сходится, а значит, на самом деле, можно говорить о сходимости данного ряда для всех $x \in [0, \pi]$). \\
+    Далее, рассматривая $\delta \in (0, \pi)$, получаем:
+    \[\sup_{x \in [\delta, \pi]} \frac{1}{\sin \left(\displaystyle \frac{x}{2} \right)} \leq \left[\text{монотонность синуса на} \left[\frac{\delta}{2}, \frac{\pi}{2}\right]\right] \leq \left(\sin \frac{\delta}{2} \right)^{-1}\]
+    Следовательно, на множестве $[\delta, \pi]$ последовательность частичных сумм 
+    \[\left\{\sum_{k = 1}^n \sin (kx) \right\}_{n = 1}^{\infty}\]
+    равномерно ограниченна. Тогда по признаку Дирихле для функциональных рядов получаем, что функциональный ряд $\displaystyle \sum_{k = 1}^{\infty} \frac{\sin (kx)}{k^{\alpha}}$ равномерно сходится на $[\delta, \pi]$ при $\alpha \in (0, 1]$. \\
+    Покажем теперь, что при $\alpha \in (0, 1]$ функциональный ряд $\displaystyle \sum_{k = 1}^{\infty} \frac{\sin (kx)}{k^{\alpha}}$ не является равномерно сходящимся на $[0, \pi]$. В самом деле, выполнено отрицание условия Коши:
+    \[\exists \varepsilon = \frac{1}{2 \sqrt{2}} > 0: \forall N \in \mathbb{N} \; \; \exists n = N \geq N \; \; \exists p = N \in \mathbb{N} \; \; \exists \underline{x} = \frac{\pi}{4N} \in [0, \pi]: \left\lvert \sum_{k = n + 1}^{n + p} \frac{\sin (k \underline{x})}{k^{\alpha}} \right\rvert =\]
+    \[= \sum_{k = N + 1}^{2N} \frac{\sin (k \underline{x})}{k^{\alpha}} \geq \frac{\sqrt{2}}{2} \sum_{k = N + 1}^{2N} \frac{1}{k^{\alpha}} \geq \left[\frac{1}{k^{\alpha}} \geq \frac{1}{k} \text{ при } \alpha \in (0, 1] \right] \geq \frac{\sqrt{2}}{2} \sum_{k = N + 1}^{2N} \frac{1}{k} \geq \frac{\sqrt{2}}{2} \frac{N}{2N} = \frac{1}{2 \sqrt{2}}\]
+    Таким образом, по критерию Коши получаем, что функциональный ряд $\displaystyle \sum_{k = 1}^{\infty} \frac{\sin (kx)}{k^{\alpha}}$ не является равномерно сходящимся на $[0, \pi]$ при $\alpha \in (0, 1]$, что и требовалось. Но выше было показано, что числовой ряд $\displaystyle \sum_{k = 1}^{\infty} \frac{\sin (kx)}{k^{\alpha}}$ сходится для каждого $x \in [0, \pi]$, а значит функциональный ряд $\displaystyle \sum_{k = 1}^{\infty} \frac{\sin (kx)}{k^{\alpha}}$ сходится поточечно на $[0, \pi]$ при $\alpha \in (0, 1]$.
+\end{enumerate}
+
+\paragraph{Ответ}
+
+\begin{enumerate}
+    \item при $\alpha > 1$ равномерно сходится на $\mathbb{R}$ (это легко видно из соответствующей части решения).
+    \item при $\alpha \leq 0$ не является даже поточечно сходящимся на $[\delta, \pi], \; \delta \in (0, \pi),$ и на $[0, \pi]$.
+    \item при $\alpha \in (0, 1]$ сходится поточечно на $[0, \pi]$, но не сходится равномерно на $[0, \pi]$, и сходится равномерно на $[\delta, \pi], \; \delta \in (0, \pi)$.
+\end{enumerate}
+
+\end{document}

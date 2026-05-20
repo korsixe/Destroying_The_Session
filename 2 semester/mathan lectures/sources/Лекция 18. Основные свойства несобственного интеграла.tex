@@ -1,0 +1,309 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{ulem}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\DIF}{DIF}
+\DeclareMathOperator{\rg}{rg}
+\DeclareMathOperator{\dist}{dist}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Кушать подано, садитесь жрать, пожалуйста!}
+\fancyhead[R]{\href{https://t.me/ceagest}{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 18. Несобственный интеграл. Основные свойства несобственного интеграла. Несобственный интеграл от знакопостоянной функции.
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Несобственный интеграл}
+
+\begin{definition}[Несобственный интеграл Римана с особенностью на правом конце отрезка интегрирования]
+    Пусть $- \infty < a < b \leq + \infty$. Пусть $f \colon [a, b) \to \mathbb{R}$ и $f \in \mathcal{R}([a, b']) \; \; \forall b' \in (a, b)$. Будем говорить, что $f$ интегрируема в несобственном смысле на $[a, b)$, если
+    \[\exists \lim_{b' \to b - 0} \int_{a}^{b'} f(x) \,dx \in \mathbb{R}\]
+    Сам же предел (естественно, при выполнении требуемых априори условий на функцию) будем назвать несобственным интегралом $f$ на $[a, b)$ и обозначать
+    \[\int_{a}^{\to b} f(x) \,dx\]
+    Если не существует конечного предела 
+    \[\lim_{b' \to b - 0} \int_{a}^{b'} f(x) \, dx,\]
+    то говорят, что несобственный интеграл $f$ на $[a, b)$ расходится. Если же данный предел существует и конечен, то говорят, что несобственный интеграл $f$ на $[a, b)$ сходится.
+\end{definition}
+
+\begin{definition}[Несобственный интеграл Римана с особенностью на левом конце отрезка интегрирования]
+    Пусть $- \infty \leq a < b < + \infty$. Пусть $f \colon (a, b] \to \mathbb{R}$ и $f \in \mathcal{R}([a', b]) \; \; \forall a' \in (a, b)$. Будем говорить, что $f$ интегрируема в несобственном смысле на $(a, b]$, если
+    \[\exists \lim_{a' \to a + 0} \int_{a'}^{b} f(x) \,dx \in \mathbb{R}\]
+    Сам же предел (естественно, при выполнении требуемых априори условий на функцию) будем назвать несобственным интегралом $f$ на $(a, b]$ и обозначать
+    \[\int_{a \leftarrow}^{b} f(x) \,dx\]
+    Если не существует конечного предела 
+    \[\lim_{a' \to a + 0} \int_{a'}^{b} f(x) \, dx,\]
+    то говорят, что несобственный интеграл $f$ на $(a, b]$ расходится. Если же данный предел существует и конечен, то говорят, что несобственный интеграл $f$ на $(a, b]$ сходится.
+\end{definition}
+
+\begin{definition}
+    Пусть $- \infty < a < b \leq + \infty$. Пусть $f \colon [a, b) \to \mathbb{R}$ и $f \in \mathcal{R}([a, b']) \; \; \forall b' \in (a, b)$. Если функция $f$ неограниченна в любой окрестности точки $b$ или $b = + \infty$, то точка $b$ называется \textbf{особенностью} (или \textbf{особой точкой}) несобственного интеграла $f$ на $[a, b)$. 
+\end{definition}
+
+\begin{remark}
+    Пусть $- \infty < a < b \leq + \infty$. Пусть $f \colon [a, b) \to \mathbb{R}$ и $f \in \mathcal{R}([a, b']) \; \; \forall b' \in (a, b)$. Если $b \neq + \infty$ и $f$ ограниченна на $[a, b)$, то концепция несобственного интеграла бессодержательна, так как при любом доопределении $f$ в точке $b$ функция становится интегрируемой по Риману на $[a, b]$, и, более того, справедливо равенство
+    \[\int_{a}^{b} f(x) \, dx = \lim_{b' \to b - 0} \int_{a}^{b'} f(x) \, dx\]
+    В связи с этим, всюду далее, когда записываем 
+    \[\int_{a}^{\to b} f(x) \, dx,\]
+    предполагаем, что точка $b$ является особенностью несобственного интеграла $f$ на $[a, b)$. Тем самым проливается свет на обозначение верхнего (или, в случае особенности на правом конце, нижнего) предела со стрелочкой: эта запись говорит не только о стремлении к точке $b$ слева, но ещё и о том, что $b$ является особой точкой несобственного интеграла.
+\end{remark}
+
+\begin{definition}[Несобственный интеграл Римана с несколькими особенностями на отрезке интегрирования]
+    Пусть $- \infty \leq a < b \leq + \infty$ \, и \, $\exists \{x_i\}_{i = 0}^N: a \leq x_0 < \ldots < x_N \leq b$. Пусть $f \colon (a, b) \setminus \{x_i\}_{i = 0}^N \to \mathbb{R}$. Пусть выполнена совокупность:
+    \[
+    \left[
+    \begin{array}{l}
+    \text{Функция } f \text{ неограниченна в любой окреcтности точек } x_i \\
+    x_0 = - \infty \\
+    x_N = + \infty
+    \end{array}
+    \right.
+    \]
+    Пусть $f \in \mathcal{R}([c, d])$ на любом отрезке $[c, d]$, не содержащем точек $\{x_i\}_{i = 0}^N$. Тогда несобственный интеграл 
+    \[\int_{a}^{b} f(x) \, dx\]
+    понимается как конечный набор несобственных интегралов с особенностью на одном конце, то есть для каждой из произвольно выбранных точек $\xi_i \in (x_{i - 1}, x_i)$, где $i \in \{1, \ldots, N\}$, рассматриваются несобственные интегралы
+    \[\int_{x_{i - 1}}^{\xi_i} f(x) \, dx \quad \text{ и } \quad \int_{\xi_i}^{x_i} f(x) \, dx\]
+    Если \textbf{все} такие несобственные интегралы с особенностью на одном конце сходятся, то 
+    \[ \int_{a}^{b} f(x) \, dx := \sum_{i = 1}^{N} \left(\int_{x_{i - 1} \leftarrow}^{\xi_i} f(x) \, dx + \int_{\xi_i}^{\to x_i} f(x) \, dx\right)\]
+    Если же хотя бы один из несобственных интегралов с особенностью на одном конце расходится, то 
+    \[\int_{a}^{b} f(x) \, dx\]
+    по определению считается расходящимся.
+\end{definition}
+
+\begin{remark}
+    Далее без ограничения общности работаем с несобственными интегралами с особенностью на правом конце. Общность действительно не ограничивается, так как для несобственных интегралов с особенностью на левом конце рассуждения абсолютно аналогичны, а в случае несобственных интегралов, имеющих конечное число особенностей (возможно, не только на концах), редуцируем доказанные утверждения к каждому из несобственных интегралов разбиения с особенностями на одном конце.
+\end{remark}
+
+\begin{theorem}[Принцип локализации]
+    Пусть $- \infty < a < b \leq + \infty$. Пусть $f \colon [a, b) \to \mathbb{R}$, а также $f \in \mathcal{R}([a, b']) \; \; \forall b' \in (a, b)$. Пусть $c \in (a, b)$. Тогда несобственные интегралы 
+    \[\int_{a}^{\to b} f(x) \, dx \quad \text{ и } \quad \int_{c}^{\to b} f(x) \, dx \]
+    сходятся или расходятся одновременно. Если же оба этих интеграла сходятся, то
+    \[\int_{a}^{\to b} f(x) \, dx = \int_{a}^{c} f(x) \, dx + \int_{c}^{\to b} f(x) \, dx\]
+\end{theorem}
+
+\begin{proof}
+    В силу аддитивности интеграла Римана по отрезкам интегрирования и того, что перемена мест пределов интегрирования даёт знак минус перед интегралом, для любого $b' \in (a, b)$ выполнено:
+    \begin{equation*} \label{eq:1.1} \tag{$\ast$}
+        \int_{a}^{b'} f(x) \, dx = \int_{a}^{c} f(x) \, dx + \int_{c}^{b'} f(x) \, dx
+    \end{equation*}
+    При этом $f$ интегрируема по Риману на $[a, c]$, а значит слагаемое 
+    \[\int_{a}^{c} f(x) \, dx\]
+    является фиксированным числом для любого $b' \in (a, b)$. Это означает, что 
+    \[\exists \lim_{b' \to b - 0} \int_{a}^{b'} f(x) \, dx \iff \exists \lim_{b' \to b - 0} \int_{c}^{b'} f(x) \, dx\]
+    По определению несобственного интеграла Римана из условия выше получаем, что несобственные интегралы 
+    \[\int_{a}^{\to b} f(x) \, dx \quad \text{ и } \quad \int_{c}^{\to b} f(x) \, dx \]
+    сходятся или расходятся одновременно. Если оба этих интеграла сходятся, то требуемое в формулировке теоремы равенство легко вытекает из (\ref{eq:1.1}) предельным переходом при $b' \to b - 0$, а значит требуемое доказано.
+\end{proof}
+
+\begin{theorem}[Линейность несобственного интеграла Римана]
+    Пусть $- \infty < a < b \leq + \infty$. Пусть $f, g \colon [a, b) \to \mathbb{R}$, а также $f, g \in \mathcal{R}([a, b']) \; \; \forall b' \in (a, b)$. Пусть несобственные интегралы 
+    \[\int_{a}^{\to b} f(x) \, dx \quad \text{ и } \quad \int_{a}^{\to b} g(x) \, dx\]
+    сходятся. Тогда для любых $\alpha, \beta \in \mathbb{R}$ следующий интеграл также сходится:
+    \[\int_{a}^{\to b} (\alpha f(x) + \beta g(x)) \, dx\]
+    Более того,
+    \[\int_{a}^{\to b} (\alpha f(x) + \beta g(x)) \, dx = \alpha \int_{a}^{\to b} f(x) \, dx + \beta \int_{a}^{\to b} g(x) \, dx\]
+\end{theorem}
+
+\begin{proof}
+    Зафиксируем произвольно $\alpha, \beta \in \mathbb{R}$. В силу линейности собственного интеграла Римана для любого $b' \in (a, b)$ выполнено:
+    \begin{equation*} \label{eq:1.2} \tag{$\ast \ast$}
+      \int_{a}^{b'} (\alpha f(x) + \beta g(x)) \, dx = \alpha \underbrace{\int_{a}^{b'} f(x) \, dx}_{F(b')} \; + \; \beta \underbrace{\int_{a}^{b'} g(x) \, dx}_{G(b')}  
+    \end{equation*}
+    Но по условию несобственные интегралы
+    \[\int_{a}^{\to b} f(x) \, dx \quad \text{ и } \quad \int_{a}^{\to b} g(x) \, dx\]
+    сходятся, а значит по определению 
+    \[\exists \lim_{b' \to b - 0} F(b') \in \mathbb{R} \quad \text{ и } \quad \exists \lim_{b' \to b - 0} G(b') \in \mathbb{R}\]
+    Тогда по теореме об арифметических операциях с пределами функций имеем:
+    \[\exists \lim_{b' \to b - 0} (\alpha F(b') + \beta G(b')) = \alpha \lim_{b' \to b - 0} F(b') + \beta \lim_{b' \to b - 0} G(b')\]
+    Но из определения несобственного интеграла Римана и равенства (\ref{eq:1.2}) вытекает
+    \[\int_{a}^{\to b} (\alpha f(x) + \beta g(x)) \, dx = \lim_{b' \to b - 0} (\alpha F(b') + \beta G(b')),\]
+    \[\int_{a}^{\to b} f(x) \, dx = \lim_{b' \to b - 0} F(b') \quad \text{ и } \quad \int_{a}^{\to b} g(x) \, dx = \lim_{b' \to b - 0} G(b'),\]
+    а значит сходимость несобственного интеграла от линейной комбинации и требуемое в формулировке теоремы равенство показаны.
+\end{proof}
+
+\begin{consequence}
+    Пусть $- \infty < a < b \leq + \infty$. Пусть $f, g \colon [a, b) \to \mathbb{R}$ и $f, g \in \mathcal{R}([a, b']) \; \; \forall b' \in (a, b)$. Пусть 
+    \[\int_{a}^{\to b} f(x) \, dx \text{ --- сходится, a } \int_{a}^{\to b} g(x) \, dx \text{ --- расходится}\]
+    Тогда 
+    \[\int_{a}^{\to b} (f(x) + g(x)) \, dx \text{ --- расходится}\]
+\end{consequence}
+
+\begin{proof}
+    Действительно, от противного предположим, что несобственный интеграл от суммы функций $f$ и $g$ сходится. Тогда по предыдущей теореме немедленно получаем сходимость несобственного интеграла
+    \[\int_{a}^{\to b} \left[(f(x) + g(x)) - f(x)\right] \, dx = \int_{a}^{\to b} g(x) \, dx\]
+    Получаем противоречие с расходимостью несобственного интеграла от функции $g$, а значит требуемое доказано. 
+\end{proof}
+
+\begin{theorem}[Замена переменной в несобственном интеграле]
+    Пусть $- \infty < a < b \leq + \infty$. Пусть $f \colon [a, b) \to \mathbb{R}$ и $f \in C([a, b))$. Пусть $- \infty < \alpha < \beta \leq + \infty$. Пусть $x \colon [\alpha, \beta) \to [a, b)$, $x \in C^{1}([\alpha, \beta))$, а также $x$ является строго возрастающей на $[\alpha, \beta)$ функцией. Тогда несобственные интегралы 
+    \[\int_{a}^{\to b} f(x) \, dx \quad \text{ и } \quad \int_{\alpha}^{\to \beta} f(x(t)) \cdot x'(t) \, dt\]
+    сходятся или расходятся одновременно. Более того, если оба этих интеграла сходятся, то они равны.
+\end{theorem}
+
+\begin{proof}
+    Зафиксируем произвольно $\beta' \in (\alpha, \beta)$ и обозначим $b' = x(\beta') \in (a, b)$. В силу теоремы о замене переменной в собственном интеграле Римана:
+    \begin{equation*} \label{eq:1.3} \tag{$\star$}
+        \underbrace{\int_{a}^{b'} f(x) \, dx}_{F(b')} = \underbrace{\int_{\alpha}^{\beta'} f(x(t)) \cdot x'(t) \, dt}_{H(\beta')}
+    \end{equation*}
+    При этом $b' = x(\beta')$, а значит $H(\beta') = F(x(\beta')) = (F \circ x) (\beta')$. Кроме того, в силу непрерывности и строгого возрастания функции $x \colon [\alpha, \beta) \to [a, b)$ по теореме об обратной функции получаем, что существует непрерывная и строго возрастающая функция $t = t(x) \colon [a, b) \to [\alpha, \beta)$. Тогда из равенств $b' = x(\beta')$ и $\beta' = t(b')$ в силу строгого возрастания вытекает, что 
+    \[b' \to b - 0 \iff \beta' \to \beta - 0\]
+    Отсюда по теореме о замене переменной при вычислении предела немедленно получаем:
+    \[\exists \lim_{b' \to b - 0} F(b') \in \mathbb{R} \iff \exists \lim_{\beta' \to \beta - 0} (F \circ x) (\beta') \in \mathbb{R}\]
+    Более того, если оба этих предела существуют (в смысле $\mathbb{R}$), то из той же самой теоремы следует их равенство. Тогда, используя вновь равенство (\ref{eq:1.3}) и вспоминая определение несобственного интеграла Римана, получаем то, что и требовалось.
+\end{proof}
+
+\begin{theorem}[Критерий Коши для несобственного интеграла Римана]
+    Пусть $- \infty < a < b \leq + \infty$. Пусть $f \colon [a, b) \to \mathbb{R}$ и $f \in \mathcal{R}([a, b']) \; \; \forall b' \in (a, b)$. Несобственный интеграл 
+    \[\int_{a}^{\to b} f(x) \, dx\]
+    сходится тогда и только тогда, когда выполнено условие Коши, то есть 
+    \[\forall \varepsilon > 0 \; \exists b(\varepsilon) \in (a, b) : \forall b', b'' \in (b(\varepsilon), b) \hookrightarrow \left\lvert \int_{b'}^{b''} f(x) \, dx \right\rvert < \varepsilon\]
+\end{theorem}
+
+\begin{proof}
+    Рассмотрим функцию $F \colon [a, b) \to \mathbb{R}$ такую, что 
+    \[F(b') = \int_{a}^{b'} f(x) \, dx \quad \forall b' \in (a. b)\]
+    По определению несобственного интеграла Римана 
+    \[\int_{a}^{\to b} f(x) \, dx \text{ --- сходится } \iff \exists \lim_{b' \to b - 0} F(b') \in \mathbb{R}\]
+    Существование же и конечность предела функции $F$ при $b' \to b - 0$ по критерию Коши для числовых функций эквивалентны следующему:
+    \[\forall \varepsilon > 0 \; \exists b(\varepsilon) \in (a, b) : \forall b', b'' \in (b(\varepsilon), b) \hookrightarrow \left\lvert F(b') - F(b'') \right\rvert < \varepsilon\]
+    Но в силу аддитивности собственного интеграла Римана по отрезку интегрирования выполнено:
+    \[\left\lvert F(b') - F(b'') \right\rvert = \left\lvert \int_{a}^{b'} f(x) \, dx - \int_{a}^{b''} f(x) \, dx \right\rvert = \left\lvert \int_{b'}^{b''} f(x) \, dx \right\rvert \]
+    Тогда из этих чудесных равенств и вышеописанного кванторного условия немедленно получаем требуемое.
+\end{proof}
+
+\begin{example}
+    Рассмотрим несобственный интеграл
+    \[I(\alpha) = \int_{0 \leftarrow}^{1} \frac{dx}{x^{\alpha}}\]
+    Поймём, при каких значениях параметра $\alpha$ интеграл $I(\alpha)$ сходится. Для этого разберём несколько случаев:
+    \begin{enumerate}
+        \item Если $\alpha = 1$, то для любого $\varepsilon \in (0, 1)$ по формуле Ньютона-Лейбница выполнено:
+        \[\int_{\varepsilon}^{1} \frac{dx}{x} = \ln 1 - \ln \varepsilon = - \ln \varepsilon \to + \infty, \; \varepsilon \to +0\]
+        Из этого по определению несобственного интеграла сразу получаем расходимость $I(1)$.
+        \item Если $\alpha > 1$, то вновь для любого $\varepsilon \in (0, 1)$ по формуле Ньютона-Лейбница:
+        \[\int_{\varepsilon}^{1} \frac{dx}{x^{\alpha}} = \frac{1}{-\alpha + 1} \cdot \frac{1}{1^{\alpha - 1}} - \frac{1}{-\alpha + 1} \cdot \frac{1}{\varepsilon^{\alpha - 1}} = \frac{1}{\alpha - 1} \left[\frac{1}{\varepsilon^{\alpha - 1}} - 1\right] \to + \infty, \; \varepsilon \to +0\]
+        Отсюда по определению несобственного интеграла имеем расходимость $I(\alpha)$ при $\alpha > 1$.
+        \item Если же $\alpha < 1$, то для любого $\varepsilon \in (0, 1)$ по формуле Ньютона-Лейбница справедливо следующее:
+        \[\int_{\varepsilon}^{1} \frac{dx}{x^{\alpha}} = \frac{1}{\alpha - 1} \left[\frac{1}{\varepsilon^{\alpha - 1}} - 1\right] \to \frac{1}{1 - \alpha}, \; \varepsilon \to +0\]
+        Получили, что предел 
+        \[\lim_{\varepsilon \to +0} \int_{\varepsilon}^{1} \frac{dx}{x^{\alpha}} = \int_{0 \leftarrow}^{1} \frac{dx}{x^{\alpha}} = I(\alpha)\]
+        существует и конечен, а значит несобственный интеграл $I(\alpha)$ сходится при $\alpha < 1$.
+    \end{enumerate}
+\end{example}
+
+\begin{example}
+    Рассмотрим несобственный интеграл
+    \[J(\alpha) = \int_{1}^{\to + \infty} \frac{dx}{x^{\alpha}}\]
+    Действуя совершенно аналогично предыдущему примеру, легко получить, что $J(\alpha)$ сходится при $\alpha > 1$ и расходится при $\alpha \leq 1$.
+\end{example}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{pictures/Табличные несобственные интегралы.jpg}
+\end{figure}
+
+\section{Несобственный интеграл от знакопостоянной функции}
+
+В этом разделе без ограничения общности будем работать только с неотрицательными функциями, так как для неположительных можно без труда провести редукцию к уже доказанному вынесением знака минус.
+
+\begin{lemma}
+    Пусть $- \infty < a < b \leq + \infty$. Пусть $f \colon [a, b) \to \mathbb{R}$,  $f(x) \geq 0 \; \forall x \in [a, b)$, а также $f \in \mathcal{R}([a, b']) \; \; \forall b' \in (a, b)$. Тогда 
+    \[\int_{a}^{\to b} f(x) \, dx \text{ --- сходится } \iff \sup_{b' \in (a, b)} \int_{a}^{b'} f(x) \, dx < + \infty\]
+\end{lemma}
+
+\begin{proof}
+    Пусть функция $F \colon [a, b) \to \mathbb{R}$ такая, что:
+    \[F(b') := \int_{a}^{b'} f(x) \, dx \quad \forall b' \in (a, b)\]
+    Так как $f(x) \geq 0 \; \forall x \in [a, b)$, то из свойств собственного интеграла Римана, связанных с неравенствами, получаем нестрогое возрастание $F$ на $[a, b)$. Тогда по теореме Вейерштрасса:
+    \[\exists \lim_{b' \to b - 0} F(b') = \sup_{b' \in (a, b)} F(b')\]
+    Из полученного равенства и определения сходимости несобственного интеграла немедленно получаем то, что и требовалось.
+\end{proof}
+
+\begin{theorem}[Первый признак сравнения]
+    Пусть $- \infty < a < b \leq + \infty$. Пусть $f, g \colon [a, b) \to \mathbb{R}$, а также $f, g \in \mathcal{R}([a, b']) \; \; \forall b' \in (a, b)$. Пусть $f(x) \geq 0 \; \forall x \in [a, b)$ и $g(x) \geq 0 \; \forall x \in [a, b)$. Пусть нашлась $c \in (a, b)$ такая, что $0 \leq f(x) \leq g(x) < + \infty \; \; \forall x \in [c, b)$. Тогда:
+    \begin{equation} \label{th:eq:2.1.1}
+        \int_{a}^{\to b} g(x) \, dx \text{ --- сходится} \implies \int_{a}^{\to b} f(x) \, dx \text{ --- сходится}
+    \end{equation}
+    \begin{equation} \label{th:eq:2.1.2}
+        \int_{a}^{\to b} f(x) \, dx \text{ --- расходится} \implies \int_{a}^{\to b} g(x) \, dx \text{ --- расходится}
+    \end{equation}
+\end{theorem}
+
+\begin{proof}
+    Отметим для начала, что в силу принципа локализации сходимость или расходимость несобственных интегралов 
+    \[\int_{a}^{\to b} f(x) \, dx \quad \text{ и } \quad \int_{a}^{\to b} g(x) \, dx\]
+    эквивалентна сходимости или расходимости несобственных интегралов
+    \[\int_{c}^{\to b} f(x) \, dx \quad \text{ и } \quad \int_{c}^{\to b} g(x) \, dx\]
+    Положим по определению
+    \[F(b') := \int_{c}^{b'} f(x) \, dx \quad \forall b' \in (c, b)\]
+    \[G(b') := \int_{c}^{b'} g(x) \, dx \quad \forall b' \in (c, b)\]
+    Заметим, что из свойств собственного интеграла Римана, связанных с неравенствами, а также из условия $0 \leq f(x) \leq g(x) < + \infty \; \; \forall x \in [c, b)$, сразу следует, что 
+    \begin{equation*} \label{eq:2.1} \tag{$\star \star$}
+        F(b') \leq G(b') \quad \forall b' \in (c, b)
+    \end{equation*}
+    Кроме того, в силу предыдущей леммы: 
+    \[\int_{c}^{\to b} f(x) \, dx \text{ --- сходится} \iff \sup_{b' \in (a, b)} F(b') < + \infty\]
+    \[\int_{c}^{\to b} g(x) \, dx \text{ --- сходится} \iff \sup_{b' \in (a, b)} G(b') < + \infty\]
+    Тогда, учитывая условие (\ref{eq:2.1}), имеем тривиальное следствие (несложно убедиться в справедливости сего факта, взяв супремум от обеих частей неравенства (\ref{eq:2.1}) и пристально посмотрев на полученное):
+    \[\sup_{b' \in (a, b)} G(b') < + \infty \implies \sup_{b' \in (a, b)} F(b') < + \infty\]
+    \[\sup_{b' \in (a, b)} F(b') = + \infty \implies \sup_{b' \in (a, b)} G(b') = + \infty\]
+    Отсюда, учитывая вышесказанное, легко получаем (\ref{th:eq:2.1.1}) и (\ref{th:eq:2.1.2}), что и требовалось.
+\end{proof}
+
+\begin{definition}
+    Пусть $f, g \colon [a, b) \to [0, + \infty)$. Будем говорить, что функции $f$ и $g$ эквивалентны в смысле сходимости интегралов, и записывать это 
+    \[f(x) \overset{\text{сх.}}{\sim} g(x), \; x \to b - 0,\]
+    если
+    \[\exists c \in (a, b),\; \exists m, M > 0: \; m g(x) \leq f(x) \leq M g(x) \quad \forall x \in (c, b)\]
+\end{definition}
+
+\begin{theorem}[Второй признак сравнения]
+    Пусть $f, g \colon [a, b) \to [0, + \infty)$ и $f, g \in \mathcal{R}([a, b']) \; \; \forall b' \in (a, b)$.
+    Пусть $f(x) \overset{\text{сх.}}{\sim} g(x), \; x \to b - 0$. Тогда 
+    \[\int_{a}^{\to b} f(x) \, dx \text{ --- сходится} \iff \int_{a}^{\to b} g(x) \, dx \text{ --- сходится}\]
+\end{theorem}
+
+\begin{proof}
+    Так как $f(x) \overset{\text{сх.}}{\sim} g(x), \; x \to b - 0$, то по определению:
+    \begin{equation*} \label{eq:2.2} \tag{$\vee$}
+        \exists c \in (a, b),\; \exists m, M > 0: \; m g(x) \leq f(x) \leq M g(x) \quad \forall x \in (c, b)
+    \end{equation*}
+    Из принципа локализации сразу получаем, что достаточно доказать следующее:
+    \[\int_{c}^{\to b} f(x) \, dx \text{ --- сходится} \iff \int_{c}^{\to b} g(x) \, dx \text{ --- сходится}\]
+    В то же время, в силу первого признака сравнения и неравенств (\ref{eq:2.2}):
+    \[\int_{c}^{\to b} M g(x) \, dx  \text{ --- сходится} \implies \int_{c}^{\to b} f(x) \, dx \text{ --- сходится} \implies \int_{c}^{\to b} m g(x) \, dx  \text{ --- сходится}\]
+    Но из свойств пределов числовых функций и линейности собственного интеграла Римана совершено очевидно вытекает, что
+    \[\int_{c}^{\to b} g(x) \, dx  \text{ --- сходится} \iff \int_{c}^{\to b} M g(x) \, dx  \text{ --- сходится}\]
+    \[\int_{c}^{\to b} m g(x) \, dx  \text{ --- сходится} \iff \int_{c}^{\to b} g(x) \, dx  \text{ --- сходится}\]
+    Тогда, объединяя цепочки следствий и полученные выше эквивалентности, заключаем, что требуемое доказано.
+\end{proof}
+
+\begin{remark}
+    \textbf{Маэстро предупреждает}: никогда не пишите ничего подобного ни на письменном, не на устном экзамене по матану, так как такая запись некорректна и не имеет смысла:
+    \[\int_{a}^{\to b} f(x) \, dx  \; \; \overset{\text{сх.}}{\sim} \; \; \int_{a}^{\to b} g(x) \, dx\]
+\end{remark}
+
+\end{document}

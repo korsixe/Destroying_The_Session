@@ -1,0 +1,291 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{ulem}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\DIF}{DIF}
+\DeclareMathOperator{\rg}{rg}
+\DeclareMathOperator{\dist}{dist}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{А мы тут, знаете, всё \sout{интегралами} плюшками балуемся… }
+\fancyhead[R]{\href{https://t.me/mallina_olga }{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 19. Абсолютная и условная сходимости. Признак Дирихле. Признак Абеля.
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Лемма об относительной сходимости}
+\begin{lemma}
+    $\overset{\text{сх}}{\sim}$ определяет отношение эквивалентности на множестве неотрицательных функций на $[a,b)$.
+\end{lemma}
+
+\begin{proof}
+    1) рефлексивность
+    \[ f(x) \overset{\text{сх}}{\sim} f(x), x\to b-0 \]
+    \[ m=M=1 \]
+    2) симметричность
+    \[ f(x) \overset{\text{сх}}{\sim} g(x), \ x\to b-0 \]
+    \[\exists m>0, M>0 \text{ т.ч. } mg(x)\le f(x) \le Mg(x) \ \forall x\ge b' \]
+    \[ \Rightarrow \frac{1}{M} f(x) \le g(x) \le \frac{1}{m} f(x) \]
+    3) транзитивность
+    \[ f_1(x) \overset{\text{сх}}{\sim} f_2(x), \ f_2(x) \overset{\text{сх}}{\sim} f_3(x) , x\to b-0 \]
+    \[ \Rightarrow f_1(x) \overset{\text{сх}}{\sim} f_3(x), x\to b-0 \]
+    \[ f_1(x) \overset{\text{сх}}{\sim} f_2(x) \Leftrightarrow \exists m_1>0,M_1>0 \text{ и } b_1\in (a,b)  \text{ такие, что } m_1f_2(x) \le f_1(x) \le M_1f_2(x) \ \forall x\in [b_1,b) \]
+    \[ f_2(x) \overset{\text{сх}}{\sim} f_3(x) \Leftrightarrow \exists m_2>0,M_2>0 \text{ и } b_2\in (a,b)  \text{ такие, что } m_2f_3(x) \le f_2(x) \le M_2f_3(x) \ \forall x\in [b_2,b) \]
+    Пусть $b':= max \{b_1,b_2\}$
+    \[ m_1m_2f_3(x)\le f_1(x) \le M_1M_2f_3(x) \ \forall x\in [b',b) \]
+    \[ \Rightarrow f_1(x)\overset{\text{сх}}{\sim} f_3(x), x\to b-0 \]
+\end{proof}
+
+\section{Лемма о неотрицательных функциях}
+
+\begin{lemma}
+    Пусть $f_i, g_i \ i=1,2,3$ --- неотрицательные функции на $[a,b)$. Пусть 
+    \[ f_i(x) \overset{\text{сх}}{\sim} g_i(x), x\to b-0 \]
+    Если $f_3(x)>0$ и $g_3(x)>0 \ \forall x\in [a,b)$, то 
+    \[ \frac{f_1(x)f_2(x)}{f_3(x)} \overset{\text{сх}}{\sim} \frac{g_1(x)g_2(x)}{g_3(x)}, \  x\to b-0 \]
+\end{lemma}
+
+\begin{proof}
+    \[ f_i(x) \overset{\text{сх}}{\sim} g_i(x) \Leftrightarrow \exists m_i>0, M_i>0, b_i\in (a,b) \text{ такие, что } m_ig_i(x)\le f_i(x)\le M_ig_i(x) \ \forall x\in (b_i,b) \]
+    Пусть $b':= max \{b_1,b_2,b_3 \}$.
+    Тогда
+    \[ \frac{m_1m_2g_1(x)g_2(x)}{M_3g_3(x)} \le  \frac{f_1(x)f_2(x)}{f_3(x)} \le \frac{M_1M_2g_1(x)g_2(x)}{m_3g_3(x)} \forall x\in [b',b)\]
+    Пусть \[ m= \frac{m_1m_2}{M_3} , M= \frac{M_1M_2}{m_3} \]
+    $\Rightarrow$ ч.т.д.
+\end{proof}
+
+\section{Абсолютная и условная сходимости несобственного интеграла}
+
+\begin{definition}
+    Пусть $-\infty<a<b\le +\infty, f\in \mathcal{R}([a,b']) \ \forall b'\in(a,b) $.
+    Будем говорить, что несобственный интеграл 
+    \[ \int_{a}^{\to b} f(x)\,dx  \text{ сходится абсолютно, если }  \int_a^{\to b} |f(x)|\,dx \text{ --- сходится.} \]
+    Если же 
+    \[ \int_{a}^{\to b} f(x)\, dx \text{ --- сходится и при этом  } \int_a^{\to b} |f(x)|\,dx \text{ --- расходится, то говорим, что } \]
+    \[ \int_{a}^{\to b} f(x)\,dx \text{ сходится условно. } \]
+\end{definition}
+
+\begin{remark}
+    Заведём обозначение: $f\in A([a,b)) \Leftrightarrow \forall b'\in (a,b)\ f\in \mathcal{R}([a,b'])$\\
+    при этом считаем, что $-\infty<a<b\le +\infty$
+\end{remark}
+
+\begin{theorem}
+    Пусть $f\in A([a,b))$ . Тогда 
+    \[ \int_{a}^{\to b} f(x)\,dx \text{ --- сходится абсолютно } \Rightarrow \int_{a}^{\to b} f(x)\,dx\text{ --- сходится } \]
+    Обратное, конечно, неверно. 
+\end{theorem}
+
+\begin{proof}
+    Ключевое наблюдение: так как $f\in A([a,b)) \Rightarrow |f|\in A([a,b))$ . Кроме того, справедливо неравенство:
+    \[ \left| \int_{b'}^{b''} f(x)\,dx \right| \le \int_{b'}^{b''} |f(x)|\,dx \quad \forall b',b''\in [a,b) \tag{*}\label{eq:star} \]
+    \[ \int_{a}^{\to b} f(x)\, dx \text{ --- сходится абсолютно} \Leftrightarrow \int_{a}^{\to b} |f(x)|\,dx \text{ --- сходится } \]
+    Тогда по критерию Коши:
+    \[ \Leftrightarrow \forall \varepsilon>0 \ \exists b(\varepsilon)\in (a,b) : \forall b',b''\in (b(\varepsilon),b) \hookrightarrow \int_{b'}^{b''} |f(x)|\,dx < \varepsilon \]
+    Тогда в силу \eqref{eq:star} получим:
+    \[ \Rightarrow \forall \varepsilon >0  \ \exists b(\varepsilon)\in (a,b): \forall b',b''\in (b(\varepsilon),b) \hookrightarrow \left|\int_{b'}^{b''}f(x)\,dx \right| <\varepsilon \]
+    $\Rightarrow$ выполнено условие Коши для несобственного интеграла 
+    \[ \int_{a}^{\to b} f(x)\,dx \]
+    $\Rightarrow$ в силу критерия Коши 
+    \[ \int_{a}^{\to b} f(x)\,dx \text{ --- сходится }  \]
+\end{proof}
+
+\begin{theorem}
+    (Признак Дирихле для несобственных интегралов) Пусть $f\in C([a,b)), g\in C^1([a,b))$.Пусть\\
+    1) Первообразная F от f ограничена на $[a,b)$\\
+    \[ (F(x)=\int_{a}^{x}f(t)\,dt \ ,x\in[a,b)) \] 
+    2) $\exists \lim\limits_{x\to b-0} g(x) =0 $\\
+    3) $g$ нестрого убывает на $[a,b)$, то есть  $g'(x)\le 0 \ \forall x\in [a,b)$\\
+    Тогда
+    \[ \int_{a}^{\to b}f(x)g(x)\, dx \text{ --- сходится }\]
+\end{theorem}
+
+\begin{proof}
+    Фиксируем произвольный $b'\in (a,b)$. Проинтегрируем по частям:
+    \[ \int_{a}^{b'} f(x)g(x)\, dx = F(x)g(x) \bigg|_a^{b'} - \int_{a}^{b'}F(x)g'(x)\, dx \]
+    Так как $g'$ --- непрерывна, то по формуле Ньютона-Лейбница
+    \[ \int_{a}^{b'} g'(x)\,dx = g(b') - g(a) \tag{*}\label{eq:star}\]
+    В силу условия 2) и \eqref{eq:star} 
+    \[ \Rightarrow \int_{a}^{\to b} g'(x)\, dx \text{ --- сходится } \]
+    Но при этом $g'(x)\le 0$, а значит
+    \[ \int_{a}^{\to b} -g'(x)\, dx = \int_{a}^{\to b} |g'(x)|\,dx \text{ --- сходится } \]
+    В силу условия 1) 
+    \[ \exists c>0: |F(x)| \le c \ \forall x\in[a,b) \]
+    Но тогда по признаку сравнения:
+    \[ \int_{a}^{\to b} |F(x)g'(x)|\, dx \text{ --- сходится } \] 
+    \[ \Rightarrow \int_{a}^{b'}F(x)g'(x)\, dx \text{ --- абсолютно сходится }\Rightarrow \text{ сходится } \]
+    В силу условия 2)
+    \[ \exists \lim\limits_{b'\to b-0} F(b')g(b') =0 \]
+    \[ \Rightarrow F(x)g(x) \bigg|_a^{b'} = F(b')g(b') - F(a)g(a) \]
+    Таким образом, 
+    \[ \exists \lim\limits_{b'\to b-0} F(x)g(x) \bigg|_a^{b'} = -F(a)g(a)\]
+    \[ \exists \lim\limits_{b'\to b-0} \int_{a}^{b'} F(x)g'(x)\, dx \in \mathbb{R}\]
+    \[ \Rightarrow \exists \lim\limits_{b'\to b-0} \int_{a}^{b'} f(x)g(x)\, dx \in \mathbb{R} \]
+\end{proof}
+
+\begin{theorem}
+    (Признак Абеля для несобственных интегралов) Пусть $f\in C([a,b)), g\in C^1([a,b))$.\\
+    Пусть:
+    \[ 1) \int_{a}^{\to b} f(x)\, dx \text{ --- сходится } \]
+    \[ 2) g \text{ ограничена снизу на } [a,b) \]
+    \[ 3) g \text{ нестрого убывает на } [a,b) \text{, то есть } g'(x)\le 0 \ \forall x\in [a,b) \]
+    Тогда 
+    \[ \int_{a}^{\to b}f(x)g(x)\, dx \text{ --- сходится }\]
+\end{theorem}
+
+\begin{proof}
+    Так как $g$ ограничена снизу на $[a,b)$ и нестрого убывает, то 
+    \[ \exists \lim\limits_{x\to b-0} g(x) = g_0 \in \mathbb{R} \]
+    Рассмотрим функцию $\widetilde{g(x)} := g(x) - g_0 \ \forall x\in [a,b) $. Тогда $\widetilde{g}$ удовлетворяет 2) и 3) в признаке Дирихле.
+    $\Rightarrow$ по признаку Дирихле:
+    \[ \int_{a}^{\to b} f(x)\widetilde{g(x)}\, dx \text{ --- сходится } \]
+    \[ \int_{a}^{\to b} f(x)g_0\, dx \text{ --- сходится по условию 1)} \]
+    Но 
+    \[ f(x)g(x) = f(x)\widetilde{g(x)} + f(x)g_0 \]
+    $\Rightarrow$ в силу линейности несобственного интеграла:
+    \[ \int_{a}^{\to b} f(x)g(x)\, dx \text{ --- сходится, и более того он равен =} \int_{a}^{\to b} f(x)\widetilde{g(x)}\, dx + \int_{a}^{\to b} g_0f(x)\, dx \]
+\end{proof}
+
+
+\begin{example}
+    Рассмотрим
+    \[ I_\alpha = \int_{1}^{+\infty} \frac{\sin x}{x^\alpha}\,dx \]
+    Задача: исследовать на абсолютную и условную сходимость при всех $\alpha\in \mathbb{R}$.\\
+    1) Заметим, что при $\alpha>1$ 
+    \[ \left| \frac{\sin x}{x^\alpha} \right| \le \frac{1}{x^\alpha } \] 
+    \[ \int_{1}^{+\infty} \frac{dx}{x^\alpha} \text{ --- сходится при } \alpha>1 \]
+    \[ \Rightarrow \text{ по признаку сравнения } \int_{1}^{+\infty} \left| \frac{\sin x}{x^\alpha} \right| \,dx \text{ --- сходится } \]
+    2) Заметим, что 
+    \[ \frac{1}{x^\alpha} \downarrow 0, x\to +\infty \]
+    \[ \left| \int_{1}^{x} \sin t\, dt \right| = \left|\cos t \ \bigg|_1^{x}\right| \le 2 \quad \forall x\in \mathbb{R} \]
+    \[ \Rightarrow \text{по признаку Дирихле } \int_{1}^{+\infty } \frac{\sin x}{x^\alpha} dx \text{ --- сходится } \]
+    3) Покажем, что при $\alpha \le 0$ 
+    \[ \int_{1}^{+\infty } \frac{\sin x}{x^\alpha} dx \text{ --- расходится } \]
+    Заметим, что 
+    \[ \frac{1}{x^\alpha } \ge 1 \text{ при } \alpha\le 0 \ \forall x\in [1,+\infty) \]
+    Запишем отрицание к условию Коши:
+    \[ \exists \varepsilon>0: \forall b \in (1,+\infty) \ \exists b',b'' \ge b: \left| \int_{b'}^{b''} \frac{\sin x}{x^\alpha}\, dx \right| \ge \varepsilon  \]
+    \[ \exists \varepsilon=1: \forall b \in (1,+\infty) \ \exists b'= 2\pi ([b]+1) ,b'' = \pi+2\pi ([b]+1) : \left| \int_{b'}^{b''} \frac{\sin x}{x^\alpha}\, dx \right| \ge \int_{b'}^{b''} \sin x\,dx = 2 >1 \] 
+    \[ \Rightarrow \int_{1}^{+\infty} \frac{\sin x}{x^\alpha} \, dx \text{ --- расходится при } \alpha \le 0 \]
+    4) $\alpha\in (0,1] $
+    \[ \frac{|\sin x|}{x^\alpha } \ge \frac{\sin^2 x}{x^\alpha} = \frac{1-\cos (2x)}{2x^\alpha} \]
+    Теперь рассмотрим следующий интеграл:
+    \[ \int_{1}^{+\infty} \frac{1-\cos (2x)}{2x^\alpha} \, dx \text{ --- расходится } \] 
+    \[ \text{ так как } \int_{1}^{+\infty } \frac{dx}{2x^\alpha} \text{ --- расходится при } \alpha \in (0,1] \]
+    \[ \text{ и } \int_{1}^{+\infty} \frac{\cos (2x)}{2x^\alpha}\, dx \text{ --- сходится по признаку Дирихле (рассуждения те же, что и в пункте 1)}  \]
+    Итого: 
+    \[ \text{при } \alpha \le 0 \text{ --- расходится } \]
+    \[ \text{при } \alpha \in (0,1] \text{ --- сходится условно } \]
+    \[ \text{при } \alpha > 1 \text{ --- сходится абсолютно } \]
+\end{example}
+
+\begin{remark}
+    Условие монотонности функции g в признаке Дирихле очень важно и его нельзя убрать.
+\end{remark}
+
+\begin{example}
+    Рассмотрим функцию $f(x) = \sin x$ (первообразная ограничена) и \\  
+    \[ g(x) = \frac{\sin x}{x}\to 0, x\to +\infty ,\text{ но нет монотонности} \] 
+    \[ \int_{1}^{+\infty } f(x)g(x)\, dx \text{ --- расходится } \]
+\end{example}
+
+\begin{example}
+    (Почему нельзя заменять на эквивалентные в несобственных интегралах от знакопеременных функций ) 
+    \[ \int_{2}^{+\infty} \frac{\sin x}{\sqrt{x}} (1+ \frac{\sin x}{\sqrt{x}} )\, dx \]
+    \[ \frac{1}{\sqrt{2}} \le 1+ \frac{\sin x}{\sqrt{x}} \le 2 \Rightarrow 1+\frac{\sin x}{\sqrt{x}} \overset{\text{сх}}{\sim} 1 \ ,x\to +\infty \]
+    \[ \int_{2}^{+\infty} \frac{\sin x}{\sqrt{x}}\, dx \text{ --- сходится } \]
+    \[ \int_{2}^{+\infty} \left(\frac{\sin x}{\sqrt{x}} + \frac{\sin^2 x}{x}\right) \, dx \text{ --- расходится, так как } \int_{2}^{+\infty} \frac{\sin^2 x}{x}\, dx \text{ --- расходится} \]
+    Итого, замена на эквивалентную может изменить характер сходимости. 
+\end{example}
+
+\begin{theorem}
+    (Следствие из признака Абеля). Пусть $f\in C([a,b)), g\in C^1([a,b)) $. Пусть g монотонна на $[a,b)$ и $\exists \lim\limits_{x\to b-0} g(x) = g_0 \neq 0$.
+    Тогда 
+    \[ \int_{a}^{\to b} f(x)\, dx \text{ и } \int_{a}^{\to b} f(x)g(x)\, dx \text{ имеют один и тот же тип сходимости} \]
+\end{theorem}
+
+\begin{proof}
+    Пусть 
+    \[ \int_{a}^{\to b} f(x)\, dx \text{ --- сходится} \Rightarrow \int_{a}^{\to b} f(x)g(x)\, dx \text{ --- сходится по признаку Абеля} \]
+    Пусть 
+    \[ \int_{a}^{\to b} f(x)g(x)\, dx \text{ --- сходится} \]
+    Так как 
+    \[ \exists \lim\limits_{x\to b-0} g(x) = g_0 \neq 0 \Rightarrow \exists b'\in (a,b) \text{ такой, что } g(x) \neq 0 \ \forall x\in (b',b) \]  
+    \[ \Rightarrow \frac{1}{g(x)} \text{ корректно определено} \]
+    Кроме того, 
+    \[ \exists \lim\limits_{x\to b-0} \frac{1}{g(x)} = \frac{1}{g_0} \]
+    Кроме того, 
+    \[ \frac{1}{g(x)} \text{ тоже является монотонной на } (b',b) \]
+    $\Rightarrow$ по признаку Абеля 
+    \[ \int_{b'}^{\to b} f(x)\, dx = \int_{b'}^{\to b} f(x) g(x) \frac{1}{g(x)} \, dx \text{ --- сходится по признаку Абеля } \] 
+    $\Rightarrow$ в силу принципа локализации 
+    \[ \int_{a}^{\to b} f(x)\, dx \text{ --- сходится } \]
+    Так как 
+    \[ |f(x)g(x)| = |f(x)| |g(x)| \] 
+    \[ \text{ и } g(x)\to g_0\neq 0, x\to b-0 \] 
+    \[ \Rightarrow |g(x)| \overset{\text{сх}}{\sim} 1, x\to b-0 \]
+    $\Rightarrow$ в силу второго признака сравнения
+    \[ \int_{a}^{\to b} |f(x)g(x)|\, dx \text{ и } \int_{a}^{\to b} |f(x)|\, dx \text{ --- сходятся или расходятся одновременно } \]
+    \[ \Leftrightarrow \int_{a}^{\to b} f(x)g(x)\, dx \text{ --- сходится абсолютно } \Leftrightarrow \int_{a}^{\to b} f(x)\, dx \text{ --- сходится абсолютно} \]
+\end{proof}
+ 
+\begin{example}
+    Исследовать на сходимость и абсолютную сходимость:
+    \[ \int_{1}^{+\infty }x^\alpha \ln (1+\frac{1}{x}) \sin x^2 \]
+\end{example}
+
+\begin{proof}
+    Рассмотрим следующую функцию:
+    \[ g(x) = x\ln \left(1+\frac{1}{x}\right)\to 1, x\to +\infty \]
+    \[ g'(x) = \ln \left(1+\frac{1}{x}\right) +  \frac{x}{1+\frac{1}{x}} \cdot \frac{-1}{x^2}  = \ln\left(1+\frac{1}{x}\right) - \frac{1}{1+x}  \] 
+    Разложим по Тейлору:
+    \[ = \frac{1}{x} - \frac{1}{1+x} - \frac{1}{2x^2} + o\left(\frac{1}{x^2}\right) \]
+    \[ \Rightarrow g'(x) =   \frac{1}{x(1+x)} - \frac{1}{2x^2} + o\left(\frac{1}{x^2} \right)\ge \frac{1}{3x^2} \text{ при } x\ge N\in \mathbb{N} \] 
+    \[ \Rightarrow g'(x)\ge 0 \ \forall x\ge N \] 
+    $\Rightarrow$ в силу следствия из признака Абеля достаточно исследовать
+    \[ \int_{1}^{+\infty} x^{\alpha -1 } \sin x^2 \, dx \]
+    Пусть $x^2=t, x=\sqrt{t}, 2x\, dx = dt $ 
+    \[ \Rightarrow \int_{1}^{+\infty} x^{\alpha -1 } \sin x^2 \, dx \Leftrightarrow \int_{1}^{+\infty} \frac{t^{\frac{\alpha-2}{2}}\sin t}{2} \, dt \]
+    Таким образом получаем, что тип сходимости исходного интеграла тот же, что и
+    \[ \int_{1}^{+\infty}  t^{\frac{\alpha-2}{2}}\sin t \, dt \]
+    \[ \text{ при } \frac{2-\alpha}{2}\le 0 \text{ --- расходится } \]
+    \[ \text{ при } \frac{2-\alpha}{2}\in (0,1] \text{ --- сходится условно } \]
+    \[ \text{ при } \frac{2-\alpha}{2}>1 \text{ ---  сходится абсолютно} \]
+    $\Rightarrow$ итого: 
+    \[ \text{ при } \alpha \ge 2\text{ --- расходится } \]
+    \[ \text{ при } 0\le \alpha <2 \text{ --- сходится условно } \]
+    \[ \text{ при } \alpha<0  \text{ ---  сходится абсолютно} \] 
+\end{proof}
+
+
+
+
+
+
+
+\end{document}

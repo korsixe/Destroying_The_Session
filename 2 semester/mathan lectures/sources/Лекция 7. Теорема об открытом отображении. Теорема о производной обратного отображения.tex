@@ -1,0 +1,238 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{ulem}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\DIF}{DIF}
+\DeclareMathOperator{\rg}{rg}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Как говорит наш любимый шеф, если человек \sout{техает матан} идиот, то это надолго}
+\fancyhead[R]{\href{https://t.me/ceagest}{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 7. Теорема об открытом отображении. Основная геометрическая теорема. Теорема о производной обратного отображения.
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Теорема об открытом отображении}
+
+\begin{lemma}
+    Пусть $n \in \mathbb{N}$, $A \in \mathcal{L}\left(\mathbb{R}^n, \mathbb{R}^n\right)$. Пусть матрица линейного отображения $A$ в каноническом базисе обратима. Тогда
+    \[\left\lVert A(x) - A(y) \right\rVert \geq \frac{1}{\left\lVert A^{-1} \right\rVert} \left\lVert x - y \right\rVert \quad \forall x, y \in \mathbb{R}^n\]
+\end{lemma}
+
+\begin{proof}
+    Зафиксируем $x \in \mathbb{R}^n$. Так как линейное отображение $A$ обратимо, то по определению $x = A^{-1} (A(x))$. Тогда, 
+    вспомнив лемму об оценке нормы значения линейного оператора через его норму и норму аргумента из конца пятой лекции, получаем:
+    \[\left\lVert x \right\rVert = \left\lVert A^{-1} (A(x)) \right\rVert \leq \left\lVert A^{-1} \right\rVert \cdot \left\lVert A(x) \right\rVert\]
+    При этом заметим, что $\left\lVert A^{-1} \right\rVert \neq 0$, так как иначе по свойствам нормы $A^{-1} \equiv 0$, что невозможно в силу отсутствия у тождественно нулевого отображения обратного.
+    Тогда со спокойной душой делим обе части неравенства выше на эту норму:
+    \[\forall x \in \mathbb{R}^n \hookrightarrow \left\lVert A(x) \right\rVert \geq \frac{\left\lVert x \right\rVert}{\left\lVert A^{-1} \right\rVert}\]
+    Пользуясь полученным выше неравенством, уже совсем нетрудно показать требуемое. Достаточно лишь 
+    вспомнить про линейность отображения $A$ и получить:
+    \[\left\lVert A(x) - A(y) \right\rVert = \left\lVert A(x - y) \right\rVert \geq \frac{1}{\left\lVert A^{-1} \right\rVert} \cdot \left\lVert x - y \right\rVert \quad \forall x, y \in \mathbb{R}^n\]
+\end{proof}
+
+\begin{definition}
+    Пусть $\Omega \subset \mathbb{R}^n$, $F \colon \Omega \to \mathbb{R}^n$. Пусть $x^0 \in \Omega$ --- внутренняя точка множества $\Omega$ и отображение $F$ дифференцируемо в точке $x^0$. Тогда \textbf{якобианом} отображения $F$ в точке $x^0$ будем называть 
+    определитель матрицы Якоби отображения $F$ в точке $x^0$, то есть:
+    \[\mathcal{J} F\left(x^0\right) = \det \mathcal{D} F\left(x^0\right)\]
+\end{definition}
+
+\begin{remark}
+    Если кто-то однажды спросит вас в тёмной подворотне, можно ли рассматривать в определении якобиана отображение из подмножества $\mathbb{R}^n$ в $\mathbb{R}^m$, то есть брать в образе не обязательно равное по размерности арифметическое пространство,
+    то смело отвечайте такому хитрецу, желающему одним вопросом отправить вас на пересдачу, что такое действо невозможно просто потому, что детерминант определён только для квадратных матриц, а значит размерности обязательно должны совпадать.
+\end{remark}
+
+\begin{theorem}[Основная геометрическая теорема]
+    Пусть $\Omega \subset \mathbb{R}^n$, $F \colon \Omega \to \mathbb{R}^n$. Пусть $x^0 \in \Omega$ --- внутренняя точка множества $\Omega$ и отображение $F$ дифференцируемо в точке $x^0$, а также матрица Якоби $\mathcal{D} F\left(x^0\right)$ отображения $F$ в точке $x^0$ является обратимой (что равносильно не равенству нулю якобиана отображения $F$ в точке $x^0$). Тогда
+    \[\exists \delta_0 > 0 \; \; \exists c > 0: \forall x \in \overline{B}_{\delta_0}\left(x^0\right) \hookrightarrow \left\lVert F\left(x\right) - F\left(x^0\right) \right\rVert \geq c \left\lVert x - x^0 \right\rVert\] 
+\end{theorem}
+
+\begin{proof}
+    Так как $x^0$ --- внутренняя точка множества $\Omega$ и отображение $F$ дифференцируемо в точке $x^0$, то по определению:
+    \[F\left(x\right) = F\left(x^0\right) + \underbrace{\mathcal{D} F \left(x^0\right) \left(x - x^0\right)}_{A\left(x - x^0\right)} + \varepsilon_{x^0} (x) \left\lVert x - x^0 \right\rVert \quad \forall x \in \overline{B}_{\delta}\left(x^0\right)\]
+    Здесь, как и всегда, $\varepsilon_{x^0} (x) \to 0, \; x \to x^0$. При этом, если вдруг так получилось, что равенство из определения дифференцируемости выполнено для всех $x$ из открытого шара, то, уменьшив $\delta$ в два раза, получим выполнение равенства уже для нужного замкнутого шара.
+    Далее, раз уж мы постарались и доказали предыдущую лемму, применим её для обратимого по условию линейного отображения, задающегося матрицей $\mathcal{D} F \left(x^0\right)$ (обозначим его $A$ для удобства):
+    \begin{equation} \label{eq:geom:1}
+        \left\lVert A \left(x - x^0\right) \right\rVert \geq \frac{1}{\left\lVert A^{-1} \right\rVert} \cdot \left\lVert x - x^0 \right\rVert
+    \end{equation}
+    Также в силу $\varepsilon_{x^0} (x) \to 0, \; x \to x^0$ получаем:
+    \begin{equation} \label{eq:geom:2}
+        \exists \widetilde{\delta} \in (0, \delta]: \forall x \in \overline{B}_{\widetilde{\delta}}\left(x^0\right) \hookrightarrow \left\lVert \varepsilon_{x^0} (x) \right\rVert \leq \frac{1}{2\left\lVert A^{-1} \right\rVert}
+    \end{equation}
+    Запомнив два неравенства выше, выпишем третье и приступим к оценке приращения. По неравенству треугольника для нормы:
+    \begin{equation} \label{eq:geom:3}
+        \left\lVert a \pm b \right\rVert \geq \left\lVert a \right\rVert - \left\lVert b \right\rVert
+    \end{equation}
+    Тогда, вспоминая равенство из определения дифференцируемости, оцениваем наконец искомую норму разности:
+    \[\left\lVert F\left(x\right) - F\left(x^0\right) \right\rVert = \left\lVert A\left(x - x^0\right) + \varepsilon_{x^0} (x) \left\lVert x - x^0 \right\rVert \right\rVert \geq [\text{неравенство (\ref{eq:geom:3})}] \geq \]
+    \[\geq \left\lVert A \left(x - x^0\right) \right\rVert - \left\lVert \varepsilon_{x^0} (x) \left\lVert x - x^0 \right\rVert \right\rVert \geq [\text{неравенство (\ref{eq:geom:1}) + свойство нормы}] \geq \]
+    \[\geq \frac{1}{\left\lVert A^{-1} \right\rVert} \cdot \left\lVert x - x^0 \right\rVert - \left\lVert x - x^0 \right\rVert \cdot \left\lVert \varepsilon_{x^0} (x)\right\rVert = \left\lVert x - x^0 \right\rVert \left(\frac{1}{\left\lVert A^{-1} \right\rVert} - \left\lVert \varepsilon_{x^0} (x) \right\rVert \right) \geq \]
+    \[\geq [\text{неравенство (\ref{eq:geom:2})}] \geq \left\lVert x - x^0 \right\rVert \cdot \frac{1}{2\left\lVert A^{-1} \right\rVert} \quad \forall x \in \overline{B}_{\widetilde{\delta}} \left(x^0\right)\] 
+    Из вышеописанной цепочки неравенств нетрудно видеть, что, положив
+    \[\delta_0 = \widetilde{\delta}, \quad c = \frac{1}{2\left\lVert A^{-1} \right\rVert},\]
+    мы получим то, что и требовалось.
+\end{proof}
+
+\begin{theorem}[Об открытом отображении]
+    Пусть $\Omega \subset \mathbb{R}^n$ --- открыто, $F \in \DIF (\Omega, \mathbb{R}^n)$. Пусть матрица Якоби $\mathcal{D} F (x)$ отображения $F$ обратима 
+    для всех $x \in \Omega$ (то есть $\mathcal{J} F(x) \neq 0$ для всех $x \in \Omega$). Тогда множество $F(\Omega)$ открыто в $\mathbb{R}^n$.
+\end{theorem}
+
+\begin{remark}
+    Условие не равенства нулю якобиана отображения $F$ всюду на множестве $\Omega$ важно и его, вообще говоря, нельзя отбросить.
+    Действительно, приведём следующий пример:
+    \[F(x) = x^2, \quad x \in (-1, 1)\]
+    Понятно, что все требования на отображение выполнены, но при этом $\mathcal{D} F (0) = F'(0) = 0$ и множество $F(-1, 1) = [0, 1)$ не является открытым в $\mathbb{R}$.
+\end{remark}
+
+\begin{proof}
+    Фиксируем $x^0 \in \Omega$ и $y^0 = F\left(x^0\right)$. Наша цель состоит в том, чтобы найти достаточно малый шар с центром в точке $y^0$, который целиком залезет в $F(\Omega)$, так как тогда по определению открытого множества в силу произвольного выбора точки $x^0$ получим требуемое.
+    Воспользуемся же для достижения цели основной геометрической теоремой:
+    \[\exists \delta > 0 \; \; \exists c > 0: \overline{B}_{\delta} \left(x^0\right) \subset \Omega \quad \text{ и } \quad \forall x \in \overline{B}_{\delta} \left(x^0\right) \hookrightarrow \left\lVert F \left(x\right) - F\left(x^0\right) \right\rVert \geq c \left\lVert x - x^0 \right\rVert\]
+    Зафиксируем эти самые $\delta$ и $c$ из условия выше и покажем, что $B_{\frac{c \delta}{2}} \left(y^0\right) \subset F(\Omega)$. Возьмём для этого произвольно $y^{\ast} \in B_{\frac{c \delta}{2}} \left(y^0\right)$ и рассмотрим следующую функцию:
+    \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\linewidth]{pictures/Теорема об открытом отображении.jpg}
+    \end{figure}
+    \[h(x) = \left\lVert F(x) - y^{\ast} \right\rVert \]
+    Сделаем для неё пару замечаний. Ясно, что значение $h$ в точке $x^0$ можно оценить так:
+    \[h\left(x^0\right) = \left\lVert F\left(x^0\right) - y^{\ast}\right\rVert = \left\lVert y^0 - y^{\ast} \right\rVert < [\text{определение открытого шара}] < \frac{c \delta}{2}\]
+    При этом для $h(x)$ при $x \in S_{\delta}\left(x^0\right) = \{x \in \mathbb{R}^n: \left\lVert x - x^0 \right\rVert = \delta\}$ можно выписать следующие неравенства:
+    \[h(x) = \left\lVert F(x) - y^{\ast} \right\rVert \geq [\text{следствие из неравенства треугольника}] \geq\]
+    \[\geq \left\lVert F(x) - y^0 \right\rVert - \left\lVert y^0 - y^{\ast} \right\rVert \geq [\text{основная геометрическая теорема}] \geq\]
+    \[\geq \underbrace{c \left\lVert x - x^0 \right\rVert}_{= c \delta} - \left\lVert y^0 - y^{\ast} \right\rVert > [\text{определение открытого шара и сферы}] > c \delta - \frac{c \delta}{2} = \frac{c \delta}{2}\]
+    Пробежав глазками цепочку неравенств, заключаем:
+    \[\forall x \in S_{\delta} \left(x^0\right) \hookrightarrow h(x) > \frac{c \delta }{2}\]
+    Заметим же теперь, что в силу дифференцируемости отображения $F$ всюду на $\Omega$, а значит и непрерывности этого отображения в каждой точке $\Omega$, имеем $h \in C \left( \overline{B}_{\delta}\left(x^0\right) \right)$. Но множество $\overline{B}_{\delta}\left(x^0\right)$, как легко видеть, является компактом,
+    откуда по теореме Вейерштрасса функция $h$ достигает минимума на $\overline{B}_{\delta}\left(x^0\right)$. 
+    \\
+    К этому моменту внимательного читателя должен возникнуть естественный вопрос: зачем же мы доказывали все эти оценки на функцию $h$? На самом деле это было нужно 
+    только для того, чтобы сейчас уверенно заявить: $h$ достигает своего минимума точно внутри шара $\overline{B}_{\delta}\left(x^0\right)$, то есть на множестве $B_{\delta} \left(x^0\right)$.
+    Действительно, функция $h$ не может достигать минимума на границе шара $\overline{B}_{\delta}\left(x^0\right)$, так как она представляет собой сферу $S_{\delta} \left(x^0\right)$, все значения на которой по доказанному выше 
+    заведомо больше, чем в центре шара.
+    \\
+    После ответа на предыдущий вопрос, читатель, скорее всего, находится в ещё большем замешательстве, ведь совсем непонятно, к чему нам понадобилось рассматривать именно внутренность замкнутого шара. Замысел прост: 
+    мы хотим продифференцировать функцию $h$, а если быть точным, её квадрат, так как с обычной нормой каши не сваришь. Распишем для этого $h^2(x)$ по определению: 
+    \[h^2(x) = \left\lVert F(x) - y^{\ast} \right\rVert^2 = \sum_{j = 1}^n \left(F_j (x) - y^{\ast}_j \right)^2\]
+    Далее важно заметить, что если $x^{\ast}$ является точкой минимума функции $h$, то эта же точка 
+    является точкой минимума для функции $h^2$. Кроме того, если $x^{\ast}$ --- точка минимума функции, то её вектор градиент в этой точке равен нулю. Тогда, расписывая равенство нулю градиента функции $h^2$ в точке $x^{\ast}$ (по третьему необходимому условию дифференцируемости этот вектор состоит из частных производных по всем аргументам рассматриваемой функции) и учитывая полученное выше выражение, имеем:
+    \begin{equation*} \label{eq:th:1.2:1} \tag{$\ast$}
+        \forall i \in \{1, \ldots, n\} \hookrightarrow \frac{\partial h^2(x)}{\partial x_i} \Bigg|_{x = x^{\ast}} = \sum_{j = 1}^n \frac{\partial \left(F_j(x) - y_j^{\ast} \right)^2}{\partial x_i} \Bigg|_{x = x^{\ast}} = 
+    \sum_{j = 1}^n 2 \left(F_j(x^{\ast}) - y_j^{\ast} \right) \frac{\partial F_j}{\partial x_i} \left(x^{\ast}\right) = 0
+    \end{equation*}
+    Сохранив полученное в памяти, рассмотрим вектор $z$ и вспомним, из чего же состоит матрица Якоби отображения $F$ в точке $x^{\ast}$:
+    \begin{equation*}
+        z = 
+        \begin{pmatrix}
+            F_1 \left(x^{\ast} \right) - y_1^{\ast} \\
+            \vdots \\
+            F_n \left(x^{\ast} \right) - y_n^{\ast}
+        \end{pmatrix}
+        \quad \quad \quad 
+        \mathcal{D} F \left(x^{\ast} \right) = 
+        \begin{pmatrix}
+            \displaystyle \frac{\partial F_1}{\partial x_1} \left(x^{\ast} \right) & \ldots & \displaystyle \frac{\partial F_1}{\partial x_n} \left(x^{\ast} \right) \\
+            \displaystyle \vdots & \ddots & \vdots \\
+            \displaystyle \frac{\partial F_n}{\partial x_1} \left(x^{\ast} \right) & \ldots & \displaystyle \frac{\partial F_n}{\partial x_n} \left(x^{\ast} \right)
+        \end{pmatrix}
+    \end{equation*}
+    Методом пристального взгляда на два этих замечательных объекта, заключаем, что полученное таким трудом условие (\ref{eq:th:1.2:1}) равносильно следующему:
+    \[\left(\mathcal{D} F \left(x^{\ast}\right) \right)^{T} z = 0\]
+    Теперь осталось лишь заметить, что перед нами система линейных уравнений с равным числом уравнений и неизвестных, причём определитель матрицы этой системы не равен нулю, так как представляет собой 
+    определитель матрицы Якоби отображения $F$ в точке $x^{\ast} \in \Omega$, который отличен от нуля в любой точке $\Omega$ по условию. Тогда, как известно из 
+    курса линала, эта СЛУ имеет единственное решение. Но в силу однородности системы решение $z = 0$ есть всегда, а значит это и есть то самое единственное решение. Тогда, вспомнив, как же мы определяли вектор $z$, с радостью 
+    заключаем, что 
+    \[F \left(x^{\ast} \right) - y^{\ast} = 0 \iff F \left(x^{\ast} \right) = y^{\ast}\]
+    Из полученного выше ясно, что мы нашли прообраз для $y^{\ast}$, а значит $y^{\ast} \in F(\Omega)$. Но $y^{\ast} \in B_{\frac{c \delta}{2}} \left(y^0\right)$ было выбрано произвольно, откуда $B_{\frac{c \delta}{2}} \left(y^0\right) \subset F(\Omega)$. Теперь уж внимательный читатель сразу заметит, что это победа!
+\end{proof}
+
+\section{Теорема о производной обратного отображения}
+
+\begin{theorem}[О производной обратного отображения]
+    Пусть $\Omega \subset \mathbb{R}^n$, $x^0$ --- внутренняя точка множества $\Omega$.
+    Пусть:
+    \begin{enumerate}
+        \item Отображение $F \colon \Omega \to \mathbb{R}^n$ обратимо на $\Omega$ (то есть $\exists F^{-1} \colon F(\Omega) \to \Omega$)
+        \item Отображение $F$ дифференцируемо в точке $x^0$
+        \item $\mathcal{J} F\left(x^0\right) \neq 0$
+        \item Точка $y^0 = F\left(x^0\right)$ является внутренней точкой множества $F(\Omega)$
+        \item Обратное отображение $F^{-1}$ непрерывно в точке $y^0$
+    \end{enumerate}
+    Тогда отображение $F^{-1}$ дифференцируемо в точке $y^0$ и, более того, справедливо равенство:
+    \[\mathcal{D} F^{-1} \left(y^0\right) = \left(\mathcal{D} F \left(x^0\right) \right)^{-1}\]
+\end{theorem}
+
+\begin{proof}
+    Так как отображение $F$ дифференцируемо в точке $x^0$, являющейся внутренней точкой множества $\Omega$, то 
+    по определению дифференцируемости:
+    \begin{equation*} \label{eq:th:2.1:1} \tag{$\star$}
+        \exists \delta > 0: F\left(x\right) - F\left(x^0\right) = \mathcal{D} F \left(x^0\right) \left(x - x^0\right) + \varepsilon_{x^0} (x) \left\lVert x - x^0 \right\rVert \quad \forall x \in B_{\delta} \left(x^0\right)
+    \end{equation*}
+    Здесь $\varepsilon_{x^0} (x) \to 0, \; x \to x^0$. Далее в силу существования обратного отображения $F^{-1}$ и его непрерывности в точке $y^0$ получаем:
+    \[\exists \varepsilon > 0: \forall y \in B_{\varepsilon} \left(y^0\right) \hookrightarrow F^{-1} (y) \in B_{\delta} \left(x^0\right)\]
+    Коль так, то для всех $y \in B_{\varepsilon}\left(y^0\right)$ можем подставить в условие (\ref{eq:th:2.1:1}) значения 
+    \[x = F^{-1}(y) \in B_{\delta}\left(x^0\right) \quad \text{ и } \quad x^0 = F^{-1}\left(y^0\right)\]
+    Давайте же сделаем это:
+    \[y - y^0 = \mathcal{D} F \left(F^{-1}\left(y^0\right)\right) \left(F^{-1}\left(y\right) - F^{-1}\left(y^0\right)\right) + \varepsilon_{F^{-1}\left(y^0\right)} \left(F^{-1}\left(y\right)\right) \left\lVert F^{-1}\left(y\right) - F^{-1}\left(y^0\right) \right\rVert \]
+    Так как $\mathcal{J} F \left(x^0\right) \neq 0$, то матрица Якоби $\mathcal{D} F \left(x^0\right) = \mathcal{D} F\left(F^{-1}\left(y^0\right)\right)$ обратима. Умножим тогда обе части равенства выше на обратную матрицу к этой матрице Якоби:
+    \[\left(\mathcal{D} F \left(F^{-1}\left(y^0\right)\right)\right)^{-1} \left(y - y^0\right) = F^{-1}\left(y\right) - F^{-1}\left(y^0\right) + \]
+    \[+ \left(\mathcal{D} F \left(F^{-1}\left(y^0\right)\right)\right)^{-1} \varepsilon_{F^{-1}\left(y^0\right)} \left(F^{-1}\left(y\right)\right) \left\lVert F^{-1}\left(y\right) - F^{-1}\left(y^0\right) \right\rVert\]
+    Чтобы не утонуть в выкладках, обозначим линейное отображение $\left(\mathcal{D} F \left(F^{-1}\left(y^0\right)\right)\right)^{-1}$ за $A$ (линейное отображение однозначно задаётся своей матрицей) и перекинем второе слагаемое в правой части равенства налево:
+    \[F^{-1}\left(y\right) - F^{-1}\left(y^0\right) = A\left(y - y^0\right) - A \cdot \varepsilon_{F^{-1}\left(y^0\right)} \left(F^{-1}\left(y\right)\right) \left\lVert F^{-1}\left(y\right) - F^{-1}\left(y^0\right) \right\rVert \quad  \forall y \in B_{\varepsilon}\left(y^0\right)\]
+    Смекалистый читатель приметит, что это равенство уж очень похоже на определение дифференцируемости отображения $F^{-1}$ в точке $y^0$. Не хватает только тайного знания 
+    о том, что второе слагаемое в правой части равенства есть $\overline{o} \left(\left\lVert y - y^0 \right\rVert \right), \; y \to y^0$. Для того, чтобы это увидеть, воспользуемся основной геометрической теоремой для отображения $F$ и точки $x^0$ (понятно, что все условия для её использования выполнены):
+    \[\left\lVert y - y^0 \right\rVert = \left\lVert F\left(x\right) - F\left(x^0\right) \right\rVert \geq c \left\lVert x - x^0 \right\rVert = c \left\lVert F^{-1}\left(y\right) - F^{-1}\left(y^0\right)\right\rVert \quad \forall x \in \overline{B}_{\delta}\left(x^0\right)\]
+    \[\iff\]
+    \begin{equation*} \label{eq:th:2.1:2} \tag{$\star \star$}
+        \left\lVert F^{-1}\left(y\right) - F^{-1}\left(y^0\right)\right\rVert \leq \frac{1}{c} \left\lVert y - y^0 \right\rVert \quad \forall y \in B_{\varepsilon}\left(y^0\right)
+    \end{equation*}
+    Важно отметить, что здесь $\delta$ выбирается, вообще говоря, независимо по отношению к выбору $\delta$ в условии (\ref{eq:th:2.1:1}), а значит, если справедливо (\ref{eq:th:2.1:1}), то не обязательно 
+    неравенство из основной геометрической теоремы справедливо в замкнутом шаре этого же радиуса. Но мы не переживаем по этому поводу, и говорим волшебные слова о том, что, если потребуется, 
+    мы подожмём $\delta$ в двух этих условиях и обозначим полученное вновь за $\delta$, и тогда оба условия будут справедливы в соответствующих шарах этого радиуса. 
+    \\
+    От неравенства (\ref{eq:th:2.1:2}) мы возьмём только ограниченность функции
+    $\frac{\left\lVert F^{-1}\left(y\right) - F^{-1}\left(y^0\right)\right\rVert}{\left\lVert y - y^0 \right\rVert}$
+    на множестве $B_{\varepsilon}\left(y^0\right)$, а далее отметим, что следующее условие выполнено по теореме о пределе композиции отображений:
+    \[A \cdot \varepsilon_{F^{-1}\left(y^0\right)} \left(F^{-1}(y)\right) \to 0, \; y \to y^0\]
+    В самом деле, $F^{-1}(y) \to F^{-1}\left(y^0\right), \; y \to y^0$ из непрерывности обратного отображения в точке $y^0$, и при этом $A$ --- некоторая фиксированная матрица.
+    \\
+    Осталось сделать лишь пару штрихов, первым из которых будет такое обозначение:
+    \[\widetilde{\varepsilon}_{y^0} (y) := \underbrace{-A \cdot \varepsilon_{F^{-1}\left(y^0\right)} \left(F^{-1}(y)\right)}_{\text{б.м. при } y \to y^0} \cdot \underbrace{\frac{\left\lVert F^{-1}\left(y\right) - F^{-1}\left(y^0\right)\right\rVert}{\left\lVert y - y^0 \right\rVert}}_{\text{огр. при } y \to y^0}\]
+    Нетрудно видеть из всех наших потугов, что $\widetilde{\varepsilon}_{y^0} (y) \to 0, \; y \to y^0$. Вторым же штрихом будет причёсывание того самого второго слагаемого в равенстве для приращения обратного отображения:
+    \[-A \cdot \varepsilon_{F^{-1}\left(y^0\right)} \left(F^{-1}\left(y\right)\right) \left\lVert F^{-1}\left(y\right) - F^{-1}\left(y^0\right) \right\rVert = \]
+    \[= -A \cdot \varepsilon_{F^{-1}\left(y^0\right)} \left(F^{-1}\left(y\right)\right) \frac{\left\lVert F^{-1}\left(y\right) - F^{-1}\left(y^0\right) \right\rVert}{\left\lVert y - y^0 \right\rVert} \left\lVert y - y^0 \right\rVert =\]
+    \[= \widetilde{\varepsilon}_{y^0} (y) \left\lVert y - y^0 \right\rVert = \overline{o} \left(\left\lVert y - y^0 \right\rVert\right), \; y \to y^0\]
+    Всё, теперь осталось только подставить вместо этого слагаемого полученное представление:
+    \[F^{-1}\left(y\right) - F^{-1}\left(y^0\right) = A\left(y - y^0\right) + \overline{o} \left(\left\lVert y - y^0 \right\rVert\right), \; y \to y^0\]
+    Ура, перед нами заветное определение дифференцируемости отображения $F^{-1}$ в точке $y^0$. Более того, из этого же условия вытекает 
+    требуемое равенство для матриц Якоби:
+    \[\left(\mathcal{D} F \left(x^0\right) \right)^{-1} = A = \mathcal{D} F^{-1} \left(y^0\right)\]
+    Теперь уже со спокойной душой заключаем, что требуемое доказано.
+\end{proof}
+
+\end{document}

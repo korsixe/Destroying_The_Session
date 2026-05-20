@@ -1,0 +1,297 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{soul}
+\usepackage{multicol}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\rg}{rg}
+\DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\gr}{gr}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{\st{Голова} матанализ --- предмет темный и исследованию не подлежит}
+\fancyhead[R]{\href{https://t.me/lost_luna}{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 9. Теорема о неявном отображении. Диффеоморфизм. Многообразия.
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Теорема о неявном отображении}
+
+\begin{remark}
+    Вспомним следующие замечательные обозначения:
+    \begin{equation*} \label{eq:system1} \tag{$\ast$}
+        \begin{cases}
+            F_1(x_1, \dots, x_m, y_1, \dots, y_n) = 0 \\
+            \vdots \\
+            F_n(x_1, \dots, x_m, y_1, \dots, y_n) = 0
+        \end{cases}
+    \end{equation*}
+    
+    \begin{equation*}
+        F'_x = 
+        \begin{pmatrix}
+            \displaystyle \frac{\partial F_1}{\partial x_1} \left(x_1, \dots, x_m, y_1, \dots, y_n \right) & \ldots & \displaystyle \frac{\partial F_1}{\partial x_m} \left( \dots \right) \\
+            \displaystyle \vdots & \ddots & \vdots \\
+            \displaystyle \frac{\partial F_n}{\partial x_1} \left(x_1, \dots, x_m, y_1, \dots, y_n \right) & \ldots & \displaystyle \frac{\partial F_n}{\partial x_m} \left( \dots \right)
+        \end{pmatrix}
+    \end{equation*}
+
+    \begin{equation*}
+        F'_y  = 
+        \begin{pmatrix}
+            \displaystyle \frac{\partial F_1}{\partial y_1} \left(x_1, \dots, x_m, y_1, \dots, y_n \right) & \ldots & \displaystyle \frac{\partial F_1}{\partial y_n} \left( \dots \right) \\
+            \displaystyle \vdots & \ddots & \vdots \\
+            \displaystyle \frac{\partial F_n}{\partial y_1} \left(x_1, \dots, x_m, y_1, \dots, y_n \right) & \ldots & \displaystyle \frac{\partial F_n}{\partial y_n} \left( \dots \right)
+        \end{pmatrix}
+    \end{equation*}
+\end{remark}
+
+\begin{theorem}[О неявном отображении]
+    Пусть $\Omega \subset \mathbb{R}^{m + n}$ открыто и непусто, $F \colon \Omega \to \mathbb{R}^n$. Пусть:
+    \begin{enumerate}
+        \item $F \in C^1(\Omega, \mathbb{R}^n)$
+        \item $F(x^0, y^0) = 0, \; \; (x^0, y^0) \in \Omega$
+        \item $F_y'(x^0, y^0)$ обратима (то есть $\det F_y' (x^0, y^0) \ne 0$)
+    \end{enumerate}
+    Тогда:
+    \[ \exists \delta > 0 \; \; \exists \gamma > 0: \ \forall x^{\ast} \in Q_\delta(x^0)
+    \; \; \exists ! y^{\ast} \in Q_\gamma(y^0) : \ F(x^{\ast}, y^{\ast}) = 0\]
+    Напомним, что множество $Q_{\delta} (x^0)$ есть куб длины ребра $2 \delta$ c центром в точке $x^0$, то есть:
+    \[Q_{\delta} (x^0) = \prod_{i = 1}^{m} \left[x^0_i - \delta, x^0_i + \delta\right]\]
+    Тем самым определено отображение $f \colon Q_\delta(x^0) \to Q_\gamma(y^0)$. 
+    Более того, $f \in C^1(Q_\delta(x^0), Q_\gamma(y^0))$ и 
+    \[f_x'(x) = -(F_y'(x, f(x)))^{-1} \cdot F_x'(x, f(x)) \quad \forall x \in Q_\delta(x^0)\]
+\end{theorem}
+
+\begin{proof}
+    Суть теоремы в том, что мы можем найти такие малые окрестности точек $x^0$ и $y^0$, 
+    что множество решений в образовавшейся "коробочке" \ представляет собой кусок некоторого графика
+    отображения из $Q_\delta(x^0)$ в $Q_\gamma(y^0)$, причем это отображение принадлежит 
+    классу $C^1$, и мы можем посчитать его производную (в смысле введённых нами обозначений $F'_x$ и $F'_y$) по нашей дивной формулке.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{pictures/Множество решений для неявной функции.png}
+        \caption{Вот в таком ужасе хотим разобраться}
+    \end{figure} \leavevmode
+    \\
+    Сведем к теореме о локальном диффеоморфизме. Рассмотрим отображение 
+    \[\Phi: \Omega \ni (x, y) \to (x, F(x, y)) \in \mathbb{R}^{m + n}\]
+    Заметим, что:
+    \begin{enumerate}
+        \item $\Phi \in C^1(\Omega, \mathbb{R}^{m + n})$
+        \item $\Phi(x^0, y^0) = (x^0, 0)$
+        \item
+        \[\det \mathcal{\mathcal{D}}\Phi(x^0, y^0) =
+        \left|
+            \begin{array}{c}
+                \underset{m \times m}{E} \quad 0 \\ \\
+                F_x' \quad \quad F_y'
+            \end{array}
+        \right| \ne 0
+        \]
+    \end{enumerate}
+    Кроме того, из первого пункта выше вытекает непрерывность $\mathcal{D}\Phi$ на $\Omega$, а значит якобиан $\mathcal{J}\Phi = \det \mathcal{D}\Phi$ отображения $\Phi$ также непрерывен на $\Omega$, так как представляет собой полином, который, как известно, является непрерывной функцией своих аргументов. Следовательно, в силу третьего пункта наших замечаний и принципа локализации получаем, что $\mathcal{J}\Phi (x, y) = \det \mathcal{D}\Phi (x, y) \neq 0$ для всех $(x, y)$ из некоторого малого шара, лежащего в множестве $\Omega$. 
+    Тогда в этом шаре выполнены все условия теоремы о локальном диффеоморфизме для отображения $\Phi$. Следовательно, существует окрестность $U(x^0, y^0) \subset \Omega$ и 
+    существует окрестность $V(x^0, 0) = \Phi \left(U(x^0, y^0)\right)$, которые диффеоморфны с помощью отображения $\Phi$.
+    То есть, $\Phi$ взаимно однозначно переводит $U(x^0, y^0)$ на $V(x^0, 0)$, и при этом выполнено
+    \[\Phi \in C^{1} \left(U(x^0, y^0), V(x^0, 0)\right) \quad \text{ и } \quad \Phi^{-1} \in C^{1} \left(V(x^0, 0), U(x^0, y^0)\right)\]
+    Так как множество $V(x^0, 0)$ открыто в $\mathbb{R}^{m + n}$ (это легко видеть, например, из доказательства теоремы о локальном диффеоморфизме), то
+    \[\exists \delta > 0: Q_\delta (x^0, 0) \subset B_{\delta \sqrt{m + n}} (x^0, 0) \subset V(x^0, 0)\]
+    Тогда, рассмотрев сечение окрестности $V(x^0, 0)$ и куба $Q_{\delta} (x^0, 0)$ подпространством $\mathbb{R}^m$, имеем:
+    \[\exists \delta > 0: Q_{\delta} (x^0) = Q_{\delta} (x^0, 0) \cap \mathbb{R}^m \subset V(x^0, 0) \cap \mathbb{R}^m\]
+    Таким образом, 
+    \[\exists \delta > 0: Q_{\delta} (x^0) \subset V(x^0, 0) \cap \mathbb{R}^m\]
+    Кроме того, отображение $\Phi$ есть биекция множества $U(x^0, y^0)$ множество на $V(x^0, 0)$, а значит для любой точки $x^{\ast} \in Q_{\delta} (x^0) \subset V(x^0, 0) \cap \mathbb{R}^m$ выполнено, что точка $(x^{\ast}, 0)$ может быть образом только точки из множества нулей отображения $F$ (последние $n$ координат нулевые, что и соответствует обращению в ноль значения отображения $F$ на прообразе по определению отображения $\Phi$), то есть $\forall x^{\ast} \in Q_\delta(x^0)$
+    выполнено, что $\Phi^{-1}(x^{*}, 0)$ принадлежит множеству нулей $F$ и эта точка
+    $\Phi^{-1}(x^{\ast}, 0)$ единственна. Следовательно, 
+    \[\forall x^{*} \in Q_\delta(x^0) \; \; \exists! y^{\ast} \in \mathbb{R}^n: (x^{\ast}, y^{\ast}) \in U(x^0, y^0) \; \text{ и } \; F(x^{\ast}, y^{\ast}) = 0\]
+    Так как множество $U(x^0, y^0)$ открыто в $\mathbb{R}^{m + n}$, то можно считать, что $y^{*} \in
+    Q_\gamma(y^0)$. Следовательно, мы построили отображение
+    \begin{equation*} \label{eq:star1} \tag{$\ast \ast$}
+        f \colon Q_\delta(x^0) \to  Q_\gamma(y^0), \; \text{причем } F(x, f(x)) = 0 \ \ \forall x \in Q_\delta(x^0)
+    \end{equation*}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{pictures/Построение отображения.png}
+        \caption{картинка для понимания хохо}
+    \end{figure} \leavevmode
+    \\
+    Возрадуемся и внимательно посмотрим на наше отображение 
+    \[\Phi^{-1} \colon (x, 0) \to (x, f(x)), \; \; x \in Q_{\delta} (x^0)\]
+    Так как $\Phi^{-1} \in C^1 \left(V(x^0, 0), U(x^0, y^0)\right)$, то все частные производные $\Phi^{-1}$ непрерывны 
+    в окрестности $V(x^0, 0)$. При этом $\Phi^{-1}$ имеет совершенно конкретный вид, описанный выше, по крайней мере, для точек $x \in Q_{\delta} (x^0)$. Тогда и все частные производные $f$ существуют и непрерывны в $Q_\delta(x^0)$.
+    Следовательно, $f \in C^1(Q_\delta(x^0), Q_\gamma(y^0))$. \\
+    Продифференцируем (\ref{eq:star1}) по $x$, вспомнив замечательные обозначения 
+    (\ref{eq:system1}): \[F'_x(x, f(x)) + F'_y(x, f(x)) \cdot f'_x(x) = 0\]
+    Путем нехитрых математических преобразований наконец получаем: 
+    \[f'_x(x) = -(F_y'(x, f(x)))^{-1} \cdot F_x'(x, f(x)) \quad \forall x \in Q_\delta(x^0)\]
+\end{proof}
+
+\section{Диффеоморфизм}
+
+\begin{theorem}[Продолжение до диффеоморфизма]
+    Пусть $1 \leq k < m$, $\Omega \subset \mathbb{R}^k$ --- открыто и непусто. Пусть $\Phi \in C^1(\Omega, \mathbb{R}^m)$.
+    Пусть \[\rg \mathcal{D}\Phi(x) = k \; \; \forall x \in \Omega\]
+    Отождествим $\mathbb{R}^k \equiv \mathbb{R}^k \times \{0\} \subset \mathbb{R}^m$. 
+    Тогда для любой точки $x^0 \in \Omega$ существуют $m$-мерная окрестность $U(x^0, 0) \subset \mathbb{R}^m$
+    и непрерывно дифференцируемое отображение $\overline{\Phi} \colon U(x^0, 0) \to \mathbb{R}^m$ такие, что:
+    \begin{enumerate}
+        \item $\displaystyle \overline{\Phi} \Bigr|_{U(x^0, 0) \; \cap \; \mathbb{R}^k} = \Phi$
+        \item $\overline{\Phi}$ является диффеоморфизмом $U(x^0, 0)$ на открытое множество $V \subset \mathbb{R}^m$
+        \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{pictures/Продолжение до диффеоморфизма.png}
+        \caption{вот такое хотим построить}
+    \end{figure}
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    Так как $\rg \mathcal{D}\Phi(x^0) = k$, то без ограничения общности можно считать, что первые 
+    $k$ строк и $k$ столбцов матрицы $\mathcal{D}\Phi(x^0)$ линейно независимы (иначе перенумеруем 
+    координаты). \\ Определим 
+    \[\overline{\Phi}: \ \Omega \times \mathbb{R}^{m-k} \ni (x, y) \to \Phi(x) + (0, y)\]
+    Заметим, что $\mathcal{J} \overline{\Phi}(x^0, 0) \ne 0$ (автору это не заметно, поэтому распишем подробнее:
+    матрицу Якоби можно представить блочной матрицей из 4 подматриц, где на главной диагонали
+    будет матрица $k \times k$, строки и столбцы которой мы считаем ЛНЗ, и единичная матрица 
+    $(m - k) \times (m - k)$). Следовательно, в силу непрерывности $\mathcal{J} \overline{\Phi}$ как полинома от непрерывных аргументов по принципу локализации получаем, что существует $m$-мерный шарик с центром в точке $(x^0, 0)$, в котором якобиан отображения $\overline{\Phi}$ не обнуляется. Тогда в этом шаре выполнены все условия теоремы о локальном диффеоморфизме для $\overline{\Phi}$. Следовательно, существует погруженная в этот шар $m$-мерная окрестность $U(x^0, 0) \subset \mathbb{R}^m$ такая, что $\overline{\Phi}$ является диффеоморфизмом $U(x^0, 0)$ на открытое множество $V := \overline{\Phi} \left(U(x^0, 0)\right)$.
+    При этом из определения отображения $\overline{\Phi}$ нетрудно видеть, что его сужение на $U(x^0, 0) \cap \mathbb{R}^k$ в самом деле совпадает с $\Phi$, так как последние $(m - k)$ координат точек из $U(x^0, 0) \cap \mathbb{R}^k$ нулевые, откуда значение $\overline{\Phi}$ на таких точках есть значение $\Phi$, сложенное с нулевым $m$-мерным вектором. Таким образом, требуемое доказано.
+\end{proof}
+
+\begin{definition}
+    Пусть $U \subset \mathbb{R}^n$ и $V \subset \mathbb{R}^m$ --- непустые множества. Отображение $F \colon U \to V$ является \textbf{гомеоморфизмом} $U$ на $V$, если
+    \begin{enumerate}
+        \item $F$ --- биекция $U$ на $V$
+        \item $F \in C \left(U, V\right)$
+        \item $F^{-1} \in C \left(V, U\right)$
+    \end{enumerate}
+\end{definition}
+
+\begin{lemma} \label{lemma:2.1}
+    Пусть $U \subset \mathbb{R}^m$ и $V \subset \mathbb{R}^{m'}$ --- непустые открытые множества. Если $U$ и $V$ диффеоморфны, то $m = m'$.
+\end{lemma}
+
+\begin{proof}
+    Так как $U$ и $V$ диффеоморфны, то существует отображение $\Phi \colon U \to V$, являющееся диффеоморфизмом $U$ на $V$. Следовательно, по определению отображение $\Phi$ есть биекция $U$ на $V$, а также 
+    \[\Phi \in C^{1} (U, V) \quad \text{ и } \quad \Phi^{-1} \in C^{1} (V, U) \]
+    Предположим, что $m > m'$. По определению обратного отображения $\Phi^{-1} \circ \Phi = \Id$. Продифференцировав это равенство, получаем:
+    \[\underset{\rg \leq m' < m}{\mathcal{D}\Phi^{-1}} \cdot \mathcal{D}\Phi = \underset{\rg = m}{E}\]
+    Но $\rg \mathcal{D} \Phi^{-1}$ уж точно не может превосходить $m'$, а ранг произведения матриц всяко разно не больше, чем ранг одной из матриц в произведении. Следовательно, ранг левой части вышеописанного равенства не превосходит $m'$, а ранг правой части в точности равен $m > m'$. Полученное противоречие завершает доказательство.
+\end{proof}
+
+\begin{remark}
+    На самом деле, верна более общая теорема, именуемая теоремой Брауэра, для которой приведём лишь формулировку без доказательства.
+\end{remark}
+
+\begin{theorem}[Брауэра]
+    Пусть $U \subset \mathbb{R}^m$ и $V \subset \mathbb{R}^{m'}$ --- непустые открытые множества. Если $U$ и $V$ гомеоморфны, то $m = m'$.
+\end{theorem}
+
+\section{Многообразия}
+
+\begin{definition}
+    Пусть $1 \leq k < m$. Множество $M \subset \mathbb{R}^m$ называется \textbf{простым
+    $k$-мерным многообразием}, если существуют открытое множество $\Omega \subset \mathbb{R}^k$ и гомеоморфизм $\Phi \colon \Omega \overset{\text{на}}{\to} M$, называемый \textbf{параметризацией}.\\
+    Если $k = 1$, то получаем простую кривую. \\ 
+    Если дополнительно 
+    \[\Phi \in C^1(\Omega, \mathbb{R}^m) \; \; \text{ и } \; \; \rg \mathcal{D}\Phi(x) = k \; \; \forall x \in \Omega,\] 
+    то $M$ называется \textbf{простым $k$-мерным гладким многообразием}.
+\end{definition}
+
+\begin{remark}
+    Определение корректно в том смысле, что если $\exists G \subset \mathbb{R}^{k'}$
+    и $\exists \Psi \in C^1(G, \mathbb{R}^m)$ такое, что $\Psi$ есть гомеоморфизм
+    $G$ на $M$, а также $\forall x \in G \hookrightarrow \rg \mathcal{D}\Psi(x) = k'$, то $k = k'$
+\end{remark}
+
+\begin{proof}
+    Действительно, в силу теоремы о продолжении до диффеоморфизма отображения $\Phi$ и $\Psi$
+    можно продолжить до диффеоморфизмов (нетрудно видеть, что для каждого из отображений все условия теоремы выполнены). Сделаем это и рассмотрим композицию $\Phi^{-1} \circ \Psi \colon G \to \Omega$. Ясно, что по теореме о дифференцируемости композиции отображений эта композиция является диффеоморфизмом $G$ на $\Omega$. Тогда по лемме \ref{lemma:2.1} верно, что $k = k'$. Таким образом, замечание показано.
+\end{proof}
+
+\begin{theorem}[Эквивалентные описания простого гладкого многообразия]
+    Пусть $1 \leq k < m$. Пусть $M \subset \mathbb{R}^m$  и точка $p \in M$.
+    Следующие условия эквивалентны:
+    \begin{enumerate}
+        \item Существует окрестность $U(p) \subset \mathbb{R}^m$ точки $p$ такая, что множество $U(p) \cap M$ является простым $k$-мерным гладким многообразием.
+        \item Существуют открытое множество $G \subset \mathbb{R}^m$ и диффеоморфизм $\Theta \colon G \to \mathbb{R}^m$ такие, что 
+        \[p \in \Theta(G) \cap M \quad \text{ и } \quad \Theta(G) \cap M = \Theta(G \cap \mathbb{R}^k)\]
+        \item Существуют окрестность $V \subset \mathbb{R}^m$ точки $p$ и набор $F_1, \dots, F_{m-k}$ непрерывно 
+        дифференцируемых в этой окрестности функций такие, что градиенты $\nabla F_1(p), \ldots, \nabla F_{m-k}(p)$ линейно независимы, а также
+        \[M \cap V = \{x \in V: F_1(x) = \ldots = F_{m-k}(x) = 0\}\] 
+        \item Существует окрестность $W \subset \mathbb{R}^m$ точки $p$ такая, что 
+        множество $W \cap M$ является графиком в широком смысле (то есть после перенумерации координат)
+        некоторого непрерывно дифференцируемого отображения $f \colon \mathbb{R}^k \supset \Omega \to \mathbb{R}^{m - k}$.
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    $(1 \Longrightarrow 2):$ Так как множество $U(p) \cap M$ есть простое $k$-мерное гладкое многообразие, то по определению существуют открытое множество $\widetilde{\Omega} \subset \mathbb{R}^k$ и гомеоморфизм $\Phi \colon \widetilde{\Omega} \overset{\text{на}}{\to} U(p) \cap M$ такие, что
+    \[\Phi \in C^1(\widetilde{\Omega}, \mathbb{R}^m) \quad \text{ и } \quad \rg \mathcal{D} \Phi(x) = k \; \; \forall x \in \widetilde{\Omega}\]
+    Заметим, что для отображения $\Phi$ выполнены все условия теоремы о продолжении до диффеоморфизма. Тогда это отображение можно продолжить до диффеоморфизма $\overline{\Theta}$ в некоторой малой окрестности 
+    точки $\Phi^{-1}(p) \in \widetilde{\Omega}$. Сделав это, получаем, что существуют открытое множество $V \subset \mathbb{R}^m$ и диффеоморфизм $\overline{\Theta} \colon V \to \mathbb{R}^m$ такие, что 
+    \[\quad \Phi^{-1}(p) \in V \quad \text{ и } \quad \overline{\Theta} \Bigr|_{V \cap \mathbb{R}^k} = \Phi\]
+    Определим $G := \overline{\Theta}^{-1}\left(\overline{\Theta}(V) \cap U(p)\right)$. Заметим, что из открытости множеств $\overline{\Theta}(V)$ и $U(p)$ вытекает открытость их пересечения, а значит, в силу непрерывности отображения $\overline{\Theta}$, получаем, что множество $G$ открыто в $\mathbb{R}^m$. При этом отображение $\overline{\Theta}$ биективно, а значит $G \subset V$. Кроме того, из той же биективности и из $p \in \overline{\Theta}(V) \cap U(p)$ имеем $\Phi^{-1}(p) \in G$. Положим тогда отображение $\Theta$ равным сужению диффеоморфизма $\overline{\Theta}$ на множество $G$.
+    Очевидно, что $\Theta \colon G \to \mathbb{R}^m$ также является диффеоморфизмом $G$ на $\Theta(G)$ просто по его определению. При этом
+    \[\Theta(G) = \overline{\Theta}(G) = \overline{\Theta}\left(\overline{\Theta}^{-1}\left(\overline{\Theta}(V) \cap U(p)\right)\right) = \overline{\Theta}(V) \cap U(p) \subset U(p) \implies \Theta(G) \cap M \subset U(p) \cap M\]
+    Кроме того, диффеоморфизм $\overline{\Theta}$ есть продолжение отображения $\Phi$ на множестве $V$, а значит диффеоморфизм $\Theta$ есть продолжение отображения $\Phi$ на множестве $G$. Следовательно, суммируя все наши наблюдения, имеем
+    \[p \in \Theta(G) \cap M \quad \text{ и } \quad \Theta(G \cap \mathbb{R}^k) = \Theta(G) \cap M\]
+    Таким образом, получили второй пункт.
+    \\
+    $(2 \Longrightarrow 3):$ Так как у нас существуют открытое множество $G \subset \mathbb{R}^m$ и диффеоморфизм $\Theta \colon G \to \mathbb{R}^m$, для которых справедливо равенство $\Theta(G \cap \mathbb{R}^k) = \Theta(G) \cap M$, то положим $V := \Theta(G)$. Рассмотрим отображение 
+    $\Theta^{-1} \colon V \to G$ и определим функции $F_1, \dots, F_{m-k}$ соответственно его последними $(m - k)$
+    компонентами, которые просто по определению диффеоморфизма являются непрерывно дифференцируемыми на $V$. Из определения диффеоморфизма вытекает неравенство нулю якобиана отображения $\Theta^{-1}$ всюду на $V$, а значит строки квадратной матрицы $\mathcal{D}\Theta^{-1}(x)$ линейно независимы для любой точки $x \in V$. В частности, строки этой матрицы линейно независимы в точке $p \in V$, а значит, вспомнив, что строками матрицы Якоби отображения в точке выступают градиенты соответствующих координатных функций многих переменных в этой точке, получаем линейную независимость набора $\nabla F_1(p), \ldots, \nabla F_{m-k}(p)$. Кроме того, выполненное по условию равенство $\Theta(G \cap \mathbb{R}^k) = \Theta(G) \cap M$ тривиально влечёт справедливость равенства $\Theta^{-1} (M \cap V) = G \cap \mathbb{R}^k$, внимательно посмотрев на которое, нетрудно увидеть, что в силу взаимной однозначности $\Theta^{-1}$ именно множество $M \cap V$ представляет собой то множество, на котором обнуляются все функции набора $F_1, \ldots, F_{m - k}$, так как все значения отображения $\Theta^{-1}$ на множестве $M \cap V$ имеют нулями последние $(m - k)$ компонент, которые как раз и были положены по определению нашими функциями. Следовательно, 
+    \[M \cap V = \{x \in V: F_1(x) = \ldots = F_{m-k}(x) = 0\}\]
+    $(3 \Longrightarrow 4):$ Определим отображение $F \colon V \to \mathbb{R}^{m - k}$ следующим образом:
+    \[F(x) = \left(F_1(x), \ldots, F_{m - k}(x)\right) \; \; \forall x \in V\]
+    Так как все функции набора $F_1, \ldots, F_{m - k}$ непрерывно дифференцируемы на $V$, то и $F \in C^1 (V, \mathbb{R}^{m - k})$. При этом очевидно, что $p \in M \cap V$, а значит $F(p) = 0$. Тогда для того, чтобы сделать редукцию к теореме о неявном отображении, осталось лишь показать, что $F'_y (p)$ обратима. Для этого вспомним, что по условию градиенты $\nabla F_1 (p), \ldots, \nabla F_{m - k} (p)$ линейно независимы, а значит все $(m - k)$ строк матрицы Якоби $\mathcal{D}F (p)$ линейно независимы. Следовательно, ранг этой матрицы равен $(m - k)$, а значит в ней можно выделить $(m - k)$ линейно независимых столбцов. С точностью до перенумерации координат можно считать, что линейно независимыми являются именно последние $(m - k)$ столбцов. Но эти столбцы, как легко видеть, составляют матрицу $F'_y (p)$, а значит её определитель не равен нулю:
+    \[\det F'_y (p) =  \left|\begin{matrix}
+        \displaystyle \frac{\partial F_1}{\partial x_{m-k}}(p) & \dots & 
+        \displaystyle \frac{\partial F_1}{\partial x_m}(p) \\ \vdots & \ddots & 
+        \vdots \\ \displaystyle \frac{\partial F_{m-k}}{\partial x_{m-k}}(p) & 
+        \dots & \displaystyle \frac{\partial F_{m-k}}{\partial x_m}(p)
+    \end{matrix}\right| \ne 0\]
+    Следовательно, матрица $F'_y (p)$ обратима. Тогда, если положить $p = (p_x, p_y)$, где $p_x \in \mathbb{R}^k$, $p_y \in \mathbb{R}^{m - k}$, то по теореме о неявном отображении: 
+    \[\exists \delta > 0 \; \; \exists \gamma > 0: \forall x \in Q_{\delta} (p_x) \subset \mathbb{R}^k \; \; \exists! y \in Q_{\gamma}(p_y) \subset \mathbb{R}^{m-k}: F(x, y) = 0\]
+    Таким образом, задано непрерывно дифференцируемое отображение $f \colon Q_{\delta} (p_x) \to Q_{\gamma} (p_y)$. Определим $W := Q_{\delta} (p_x) \times Q_{\gamma} (p_y) \subset \mathbb{R}^m$. Легко видеть, что $W \subset V$, откуда сразу вытекает, что $W \cap M \subset V \cap M$. Но множество $V \cap M$ по условию представляет собой множество нулей отображения $F$, в котором по теореме о неявном отображении лежит $\gr f$. При этом $\gr f$ очевидным образом содержится и в $W$, а после пересечения с множеством $M$ никакие точки $\gr f$ не могли пропасть, так как они, в частности, лежат в $M$. Следовательно, в множестве $W \cap M$ содержатся те и только те точки, которые лежат на графике $f$, откуда $\gr f = W \cap M$. Осознав, что $W$ действительно является $m$-мерной окрестностью точки $p$, заключаем, что требуемое следствие показано. \\
+    $(4 \Longrightarrow 1):$ Покажем, что множество $W \cap M$ и есть то самое простое $k$-мерное гладкое многообразие. По условию существуют множество $\Omega \subset \mathbb{R}^k$ и отображение $f \colon \Omega \to \mathbb{R}^{m - k}$ такие, что
+    \[f \in C^{1} (\Omega, \mathbb{R}^{m - k}) \quad \text{ и } \quad W \cap M = \gr f = \{(x, f(x)): x \in \Omega\}\]
+    Определим отображение $\Phi \colon \Omega \to \mathbb{R}^m$ следующим образом:
+    \[\Phi(x) = (x, f(x)) \; \; \forall x \in \Omega\]
+    Увидим, что $\Phi$ является гомеоморфизмом $\Omega$ на $W \cap M$. Действительно, из определения отображения и выкладок выше $\Phi(\Omega) = W \cap M$, а значит $\Phi$ является сюръекцией $\Omega$ на $W \cap M$. При этом это отображение, очевидным образом, инъективно на $\Omega$, так как
+    \[\forall x_1, x_2 \in \Omega: x_1 \neq x_2 \hookrightarrow \Phi(x_1) = (x_1, f(x_1)) \neq (x_2, f(x_2)) = \Phi(x_2)\]
+    Следовательно, отображение $\Phi$ является биекцией $\Omega$ на $W \cap M$, а значит у него существует обратное отображение $\Phi^{-1} \colon W \cap M \to \Omega$. Осталось лишь убедиться, что 
+    \[\Phi \in C(\Omega, W \cap M) \quad \text{ и } \quad \Phi^{-1} \in C(W \cap M, \Omega)\]
+    Первое из этих условий тривиально получается из определения $\Phi$ и того, что $f \in C^{1} (\Omega, \mathbb{R}^{m - k})$. Второе же вытекает из явного вида обратного отображения $\Phi^{-1}$:
+    \[\Phi^{-1}(y) = y \cap \mathbb{R}^k \quad \forall y \in W \cap M\]
+    Таким образом, отображение $\Phi$ действительно является гомеоморфизмом $\Omega$ на $W \cap M$. Кроме того, всё из той же структуры отображения $\Phi$ и непрерывной дифференцируемости отображения $f$ вытекает:
+    \[\Phi \in C^{1} (\Omega, \mathbb{R}^m) \; \; \text{ и } \; \; \rg \mathcal{D} \Phi (x) = k \; \; \forall x \in \Omega\]
+    В самом деле, достаточно лишь подробно расписать матрицу $\mathcal{D}\Phi$ также, как это было сделано, например, при доказательстве теоремы о продолжении до диффеоморфизма. \\
+    Итак, множество $W \cap M = \gr f$ по определению является простым $k$-мерным гладким многообразием. Тогда вспомнив, что множество $W$ представляет собой окрестность точки $p$, и положив для лучшего восприятия $U(p) := W$, с радостью заключаем, что последнее следствие установлено и теорема полностью доказана.
+\end{proof}
+
+\end{document}

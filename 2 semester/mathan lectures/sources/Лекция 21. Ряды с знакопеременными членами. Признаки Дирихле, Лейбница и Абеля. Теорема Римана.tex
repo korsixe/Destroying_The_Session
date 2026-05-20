@@ -1,0 +1,339 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\DIF}{DIF}
+\DeclareMathOperator{\rg}{rg}
+\DeclareMathOperator{\gr}{gr}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Длинные слова меня только расстраивают}
+\fancyhead[R]{\href{https://t.me/sol_m_07}{Соля}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 21. Ряды со знакопеременными членами. 
+    Признак Дирихле. Признак Лейбница. Признак Абеля. 
+    Теорема Римана}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Ряды со знакопеременными членами}
+
+\begin{definition}
+  Ряд $\displaystyle \sum_{k = 1}^{\infty} a_k$ назовём 
+  \begin{itemize}
+    \item абсолютно сходящимся, если $\displaystyle \sum_{k = 1}^{\infty} 
+    \left\lvert a_k \right\rvert$ сходится
+    \item условно сходящимся, если $\displaystyle \sum_{k = 1}^{\infty} a_k$ 
+    сходится, а $\displaystyle \sum_{k = 1}^{\infty} \left\lvert a_k 
+    \right\rvert$ расходится
+  \end{itemize}
+\end{definition}
+
+\begin{theorem}
+  Если ряд $\displaystyle \sum_{k = 1}^{\infty} a_k$ абсолютно сходится, то 
+  $\displaystyle \sum_{k = 1}^{\infty} a_k$ сходится. Более того, 
+  \[\left\lvert \sum_{k = 1}^{\infty} a_k \right\rvert \ \leq \ 
+  \sum_{k = 1}^{\infty} \left\lvert a_k \right\rvert\]
+\end{theorem}
+
+\begin{proof}
+  $\displaystyle \sum_{k = 1}^{\infty} a_k$ абсолютно сходится \ 
+  $\Longleftrightarrow \ \displaystyle \sum_{k = 1}^{\infty} 
+  \left\lvert a_k \right\rvert$ сходится \ $\Longleftrightarrow$ \ [в силу 
+  критерия Коши]
+  \[\Longleftrightarrow \ \forall \varepsilon > 0 \ \exists N(\varepsilon) 
+  \in \mathbb{N}: \ \forall n \geq N(\varepsilon) \ \forall p \in \mathbb{N} 
+  \ \hookrightarrow \sum_{k = n + 1}^{n + p} \left\lvert a_k \right\rvert 
+  < \varepsilon\]
+  Но ведь $\left\lvert \displaystyle \sum_{k = n + 1}^{n + p} a_k \right\rvert 
+  \ \leq \ \displaystyle \sum_{k = n + 1}^{n + p} \left\lvert a_k \right\rvert 
+  \quad \forall n, p \in \mathbb{N}$ \\ \\
+  Тогда 
+  \[\forall \varepsilon > 0 \ \exists N(\varepsilon) \in \mathbb{N}: \ 
+  \forall n \geq N(\varepsilon) \ \forall p \in \mathbb{N} \ \hookrightarrow 
+  \left\lvert \sum_{k = n + 1}^{n + p} a_k \right\rvert \ \leq \ 
+  \sum_{k = n + 1}^{n + p} \left\lvert a_k \right\rvert < \varepsilon\]
+  Выполняется условие Коши сходимости ряда $\displaystyle \sum_{k = 1}^{\infty} 
+  a_k \implies$ в силу критерия Коши ряд сходится. \\
+  Зная, что \ $\left\lvert \displaystyle \sum_{k = 1}^{n} a_k \right\rvert \ 
+  \leq \ \displaystyle \sum_{k = 1}^{n} \left\lvert a_k \right\rvert \quad 
+  \forall n \in \mathbb{N}$, \ можем перейти к пределу и тогда получим 
+  \[\left\lvert \sum_{k = 1}^{\infty} a_k \right\rvert \ \leq \ 
+  \sum_{k = 1}^{\infty} \left\lvert a_k \right\rvert\]
+\end{proof}
+
+\begin{theorem}
+  Пусть $\displaystyle \sum_{k = 1}^{\infty} a_k$ и $\displaystyle 
+  \sum_{k = 1}^{\infty} b_k$ сходятся абсолютно. Пусть $\alpha, \beta \in 
+  \mathbb{R}$. Тогда \[\sum_{k = 1}^{\infty} (\alpha a_k + \beta b_k) 
+  \text{ сходится абсолютно}\]
+\end{theorem}
+
+\begin{proof}
+  \[\sup_{n \in \mathbb{N}} \sum_{k = 1}^{n} \left\lvert a_k \right\rvert < 
+  + \infty \ \text{ и } \ \sup_{n \in \mathbb{N}} \sum_{k = 1}^{n} \left\lvert 
+  b_k \right\rvert < + \infty \tag{$\ast$}\]
+  \[\sum_{k = 1}^{n} \left\lvert \alpha a_k + \beta b_k \right\rvert \ \leq \ 
+  [\text{по неравенству треугольника}] \ \leq \ \left\lvert \alpha \right\rvert 
+  \sum_{k = 1}^{n} \left\lvert a_k \right\rvert + \left\lvert \beta 
+  \right\rvert \sum_{k = 1}^{n} \left\lvert b_k \right\rvert\]
+  В силу ($\ast$):
+  \[\sup_{n \in \mathbb{N}} \sum_{k = 1}^{n} \left\lvert \alpha a_k + \beta 
+  b_k \right\rvert < + \infty \implies \sum_{k = 1}^{\infty} \left\lvert 
+  \alpha a_k + \beta b_k \right\rvert \text{ сходится}\]
+  \[\implies \sum_{k = 1}^{\infty} (\alpha a_k + \beta b_k) 
+  \text{ сходится абсолютно}\]
+\end{proof}
+
+\section{Признаки сходимости числовых рядов}
+
+\begin{theorem}[Признак Дирихле для числовых рядов]
+  Пусть $\{a_k\}$ и $\{b_k\}$ -- числовые последовательности, которые 
+  обладают следующими свойствами:
+  \begin{enumerate}
+    \item $\exists M > 0: \ \left\lvert \displaystyle \sum_{k = 1}^{n} 
+    a_k \right\rvert \leq M \quad \forall n \in \mathbb{N}$
+    \item $\exists \displaystyle \lim_{k \to \infty} b_k = 0$
+    \item $\{b_k\}$ нестрого монотонна
+  \end{enumerate}
+  Тогда \ $\displaystyle \sum_{k = 1}^{\infty} a_kb_k$ сходится.
+\end{theorem}
+
+\begin{proof}
+  Для начала нам понадобится преобразование Абеля. Зафиксируем $n \in \mathbb{N}$. 
+  Рассмотрим $\displaystyle \sum_{k = 1}^{n} a_kb_k$. Пусть $A_k = \displaystyle 
+  \sum_{j = 1}^{k} a_j$, причём $A_0 := 0$. Заметим, что
+  \[a_k = A_k - A_{k - 1}, \quad \forall k \in \mathbb{N}\]
+  Тогда
+  \[\sum_{k = 1}^{n} a_kb_k \ = \ \sum_{k = 1}^{n} (A_k - A_{k - 1})b_k \ = \ 
+  \sum_{k = 1}^{n} A_kb_k - \sum_{k = 1}^{n} A_{k - 1}b_k \ =\]
+  \[= \ A_nb_n + \sum_{k = 1}^{n - 1} A_kb_k - \sum_{k = 1}^{n - 1} 
+  A_kb_{k + 1} - A_0b_1 \ = \ A_nb_n + \sum_{k = 1}^{n - 1} A_k
+  (b_k - b_{k + 1})\]
+  Вот и оно, преобразование Абеля:
+  \[\sum_{k = 1}^{n} a_kb_k \ = \ A_nb_n + \sum_{k = 1}^{n - 1} A_k
+  (b_k - b_{k + 1}) \tag{$\ast$}\]
+  В силу 
+  \begin{enumerate}
+    \item $\left\lvert A_n \right\rvert \leq M \quad \forall n \in \mathbb{N}$
+    \item $b_n \to 0, \ n \to + \infty$
+  \end{enumerate}
+  получаем $A_nb_n \to 0, \ n \to + \infty$
+  \[\sum_{k = 1}^{n - 1} (b_k - b_{k + 1}) = b_1 - b_n \to b_1, \ n \to + 
+  \infty\] 
+  Без ограничения общности будем считать, что $b_{k + 1} \leq b_k \quad 
+  \forall k \in \mathbb{N}$
+  \[\implies \sum_{k = 1}^{\infty} \left\lvert b_k - b_{k + 1} \right\rvert 
+  \text{ сходится}\] 
+  Так как $\{\left\lvert A_k \right\rvert\}$ -- ограниченная последовательность, 
+  то в силу признака сравнения для рядов с неотрицательными членами
+  \[\left\lvert \sum_{k = 1}^{\infty} A_k(b_k - b_{k + 1}) \right\rvert 
+  \text{ сходится}\]
+  \[\implies \exists \lim_{n \to \infty} \sum_{k = 1}^{n - 1} A_k(b_k - 
+  b_{k + 1}) \in \mathbb{R}\]
+  \[\implies \text{в силу ($\ast$) } \ \exists \lim_{n \to \infty} 
+  \sum_{k = 1}^{n} a_kb_k \in \mathbb{R}\]
+  \[\implies \sum_{k = 1}^{\infty} a_kb_k \text{ сходится}\]
+\end{proof}
+
+\begin{example}
+  $\displaystyle \sum_{n = 1}^{\infty} \frac{\sin n}{n^{\alpha}}$ сходится 
+  при $\alpha > 0$
+\end{example}
+
+\begin{theorem}[Признак Лейбница]
+  Пусть $\{c_k\}$ нестрого монотонна и \ $\exists \displaystyle \lim_{k \to 
+  \infty} c_k = 0$. Тогда 
+  \[\sum_{k = 1}^{\infty} (-1)^kc_k \text{ сходится}\]
+\end{theorem}
+
+\begin{proof}
+  Признак Лейбница просто является частным случаем признака Дирихле.
+\end{proof}
+
+\begin{theorem}[Признак Абеля для числовых рядов]
+  Пусть $\{a_k\}$ и $\{b_k\}$ -- числовые последовательности, которые 
+  обладают следующими свойствами:
+  \begin{enumerate}
+    \item $\displaystyle \sum_{k = 1}^{\infty} a_k$ сходится
+    \item $\{b_k\}$ нестрого монотонна
+    \item $\{b_k\}$ ограничена
+  \end{enumerate}
+  Тогда \ $\displaystyle \sum_{k = 1}^{\infty} a_kb_k$ сходится.
+\end{theorem}
+
+\begin{proof}
+  Так как $\{b_k\}$ монотонна и ограничена, то по теореме Веййерштрасса 
+  \[\exists \lim_{k \to \infty} b_k = b_0 \in \mathbb{R}\]
+  Рассмотрим $\widetilde{b}_k = b_k - b_0 \quad \forall k \in \mathbb{N}$. \\
+  Рассмотрим $\displaystyle \sum_{k = 1}^{\infty} a_k\widetilde{b}_k$. 
+  Последовательности $\{a_k\}$ и $\{\widetilde{b}_k\}$ удовлетворяют условиям 
+  признака Дирихле. Тогда по признаку Дирихле
+  \[\sum_{k = 1}^{\infty} a_k\widetilde{b}_k \text{ сходится}\]
+  А ещё из сходимости $\displaystyle \sum_{k = 1}^{\infty} a_k$ следует 
+  сходимость $\displaystyle \sum_{k = 1}^{\infty} a_kb_0$ \\ \\
+  Тогда мы и получаем, что \[\sum_{k = 1}^{\infty} a_kb_k \text{ сходится}\]
+\end{proof}
+
+\section{Теорема Римана}
+
+\begin{definition}
+  Будем говорить, что ряд $\displaystyle \sum_{k = 1}^{\infty} 
+  \widetilde{a}_k$ является перестановкой ряда $\displaystyle 
+  \sum_{j = 1}^{\infty} a_j$, если \\ $\exists$ биекция $j \colon \mathbb{N} 
+  \to \mathbb{N}$ такая, что $\widetilde{a}_k = a_{j(k)} \ \forall k \in 
+  \mathbb{N}$
+\end{definition}
+
+\begin{theorem}[Риман]
+  Пусть $\displaystyle \sum_{j = 1}^{\infty} a_j$ сходится условно. Тогда 
+  $\forall x \in \overline{\mathbb{R}} \ \exists$ перестановка $j \colon 
+  \mathbb{N} \to \mathbb{N}$ такая, что \ $\displaystyle 
+  \sum_{k = 1}^{\infty} \widetilde{a}_k = x$  
+\end{theorem}
+
+\begin{proof}
+  Теорема большая. Докажем в несколько этапов:
+
+  \paragraph{Шаг 1}
+  
+  Положим 
+  \begin{itemize}
+    \item $\{b_k\}_{k = 1}^{\infty}$ -- последовательность неотрицательных 
+    элементов исходной последовательности $\{a_j\}$, взятых в естественном 
+    порядке следования
+    \item $\{c_k\}_{k = 1}^{\infty}$ -- последовательность отрицательных 
+    элементов исходной последовательности $\{a_j\}$, взятых в естественном 
+    порядке следования
+  \end{itemize} \leavevmode
+  Заметим, что обе последовательности бесконечны. Действительно, в противном 
+  случае после какого-то номера все члены ряда окажутся одного знака $\implies$ 
+  в силу принципа локализации исходный ряд $\displaystyle \sum_{j = 1}^{\infty} 
+  a_j$ сходится абсолютно -- противоречие.
+
+  \paragraph{Шаг 2}
+
+  Покажем, что \ $\displaystyle \sum_{k = 1}^{\infty} b_k$ и \ $\displaystyle 
+  \sum_{k = 1}^{\infty} c_k$ расходятся. \\ \\
+  Предположим противное: 
+  \begin{itemize}
+    \item оба ряда сходятся. Тогда они сходятся абсолютно. А это значит, что 
+    \[\exists C > 0: \ \forall n \in \mathbb{N} \ \hookrightarrow \ 
+    \sum_{k = 1}^{n} \left\lvert b_k \right\rvert \leq C \ \text{ и } \ 
+    \sum_{k = 1}^{n} \left\lvert c_k \right\rvert \leq C\]
+    Определим $p(n)$ -- количество неотрицательных членов исходного ряда 
+    среди $a_1, \ldots, a_n$. \\
+    Тогда $n - p(n)$ -- количество отрицательных членов исходного ряда 
+    среди $a_1, \ldots, a_n$
+    \[\sum_{j = 1}^{n} a_j \ = \ \sum_{k = 1}^{p(n)} b_k \ + 
+    \sum_{k = 1}^{n - p(n)} c_k \implies \sum_{j = 1}^{n} \left\lvert a_j 
+    \right\rvert \ = \ \sum_{k = 1}^{p(n)} \left\lvert b_k \right\rvert \ + 
+    \sum_{k = 1}^{n - p(n)} \left\lvert c_k \right\rvert \ \leq \ 2C\]
+    \[\implies \sum_{j = 1}^{\infty} \left\lvert a_j \right\rvert 
+    \text{ -- сходится --- противоречие}\]
+    \item $\displaystyle \sum_{k = 1}^{\infty} c_k$ сходится, а \ $\displaystyle 
+    \sum_{k = 1}^{\infty} b_k$ расходится. Тогда 
+    \[\sum_{k = 1}^{p(n)} b_k \to + \infty, \ n \to + \infty \ \text{ и } 
+    \sum_{k = 1}^{n - p(n)} c_k \text{ -- ограничена}\]
+    \[\text{Так как } \sum_{j = 1}^{n} a_j \ = \ \sum_{k = 1}^{p(n)} b_k \ + 
+    \sum_{k = 1}^{n - p(n)} c_k \text{, \ то } \ \nexists \lim_{n \to + \infty} 
+    \sum_{j = 1}^{n} a_j \in \mathbb{R} \ \text{ -- противоречие с условием}\]
+    \item $\displaystyle \sum_{k = 1}^{\infty} b_k$ сходится, а \ $\displaystyle 
+    \sum_{k = 1}^{\infty} c_k$ расходится. Тогда получаем случай, аналогичный 
+    предыдущему.
+  \end{itemize}
+
+  \paragraph{Шаг 3}
+
+  Рассмотрим случай $x \in \mathbb{R} \quad (\pm \infty$ рассмотрим в замечании) \\
+  Будем рассуждать по индукции:
+  \[\widetilde{a}_1 = 
+  \begin{cases}
+    b_1, & x \geq 0 \\
+    c_1, & x < 0
+  \end{cases}\]
+  Определим $p(n)$ -- количество неотрицательных членов среди $\widetilde{a}_1, 
+  \ldots, \widetilde{a}_n$, а также 
+  \[\widetilde{s}_n \ = \ \sum_{k = 1}^{n} \widetilde{a}_k\]
+  Предположим, что построены числа $\widetilde{a}_1, \ldots, \widetilde{a}_n$.
+  Тогда \[\widetilde{a}_{n + 1} := 
+  \begin{cases}
+    b_{p(n) + 1}, & \widetilde{s}_n \leq x \\
+    c_{n - p(n) + 1}, & \widetilde{s}_n > x
+  \end{cases}\]
+  Тем самым построены элементы $\widetilde{a}_n$ и построено отображение 
+  $j \colon \mathbb{N} \to \mathbb{N}$, которое инъективно. Чтобы проверить 
+  сюръективность, надо доказать, что $p(n) \to + \infty, \ n \to + \infty$ 
+  и $n - p(n) \to + \infty, \ n \to + \infty$. Действительно, предположим 
+  противное:
+  \begin{itemize}
+    \item $p(n) \to + \infty, \ n \to + \infty$, \ а \ $n - p(n)$ -- 
+    ограниченная (не убывает и не стремится к $\infty$) \\
+    $\implies$ в сумме $\displaystyle \sum_{k = 1}^{n} \widetilde{a}_k$ лишь 
+    конечное число отрицательных слагаемых \\
+    $\implies \displaystyle \sum_{k = 1}^{n} \widetilde{a}_k \to + \infty, 
+    \ n \to + \infty \implies \exists N(x) \in \mathbb{N}: \widetilde{s}_n 
+    > x \quad \forall n \geq N(x)$ \\ \\
+    Но по процедуре построения мы должны добавить в сумму отрицательное 
+    слагаемое $\implies$ получим противоречие при достаточно больших $n \in 
+    \mathbb{N}$
+    \item $n - p(n) \to + \infty, \ n \to + \infty$, \ а \ $p(n)$ -- 
+    ограниченная (не убывает и не стремится к $\infty$) --- рассматривается 
+    аналогично предыдущему случаю.
+  \end{itemize}
+
+  \paragraph{Шаг 4}
+
+  Почему же мы сойдёмся к $x$? \\
+  Так как изначальный ряд $\displaystyle \sum_{k = 1}^{\infty} a_k$ сходится, 
+  то $a_n \to 0, \ n \to + \infty$. Также из третьего шага вспомним, что 
+  $p(n) \to + \infty, \ n \to + \infty$ и $n - p(n) \to + \infty, \ n \to 
+  + \infty$. Тогда 
+  \[\left\lvert x - \sum_{k = 1}^{n} \widetilde{a}_k \right\rvert \ \leq \ 
+  \max \{b_{p(n)}, -c_{n - p(n)}\}\] 
+  Но на втором шаге мы доказали сходимость рядов $\displaystyle 
+  \sum_{k = 1}^{\infty} b_k$ и $\displaystyle \sum_{k = 1}^{\infty} c_k$, 
+  следовательно, $b_{p(n)} \to 0, \ n \to + \infty$ и $-c_{n - p(n)} \to 0, 
+  \ n \to + \infty$. Тогда и $\max \{b_{p(n)}, -c_{n - p(n)}\} \to 0, \ n 
+  \to + \infty$ 
+  \[\implies \text{ ряд } \sum_{k = 1}^{\infty} \widetilde{a}_k \ \to \ x, \ 
+  \ n \to + \infty\]
+\end{proof}
+
+\begin{remark}
+  Что же делать при $x = \pm \infty$? Есть много разных перестановок. Например 
+  (в случае $x = + \infty$) можем брать столько $b_i$, чтоб перемахнуть сначала 
+  за $2 \left\lvert c_1 \right\rvert$, потом за $2 (\left\lvert c_1 \right\rvert 
+  + \left\lvert c_2 \right\rvert)$ и так далее. 
+\end{remark}
+
+\section{Мыслим позитивно}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{pictures/Пух.jpg}
+\end{figure}
+
+\end{document}

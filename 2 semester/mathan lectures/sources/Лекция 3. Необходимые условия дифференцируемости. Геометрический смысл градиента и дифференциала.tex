@@ -1,0 +1,285 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Чил аут ребятки, копим свагу}
+\fancyhead[R]{\href{https://t.me/ceagest}{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 3. Производная по направлению. Необходимые условия дифференцируемости. 
+    Геометрический смысл градиента и дифференциала. Достаточное условие дифференцируемости.
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Производная по направлению}
+
+\begin{definition}
+    Пусть $f \colon B_{\delta} \left(x^0\right) \to \mathbb{R}$. Пусть $\overline{l} \in \mathbb{R}^n \setminus \{0\}$. Производной функции $f$
+    по вектору $\overline{l}$ в точке $x^0$ будем называть следующий предел, если он существует в $\mathbb{R}$:
+    \[\frac{\partial f}{\partial \overline{l}} \left(x^0\right) = \lim_{t \to +0} \frac{f\left(x^0 + t \overline{l}\right) - f\left(x^0\right)}{t}\]
+    Если $\left\lVert \overline{l} \right\rVert = 1$, то этот предел называется производной по направлению.
+\end{definition}
+
+\begin{theorem}[Связь частной производной и производной по направлению]
+    Пусть $f \colon B_{\delta}\left(x^0\right) \to \mathbb{R}$. Пусть зафиксировано произвольное $i \in \{1, \ldots, n\}$. Тогда:
+    \begin{equation*} \label{eq:th:1.1} \tag{$\ast$}
+        \exists \frac{\partial f}{\partial x_i} \left(x^0\right) \in \mathbb{R} \iff
+        \begin{cases}
+            \exists \displaystyle \frac{\partial f}{\partial \overline{l}_i^{+}} \left(x^0\right) \in \mathbb{R} \\
+            \\
+            \exists \displaystyle \frac{\partial f}{\partial \overline{l}_i^{-}} \left(x^0\right) \in \mathbb{R} \\
+            \\
+            \displaystyle \frac{\partial f}{\partial \overline{l}_i^{+}} \left(x^0\right) = - \frac{\partial f}{\partial \overline{l}_i^{-}} \left(x^0\right)
+        \end{cases}
+    \end{equation*}
+    Здесь (всюду ненулевое число стоит на $i$-ом месте):
+    \[\overline{l}_i^{+} := (0, \ldots, 0, 1, 0, \ldots, 0)\]
+    \[\overline{l}_i^{-} := (0, \ldots, 0, -1, 0, \ldots, 0)\]
+    При этом в случае существования:
+    \[ \frac{\partial f}{\partial x_i} \left(x^0\right) = \frac{\partial f}{\partial \overline{l}_i^{+}} \left(x^0\right) = - \frac{\partial f}{\partial \overline{l}_i^{-}} \left(x^0\right)\]
+\end{theorem}
+
+\begin{proof}
+    Пусть 
+    \[\varphi(t) = f\left(x_1^0, \ldots, x_i^0 + t, \ldots, x_n^0\right) \quad \forall t \in (0, \delta)\]
+    Тогда несложно убедиться, посмотрев на определение частной производной, что:
+    \begin{equation} \label{eq:1}
+        \exists \frac{\partial f}{\partial x_i} \left(x^0\right) \iff \exists \varphi'(0) = \frac{\mathrm{d} \varphi}{\mathrm{d} t} (0)
+    \end{equation}
+    При этом из прошлого семестра известен следующий интересный факт:
+    \begin{equation} \label{eq:2}
+        \exists \varphi'(0) \iff
+        \begin{cases}
+            \exists \varphi'_{+}(0) \\
+            \exists \varphi'_{-}(0) \\
+            \varphi'_{+}(0) = \varphi'_{-}(0)
+        \end{cases}
+    \end{equation}
+    Далее, расписывая правостороннюю производную $\varphi$ по определению, получим:
+    \[\varphi'_{+}(0) = \lim_{t \to +0} \frac{\varphi(t) - \varphi(0)}{t} = \lim_{t \to +0} \frac{f\left(x_1^0, \ldots, x_i^0 + t, \ldots, x_n^0\right) - f\left(x_1^0, \ldots, x_i^0, \ldots, x_n^0\right)}{t} = \frac{\partial f}{\partial \overline{l}_i^{+}} \left(x^0\right)\]
+    Аналогично расписываем и левостороннюю:
+    \[\varphi'_{-}(0) = \lim_{t \to -0} \frac{\varphi(t) - \varphi(0)}{t} = \lim_{t \to -0} \frac{f\left(x_1^0, \ldots, x_i^0 + t, \ldots, x_n^0\right) - f\left(x_1^0, \ldots, x_i^0, \ldots, x_n^0\right)}{t} = \]
+    \[= \lim_{\tau  \to +0} \frac{f\left(x_1^0, \ldots, x_i^0 - \tau, \ldots, x_n^0\right) - f\left(x_1^0, \ldots, x_i^0, \ldots, x_n^0\right)}{-\tau} = - \frac{\partial f}{\partial \overline{l}_i^{-}} \left(x^0\right)\]
+    Тогда из двух вышеописанных равенств заключаем:
+    \begin{equation} \label{eq:3}
+        \exists \varphi'_{+}(0) \iff \exists \frac{\partial f}{\partial \overline{l}_i^{+}} \left(x^0\right)
+    \end{equation}
+    \begin{equation} \label{eq:4}
+        \exists \varphi'_{-}(0) \iff \exists \frac{\partial f}{\partial \overline{l}_i^{-}} \left(x^0\right)
+    \end{equation}
+    При этом, если в (\ref{eq:3}) и (\ref{eq:4}) существуют обе соответствующие производные (по обе стороны от знака эквивалентности), 
+    то выполнены равенства:
+    \[\varphi'_{+}(0) = \frac{\partial f}{\partial \overline{l}_i^{+}} \left(x^0\right)\]
+    \[\varphi'_{-}(0) = - \frac{\partial f}{\partial \overline{l}_i^{-}} \left(x^0\right)\]
+    Итого, из условий (\ref{eq:1}), (\ref{eq:2}), (\ref{eq:3}) и (\ref{eq:4}) следует (\ref{eq:th:1.1}).
+    Осталось лишь заметить, что, при условии существования частной производной, с учётом тайного знания (\ref{eq:2}) получаем:
+    \[\varphi'(0) = \varphi'_{+} (0) = \varphi'_{-} (0) = \frac{\partial f}{\partial x_i} \left(x^0\right) = \frac{\partial f}{\partial \overline{l}_i^{+}} \left(x^0\right) = - \frac{\partial f}{\partial \overline{l}_i^{-}} \left(x^0\right)\]
+\end{proof}
+
+\begin{remark}
+    Стоит отметить ещё раз, что все равенства с производными имеют место только при условии существования соответствующих пределов. 
+\end{remark}
+
+\section{Необходимые условия дифференцируемости}
+
+\begin{theorem}[Второе необходимое условие дифференцируемости функций многих переменных в точке]
+    Пусть $f \colon B_\delta \left(x^0\right) \to \mathbb{R}$. Пусть $f$ дифференцируема в точке $x^0$. Тогда:
+    \[\forall \overline{l} \in \mathbb{R}^n \setminus \{0\} \hookrightarrow \exists \frac{\partial f }{\partial \overline{l}} \left(x^0\right) = \left\langle \nabla f\left(x^0\right), \overline{l}\right\rangle \]
+\end{theorem}
+
+\begin{proof}
+    Так как функция $f$ дифференцируема в точке $x^0$, то по определению дифференцируемости:
+    \[f\left(x\right) - f\left(x^0\right) = \left\langle \nabla f\left(x^0\right), x - x^0 \right\rangle + o \left(\left\lVert x - x^0 \right\rVert \right), \; x \to x^0\]
+    Подставим в это выражение $x = x^0 + t \overline{l}$, где $t \neq 0$, а значит и $x \neq x^0$. После подстановки получим:
+    \begin{equation*} \label{eq:th:1.2} \tag{$\ast \ast$}
+        f\left(x^0 + t \overline{l} \right) - f\left(x^0\right) = \left\langle \nabla f\left(x^0\right), t \overline{l} \right\rangle + o \left(\left\lVert t \overline{l} \right\rVert \right), \; t \to +0
+    \end{equation*}
+    Из определения $o$-малого немедленно следует:
+    \[\exists \varepsilon_{x^0} \colon (0, \sigma) \to \mathbb{R}: \varepsilon_{x^0}(t) \to 0, \; t \to +0 \quad \text{ и } \quad  o \left(\left\lVert t \overline{l} \right\rVert \right) = \varepsilon_{x^0}(t) \left\lVert t \overline{l} \right\rVert = t \cdot \varepsilon_{x^0}(t) \left\lVert \overline{l} \right\rVert \]
+    Тогда, разделив обе части (\ref{eq:th:1.2}) на $t \neq 0$ и подставив полученное выше представление $o$-малого, имеем:
+    \[\frac{f\left(x^0 + t \overline{l} \right) - f\left(x^0\right)}{t} = \left\langle \nabla f \left(x^0\right), \overline{l} \right\rangle + \varepsilon_{x_0}(t) \left\lVert \overline{l} \right\rVert  \]
+    Отсюда, переходя к пределу при $t \to +0$, с учётом того, что $\varepsilon_{x^0}$ бесконечно малая при $t \to +0$, сразу получаем:
+    \[\exists \lim_{t \to +0} \frac{f\left(x^0 + t \overline{l} \right) - f\left(x^0\right)}{t} = \left\langle \nabla f \left(x^0\right), \overline{l} \right\rangle\]
+    Легко видеть, что в левой части равенства стоит та самая производная $f$ по вектору $\overline{l}$ в точке $x^0$.
+    Но $\overline{l} \in \mathbb{R}^n \setminus \{0\}$ было выбрано произвольно, а значит требуемое доказано.
+\end{proof}
+
+\begin{remark}
+    Из существования производной функции по любому направлению в точке, вообще говоря, не следует дифференцируемость функции в этой точке. В самом деле, 
+    приведём следующий пример функции:
+    \begin{equation*}
+        f(x, y) = 
+        \begin{cases}
+            1, & y = x^2 \text{ и } x \neq 0 \\
+            0, & \text{иначе}
+        \end{cases}
+    \end{equation*}
+    Пусть $S_1^{n - 1}(0)$ --- единичная сфера в $\mathbb{R}^n$ с центром в нуле. Для краткости запись $\overline{l} \in \mathbb{R}^n: \left\lVert \overline{l} \right\rVert = 1$ будем 
+    заменять на эквивалентную ей $\overline{l} \in S_1^{n - 1}(0)$. Теперь вернёмся к примеру. Для рассматриваемой функции из доказанного в предыдущей лекции сразу следует:
+    \[\forall \overline{l} \in S_1^1(0) \hookrightarrow \exists \frac{\partial f}{\partial \overline{l}} (0, 0) = 0\]
+    Но при этом в точке $(0, 0)$ у функции $f$ не существует предела по совокупности переменных, а значит о непрерывности не может быть и речи.
+    Тогда по первому необходимому условию дифференцируемости $f$ не является дифференцируемой в точке $(0, 0)$. 
+    \\
+    Отметим также, что у данной функции, сверх того, существуют и частные производные в точке $(0, 0)$:
+    \[\exists \frac{\partial f}{\partial x} (0, 0) = 0 \quad \text{ и } \quad \exists \frac{\partial f}{\partial y} (0, 0) = 0\]
+\end{remark}
+
+\begin{theorem}[Третье необходимое условие дифференцируемости]
+    Пусть $f \colon B_{\delta} \left(x^0\right) \to \mathbb{R}$. Если $f$ дифференцируема в точке $x^0$, то:
+    \[\forall i \in \{1, \ldots, n\} \hookrightarrow \exists \frac{\partial f}{\partial x_i} \left(x^0\right) = \left(\nabla f\left(x^0\right)\right)_i\]
+\end{theorem}
+
+\begin{proof}
+    Так как $f$ дифференцируема в точке $x^0$, то в силу второго необходимого условия дифференцируемости:
+    \[\exists \frac{\partial f}{\partial \overline{l}_i^{+}}\left(x^0\right) = \left\langle \nabla f \left(x^0\right), \overline{l}_i^{+}\right\rangle = \left(\nabla f\left(x^0\right)\right)_i\]
+    \[\exists \frac{\partial f}{\partial \overline{l}_i^{-}}\left(x^0\right) = \left\langle \nabla f \left(x^0\right), \overline{l}_i^{-}\right\rangle = \left\langle \nabla f \left(x^0\right), -\overline{l}_i^{+}\right\rangle = -\left\langle \nabla f \left(x^0\right), \overline{l}_i^{+}\right\rangle = - \left(\nabla f\left(x^0\right)\right)_i\]
+    Отсюда по теореме о связи частной производной и производной по направлению:
+    \[\exists \frac{\partial f}{\partial x_i} \left(x^0\right) = \frac{\partial f}{\partial \overline{l}_i^{+}}\left(x^0\right) = - \frac{\partial f}{\partial \overline{l}_i^{-}}\left(x^0\right) = \left(\nabla f\left(x^0\right)\right)_i\]
+\end{proof}
+
+\begin{remark}
+    Из непрерывности функции в точке по совокупности переменных, вообще говоря, не следует 
+    её дифференцируемость в этой точке. Действительно, рассмотрим следующую функцию:
+    \[f(x, y) = \left\lvert x \right\rvert \]
+    Очевидно, что $f$ непрерывна вообще в каждой точке по совокупности переменных. Но при этом ясно, что:
+    \[\not \exists \frac{\partial \left\lvert x \right\rvert}{\partial x} (0) \implies \not \exists \frac{\partial f}{\partial x} (0, 0)\]
+    Легко видеть, что в таком случае не выполнено третье необходимое условие дифференцируемости, а значит функция $f$ не дифференцируема в точке $(0, 0)$.
+\end{remark}
+
+\section{Геометрический смысл градиента и дифференциала}
+
+\subsection{Геометрический смысл градиента}
+
+\begin{theorem}[Геометрический смысл градиента]
+    Пусть $f \colon B_{\delta} \left(x^0\right) \to \mathbb{R}$. Пусть $f$ дифференцируема в точке $x^0$ и $\nabla f \left(x^0\right) \neq 0$.
+    Тогда направления 
+    \[ \overline{l}_{\max} = \frac{\nabla f \left(x^0\right)}{\left\lVert \nabla f \left(x^0\right) \right\rVert} \quad \text{ и } \quad \overline{l}_{\min} = - \frac{\nabla f \left(x^0\right)}{\left\lVert \nabla f \left(x^0\right) \right\rVert} \]
+    являются соответственно направлениями наибольшего возрастания и наибольшего убывания, то есть:
+    \[\exists \max_{\overline{l} \in S_1^{n - 1}(0)} \left\langle \overline{l}, \nabla f \left(x^0\right)\right\rangle = \left\langle \overline{l}_{\max}, \nabla f \left(x^0\right)\right\rangle  \]
+    \[\exists \min_{\overline{l} \in S_1^{n - 1}(0)} \left\langle \overline{l}, \nabla f \left(x^0\right)\right\rangle = \left\langle \overline{l}_{\min}, \nabla f \left(x^0\right)\right\rangle  \]
+\end{theorem}
+
+\begin{proof}
+    Заметим, что по неравенству Коши-Буняковского-Шварца:
+    \[\forall \overline{l} \in S_1^{n - 1}(0) \hookrightarrow \left\lvert \left\langle \nabla f \left(x^0\right), \overline{l}\right\rangle \right\rvert \leq \left\lVert \nabla f \left(x^0\right)\right\rVert \cdot \underbrace{\left\lVert \overline{l} \right\rVert}_{= 1} = \left\langle \nabla f \left(x^0\right), \frac{\nabla f \left(x^0\right)}{\left\lVert \nabla f \left(x^0\right) \right\rVert }\right\rangle   \]
+    Отсюда вспоминая, что такое модуль, получаем:
+    \[\left\langle \nabla f \left(x^0\right), \overline{l}_{\min}\right\rangle = -\left\langle \nabla f \left(x^0\right), \frac{\nabla f \left(x^0\right)}{\left\lVert \nabla f \left(x^0\right) \right\rVert }\right\rangle \leq \left\langle \nabla f \left(x^0\right), \overline{l}\right\rangle \leq \left\langle \nabla f \left(x^0\right), \frac{\nabla f \left(x^0\right)}{\left\lVert \nabla f \left(x^0\right) \right\rVert }\right\rangle = \left\langle \nabla f \left(x^0\right), \overline{l}_{\max}\right\rangle\]
+    Осталось лишь понять из неравенств выше, что требуемые максимум и минимум достигаются буквально подстановкой $\overline{l}_{\max}$ и $\overline{l}_{\min}$ в оцениваемое скалярное произведение, то есть 
+    достигаются именно там, где это требовалось. Сей вывод завершает доказательство.
+\end{proof}
+
+\subsection{Геометрический смысл дифференциала. Касательная плоскость}
+
+Пусть $B_{\delta}\left(x^0, y^0\right) \subset \mathbb{R}^2$, $f \colon B_{\delta}\left(x^0, y^0\right) \to \mathbb{R}$.
+Проведём через точку $\left(x^0, y^0, f\left(x^0, y^0\right)\right)$ невертикальную плоскость. Пусть $\overline{n} = (n_x, n_y, n_z)$, где $n_z \neq 0$ --- нормальный вектор к этой плоскости.
+Тогда уравнение рассматриваемой плоскости имеет вид:
+\[n_x \left(x - x^0\right) + n_y \left(y - y^0\right) + n_z \left(z - f\left(x^0, y^0\right)\right) = 0\]
+Поделим обе части полученного равенства на $-n_z \neq 0$ и обозначим $N_x = \displaystyle -\frac{n_x}{n_z}$ и $N_y = \displaystyle -\frac{n_y}{n_z}$:
+\[N_x \left(x - x^0\right) + N_y \left(y - y^0\right) = z - f\left(x^0, y^0\right)\]
+Отсюда наконец получаем уравнение данной плоскости в следующем виде:
+\begin{equation*} \label{eq:sc:3} \tag{$\star$}
+    z_t(x, y) = f\left(x^0, y^0\right) + N_x \left(x - x^0\right) + N_y \left(y - y^0\right)    
+\end{equation*}
+При этом теперь нормальный вектор к этой плоскости есть $\overline{N} = \left(N_x, N_y, -1\right)$.
+
+\begin{definition}
+    Пусть $f \colon B_{\delta}\left(x^0, y^0\right) \to \mathbb{R}$. Плоскость, заданная 
+    уравнением $($\ref{eq:sc:3}$)$ называется касательной плоскостью к графику функции $f$ в точке $\left(x^0, y^0, f\left(x^0, y^0\right)\right)$, если:
+    \[f(x, y) - z_t(x, y) = \varepsilon(x, y) \sqrt{\left(x - x^0\right)^2 + \left(y - y^0\right)^2} \quad \forall (x, y) \in B_{\delta}(x^0, y^0)\]
+    Здесь $\varepsilon(x, y) \to 0, \; (x, y) \to \left(x^0, y^0\right)$ по совокупности переменных.
+\end{definition}
+
+\begin{theorem}[Геометрический смысл дифференциала]
+    Функция $f \colon B_{\delta}\left(x^0, y^0\right) \to \mathbb{R}$ дифференцируема в точке $\left(x^0, y^0\right)$ тогда 
+    и только тогда, когда в точке $\left(x^0, y^0, f\left(x^0, y^0\right)\right)$ существует касательная плоскость к графику 
+    функции $f$. Более того, $\overline{n} = \left(\nabla f\left(x^0, y^0\right), -1\right)$ --- нормальный вектор к этой 
+    касательной плоскости, а также:
+    \[z_t\left(x, y\right) - z_t\left(x^0, y^0\right) = d_{\left(x^0, y^0\right)} f\left(\left(x, y\right) - \left(x^0, y^0\right)\right)\]
+\end{theorem}
+
+\begin{proof}
+    Дифференцируемость функции $f$ в точке $\left(x^0, y^0\right)$ равносильна:
+    \begin{equation*} \label{eq:th:3.2} \tag{$\star \star$}
+        f\left(x, y\right) - f\left(x^0, y^0\right) = A_1 \left(x - x^0\right) + A_2 \left(y - y^0\right) + \varepsilon(x, y) \sqrt{\left(x - x^0 \right)^2 + \left(y - y^0\right)^2}
+    \end{equation*}
+    Тогда, внимательно посмотрев на определение касательной плоскости, заключаем, что плоскость, записанная в виде 
+    \[z_t(x, y) = f \left(x^0, y^0\right) + A_1 \left(x - x^0\right) + A_2 \left(y - y^0\right)\]
+    является касательной плоскостью к графику $f$ в точке $\left(x^0, y^0, f\left(x^0, y^0\right)\right)$. При этом теперь совершенно очевидно, что 
+    нормальный вектор к этой плоскости есть $\left(A_1, A_2, -1\right)$. Но по определению дифференцируемости $\left(A_1, A_2\right) = \nabla f \left(x^0, y^0\right)$, а значит 
+    нормальный вектор переписывается в виде $\left(\nabla f\left(x^0, y^0\right), -1\right)$, то есть получаем требуемое представление. Для доказательства 
+    последнего факта перепишем (\ref{eq:th:3.2}) в немного другом виде:
+    \[f\left(x, y\right) = f\left(x^0, y^0\right) + d_{\left(x^0, y^0\right)} f \left(\left(x, y\right) - \left(x^0, y^0\right)\right) + \varepsilon(x, y) \sqrt{\left(x - x^0 \right)^2 + \left(y - y^0\right)^2}\]
+    Осталось лишь вспомнить, как была определена нами в этом доказательстве касательная плоскость, и заметить, что:
+    \[z_t\left(x, y\right) - z_t\left(x^0, y^0\right) = A_1 \left(x - x^0\right) + A_2 \left(y - y^0\right) =  d_{\left(x^0, y^0\right)} f\left(\left(x, y\right) - \left(x^0, y^0\right)\right)\]
+\end{proof}
+
+\section{Достаточное условие дифференцируемости}
+
+\begin{theorem}[Достаточное условие дифференцируемости]
+    Пусть $B_{\delta}\left(x^0\right) \subset \mathbb{R}^n$, $f \colon B_{\delta}\left(x^0\right) \to \mathbb{R}$. Пусть 
+    \[\forall x \in B_{\delta} \left(x^0\right) \hookrightarrow \exists \frac{\partial f}{\partial x_1}(x) \in \mathbb{R}, \ldots, \exists \frac{\partial f}{\partial x_n}(x) \in \mathbb{R}\]
+    Пусть все частные производные непрерывны в точке $x^0$. Тогда $f$ дифференцируема в точке $x^0$.
+\end{theorem}                       
+
+\begin{proof}
+    Докажем при $n = 2$, так как в общем случае доказательство аналогично, но писанины значительно больше.
+    Воспользовавшись умным нулём, распишем приращение $f$ следующим образом:
+    \[f\left(x_1, x_2\right) - f \left(x_1^0, x_2^0\right) = \underbrace{f\left(x_1, x_2\right) - f \left(x_1, x_2^0\right)}_{s_1} + \underbrace{f \left(x_1, x_2^0\right) - f \left(x_1^0, x_2^0\right)}_{s_2}\]
+    Рассмотрим функцию $t \to f(x_1, t)$ и заметим, что она дифференцируема как функция $t$ на интервале, содержащем отрезок $\left[x_2^0, x_2\right]$ (или, конечно, $\left[x_2, x_2^0\right]$ в зависимости от соответствующих величин). В самом деле, это 
+    следует из существования частных производных по всем аргументам $f$ в любой точке шара $B_{\delta}\left(x^0\right)$. 
+    \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\linewidth]{pictures/Достаточное условие дифференцируемости.jpg}
+    \end{figure} \leavevmode
+    \\
+    Но тогда по теореме Лагранжа о среднем:
+    \[\exists \xi \in \left(x_2^0, x_2\right): s_1 = \left(x_2 - x^0_2\right) \cdot \frac{\partial f(x_1, t)}{\partial t} \biggr|_{t = \xi} = \left(x_2 - x^0_2\right) \cdot \frac{\partial f}{\partial x_2} (x_1, \xi)\]
+    Проводя аналогичные рассуждения для $\left[x_1^0, x_1\right]$, также по теореме Лагранжа о среднем получим:
+    \[\exists \zeta \left(x_1^0, x_1\right): s_2 = \left(x_1 - x^0_1\right) \cdot \frac{\partial f}{\partial x_1} \left(\zeta, x_2^0\right)\]
+    Тогда, пользуясь полученными выше условиями и изначальным равенством для приращения, а также вновь умным нулём, имеем:
+    \[f\left(x_1, x_2\right) - f \left(x_1^0, x_2^0\right) = \frac{\partial f}{\partial x_1} \left(\zeta, x_2^0\right) \left(x_1 - x^0_1\right) + \frac{\partial f}{\partial x_2} (x_1, \xi) \left(x_2 - x^0_2\right) =  \]
+    \[= \frac{\partial f}{\partial x_1} \left(x_1^0, x_2^0\right)\left(x_1 - x_1^0\right) + \frac{\partial f}{\partial x_2} \left(x_1^0, x_2^0\right)\left(x_2 - x_2^0\right) + \]
+    \[+ \left[\frac{\partial f}{\partial x_1} \left(\zeta, x_2^0\right) - \frac{\partial f}{\partial x_1} \left(x_1^0, x_2^0\right) \right] \left(x_1 - x^0_1\right) + \left[\frac{\partial f}{\partial x_2} (x_1, \xi) - \frac{\partial f}{\partial x_2} \left(x_1^0, x_2^0\right) \right] \left(x_2 - x_2^0\right) = \]
+    \[= \underbrace{\frac{\partial f}{\partial x_1} \left(x_1^0, x_2^0\right)}_{A_1}\left(x_1 - x_1^0\right) + \underbrace{\frac{\partial f}{\partial x_2} \left(x_1^0, x_2^0\right)}_{A_2}\left(x_2 - x_2^0\right) + \]
+    \[+ \Bigg( \left[\frac{\partial f}{\partial x_1} \left(\zeta, x_2^0\right) - \frac{\partial f}{\partial x_1} \left(x_1^0, x_2^0\right) \right] \frac{\left(x_1 - x^0_1\right)}{\sqrt{\left(x_1 - x_1^0\right)^2 + \left(x_2 - x_2^0\right)^2}} +\]
+    \[+ \left[\frac{\partial f}{\partial x_2} (x_1, \xi) - \frac{\partial f}{\partial x_2} \left(x_1^0, x_2^0\right) \right] \frac{\left(x_2 - x_2^0\right)}{\sqrt{\left(x_1 - x_1^0\right)^2 + \left(x_2 - x_2^0\right)^2}} \Bigg) \cdot \sqrt{\left(x_1 - x_1^0\right)^2 + \left(x_2 - x_2^0\right)^2}\]
+    Теперь увидим, что из непрерывности частных производных в точке $\left(x_1^0, x_2^0\right)$ следует:
+    \[\left[\frac{\partial f}{\partial x_1} \left(\zeta, x_2^0\right) - \frac{\partial f}{\partial x_1} \left(x_1^0, x_2^0\right) \right] \to 0, \; (x_1, x_2) \to \left(x_1^0, x_2^0\right)\]
+    \[\left[\frac{\partial f}{\partial x_2} (x_1, \xi) - \frac{\partial f}{\partial x_2} \left(x_1^0, x_2^0\right) \right] \to 0, \; (x_1, x_2) \to \left(x_1^0, x_2^0\right)\]
+    Более того, следующие функции, очевидно, являются ограниченными (их модуль не превосходит единицы):
+    \[\frac{\left(x_1 - x^0_1\right)}{\sqrt{\left(x_1 - x_1^0\right)^2 + \left(x_2 - x_2^0\right)^2}} \quad \text{ и } \quad \frac{\left(x_2 - x_2^0\right)}{\sqrt{\left(x_1 - x_1^0\right)^2 + \left(x_2 - x_2^0\right)^2}}\]
+    Из всего этого по теореме об арифметических операциях с пределами сразу следует:
+    \[\Bigg( \left[\frac{\partial f}{\partial x_1} \left(\zeta, x_2^0\right) - \frac{\partial f}{\partial x_1} \left(x_1^0, x_2^0\right) \right] \frac{\left(x_1 - x^0_1\right)}{\sqrt{\left(x_1 - x_1^0\right)^2 + \left(x_2 - x_2^0\right)^2}} + \]
+    \[+ \left[\frac{\partial f}{\partial x_2} (x_1, \xi) - \frac{\partial f}{\partial x_2} \left(x_1^0, x_2^0\right) \right] \frac{\left(x_2 - x_2^0\right)}{\sqrt{\left(x_1 - x_1^0\right)^2 + \left(x_2 - x_2^0\right)^2}} \Bigg) \to 0, \; (x_1, x_2) \to \left(x_1^0, x_2^0\right)\]
+    Коль так, обозначим всю эту огромную скобку, которая даже не помещается в одну строку, как $\varepsilon(x_1, x_2)$. Из условия выше 
+    функция $\varepsilon$ является бесконечно малой при $(x_1, x_2) \to \left(x_1^0, x_2^0\right)$. Теперь всё наше печально известное выражение для приращения можно наконец переписать так:
+    \[f\left(x_1, x_2\right) - f \left(x_1^0, x_2^0\right) = \underbrace{\frac{\partial f}{\partial x_1} \left(x_1^0, x_2^0\right)}_{A_1}\left(x_1 - x_1^0\right) + \underbrace{\frac{\partial f}{\partial x_2} \left(x_1^0, x_2^0\right)}_{A_2}\left(x_2 - x_2^0\right) + \underbrace{\varepsilon(x_1, x_2) \sqrt{\left(x_1 - x_1^0\right)^2 + \left(x_2 - x_2^0\right)^2}}_{o \left(\left\lVert x - x^0 \right\rVert \right)}\]
+    Внимательный читатель сразу смекнёт, что перед нами в чистом виде определение дифференцируемости функции $f$ в точке $x^0$, а значит 
+    требуемое доказано.
+\end{proof}
+
+\end{document}

@@ -1,0 +1,338 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\DIF}{DIF}
+\DeclareMathOperator{\rg}{rg}
+\DeclareMathOperator{\gr}{gr}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Ну, неопределённый интеграл, ну погоди!}
+\fancyhead[R]{\href{https://t.me/sol_m_07}{Соля}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 16. Интегрирование неравенств. Интегрируемость модуля. \par
+    Аддитивность интеграла по отрезку интегрируемости. \par 
+    Первообразные и неопределённый интеграл}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Лемма для разминки}
+
+\begin{lemma}
+  Пусть $f, g \colon [a, b] \to \mathbb{R}$. Пусть $f(x) \neq g(x)$ на конечном числе 
+  точек $\{c_i\}^N_{i = 0} \subset [a, b]$. Тогда \[f \in \mathcal{R}([a, b]) 
+  \Longleftrightarrow g \in \mathcal{R}([a, b])\]
+  и в случае интегрируемости обеих 
+  \[\int_{a}^{b} f(x)\,dx \ = \ \int_{a}^{b} g(x)\,dx \]
+\end{lemma}
+
+\begin{proof}
+  Пусть $h(x) = f(x) - g(x)$. Тогда $h(x) \neq 0$ на конечном числе точек 
+  $\{c_i\}^N_{i = 0}$ \\ $\implies \exists M > 0 \ \text{ т.ч. } 
+  \left\lvert h(x) \right\rvert \leq M$ \\
+  Пусть $\{x_i\}^{N_T}_{i = 0}$ -- произвольное разбиение отрезка $[a, b]$ \
+  ($a = x_0 < \dots < x_{N_T} = b$) \\
+  Отберём среди отрезков разбиения те, которые пересекают конечное множество 
+  точек $\{c_i\}^N_{i = 0}$ $\implies \forall \xi_T$ -- выборки, соответствующей 
+  разбиению $T$ \[\left\lvert \sigma (h, T, \xi_T) \right\rvert \ \leq \ 2M \cdot N \cdot l(T)\] 
+  Получается, что 
+  \[\forall \varepsilon > 0 \ \exists \delta(\varepsilon) = \frac{\varepsilon}{3MN}: \ 
+  \forall T \in \mathcal{T}([a, b]): \ l(T) < \delta(\varepsilon) \ \text{ и } \ \forall 
+  \xi_T \ \hookrightarrow \ \left\lvert \sigma (h, T, \xi_T) \right\rvert < \varepsilon\]
+  \[\implies \ h \in \mathcal{R}([a, b]) \ \text{ и } \int_{a}^{b} h(x)\,dx = 0\]
+  Тогда если $f \in \mathcal{R}([a, b])$, то в силу линейности
+  \[g = f - h \implies g \in \mathcal{R}([a, b]) \ \text{ и } \int_{a}^{b} g(x)\,dx 
+  = \int_{a}^{b} f(x)\,dx \ - \int_{a}^{b} h(x)\,dx = \int_{a}^{b} f(x)\,dx\]
+  Аналогично, если $g \in \mathcal{R}([a, b])$, то 
+  \[f = g + h \implies f \in \mathcal{R}([a, b]) \ \text{ и } \int_{a}^{b} f(x)\,dx 
+  = \int_{a}^{b} g(x)\,dx \ + \int_{a}^{b} h(x)\,dx = \int_{a}^{b} g(x)\,dx\]
+\end{proof}
+
+\section{Интегрирование неравенств и интегрируемость модуля}
+
+\begin{lemma}[Интегрирование неравенств]
+  Пусть $f, g \in \mathcal{R}([a, b])$ и $f(x) \leq g(x) \ \forall x \in [a, b]$. 
+  Тогда \[\int_{a}^{b} f(x)\,dx \ \leq \ \int_{a}^{b} g(x)\,dx \]
+\end{lemma}
+
+\begin{proof}
+  Пусть $T \in \mathcal{T}([a, b])$ -- разбиение отрезка $[a, b]$ и $ 
+  \xi_T$ -- произвольная выборка. Тогда 
+  \[\sigma (f, T, \xi_T) \ \leq \ \sigma (g, T, \xi_T) \tag{$\ast$}\]
+  Переходя к пределу в неравенстве ($\ast$) при $l(T) \to 0$, получим 
+  \[\lim_{l(T) \to 0} \sigma (f, T, \xi_T) \ \leq \ \lim_{l(T) \to 0} 
+  \sigma (g, T, \xi_T)\]
+\end{proof}
+
+\begin{lemma}[Интегрируемость модуля]
+  Пусть $f \in \mathcal{R}([a, b])$. Тогда $\left\lvert f \right\rvert \in 
+  \mathcal{R}([a, b])$ и \[\left\lvert \int_{a}^{b} f(x)\,dx \right\rvert 
+  \ \leq \ \int_{a}^{b} \left\lvert f(x) \right\rvert\,dx \tag{$\vee$}\]
+\end{lemma}
+
+\begin{proof}
+  Если $f$ ограничена на $[a, b]$, то $\left\lvert f \right\rvert$ тоже 
+  ограничена на $[a, b]$. Причём 
+  \[\mathcal{C}(f, [a, b]) \subset \mathcal{C}(\left\lvert f \right\rvert, 
+  [a, b]) \implies \mathcal{D}(\left\lvert f \right\rvert, [a, b]) \subset 
+  \mathcal{D}(f, [a, b])\]
+  $\implies$ так как по критерию Лебега $f$ ограничена и множество точек разрыва 
+  имеет лебегову меру ноль, то для $\left\lvert f \right\rvert$ это тоже верно 
+  $\implies$ по критерию Лебега $\left\lvert f \right\rvert \in \mathcal{R}([a, b])$. \\
+  Остаётся доказать неравенство ($\vee$):
+  \[(\vee) \ \Longleftrightarrow \ - \int_{a}^{b} \left\lvert f(x) 
+  \right\rvert\,dx \ \leq \ \int_{a}^{b} f(x)\,dx \ \leq \ \int_{a}^{b} 
+  \left\lvert f(x) \right\rvert\,dx\]
+  Но $\forall x \in [a, b] \ \hookrightarrow \ - \left\lvert f(x) \right\rvert 
+  \ \leq f(x) \ \leq \ \left\lvert f(x) \right\rvert$
+  Так как $f, \left\lvert f \right\rvert \in \mathcal{R}([a, b])$, то можно 
+  воспользоваться предыдущей леммой об интегрируемости неравенств. Получим 
+  \[\int_{a}^{b} - \left\lvert f(x) \right\rvert\,dx \ \leq \ \int_{a}^{b} 
+  f(x)\,dx \ \leq \ \int_{a}^{b} \left\lvert f(x) \right\rvert\,dx \ 
+  \Longleftrightarrow \ (\vee)\]
+\end{proof}
+
+\begin{remark}
+  Из интегрируемости модуля не следует интегрируемость самой функции.
+\end{remark}
+
+\begin{example}
+  \[f(x) = \begin{cases}
+    1, & x \in \mathbb{Q} \cap [0, 1] \\
+    -1, & x \in (\mathbb{R} \backslash \mathbb{Q}) \cap [0, 1]
+  \end{cases}\]
+  $f \notin \mathcal{R}([0, 1])$, но $\left\lvert f(x) \right\rvert \equiv 1 
+  \in \mathcal{R}([0, 1])$
+\end{example}
+
+\section{Аддитивность интеграла по отрезку интегрируемости}
+
+\begin{theorem}[Аддитивность интеграла по отрезку интегрируемости]
+  Пусть $f \in \mathcal{R}([a, c]) \cap \mathcal{R}([c, b])$, где $a < c < b$. 
+  Тогда $f \in \mathcal{R}([a, b])$ и 
+  \[\int_{a}^{b} f(x)\,dx \ = \ \int_{a}^{c} f(x)\,dx \ + \ \int_{c}^{b} f(x)\,dx\]
+\end{theorem}
+
+\begin{proof}
+  Пусть $T \in \mathcal{T}([a, b]), \quad a = x_0 < \dots < x_{N_T} = b$. \\
+  Пусть $c \in [x_{j - 1}, x_j] \quad j \in \{1, \dots, N_T\}$
+  \[J_1 = \int_{a}^{c} f(x)\,dx \in \mathbb{R}\]
+  \[J_2 = \int_{c}^{b} f(x)\,dx \in \mathbb{R}\] \\
+  $T_1(T): \quad a = x_0 < \dots < x_{j - 1} \leq c$ -- разбиение отрезка $[a, c]$ \\ 
+  $T_2(T): \quad c \leq x_j < \dots < x_{N_T} = b$ -- разбиение отрезка $[c, b]$ \\
+  \[\forall \varepsilon > 0 \ \exists \delta_1(\varepsilon) > 0: \ \forall T_1 
+  \in \mathcal{T}([a, c]): \ l(T_1) < \delta_1(\varepsilon) \ \hookrightarrow \ 
+  \begin{cases}
+    \left\lvert s_f(T_1) - J_1 \right\rvert < \displaystyle \frac{\varepsilon}{4} \\
+    \\
+    \left\lvert S_f(T_1) - J_1 \right\rvert < \displaystyle \frac{\varepsilon}{4}
+  \end{cases}\]
+  \[\forall \varepsilon > 0 \ \exists \delta_2(\varepsilon) > 0: \ \forall T_2 
+  \in \mathcal{T}([c, b]): \ l(T_2) < \delta_2(\varepsilon) \ \hookrightarrow \ 
+  \begin{cases}
+    \left\lvert s_f(T_2) - J_2 \right\rvert < \displaystyle \frac{\varepsilon}{4} \\
+    \\
+    \left\lvert S_f(T_2) - J_2 \right\rvert < \displaystyle \frac{\varepsilon}{4}
+  \end{cases}\] \\
+  Заметим, что \[l(T_1(T)) \leq l(T) \ \text{ и } \ l(T_2(T)) \leq l(T)\] \\
+  Так как $f \in \mathcal{R}([a, c])$ и $f \in \mathcal{R}([c, b])$, то $f$ 
+  ограничена на $[a, c]$ и $f$ ограничена на $[c, b]$
+  \[\implies \exists M > 0: \ \left\lvert f(x) \right\rvert \leq M \quad \forall x \in [a, b]\]
+  Тогда $\forall \varepsilon > 0 \ \exists \delta(\varepsilon) = \min 
+  \{\delta_1(\varepsilon), \delta_2(\varepsilon), \displaystyle \frac{\varepsilon}{4M}\}$ \\ \\
+  Если $T$ -- разбиение отрезка $[a, b]$ мелкости $< \delta(\varepsilon)$, то 
+  \[\left\lvert S_f(T) - (J_1 + J_2) \right\rvert \ \leq\]
+  \[\leq \ \left\lvert S_f(T) - S_f(T_1(T)) - S_f(T_2(T)) \right\rvert \ + \ 
+  \left\lvert S_f(T_1(T)) - J_1 \right\rvert \ + \ \left\lvert S_f(T_2(T)) - 
+  J_2 \right\rvert \ <\]
+  \[< \ \left\lvert S_f(T) - S_f(T_1(T)) - S_f(T_2(T)) \right\rvert \ + \ 
+  \frac{\varepsilon}{2}\]
+  Оценим оставшийся модуль:
+  \[\left\lvert S_f(T) - S_f(T_1(T)) - S_f(T_2(T)) \right\rvert \ \leq\]
+  \[\leq \ \left\lvert c - x_{j - 1} \right\rvert \sup_{x \in [x_{j - 1}, c]} 
+  \left\lvert f(x) \right\rvert \ + \ \left\lvert x_j - c \right\rvert 
+  \sup_{x \in [c, x_j]} \left\lvert f(x) \right\rvert \ + \ \left\lvert x_{j - 1} - 
+  x_j \right\rvert \sup_{x \in [x_{j-1}, x_j]} \left\lvert f(x) \right\rvert \ \leq\]
+  \[\leq \ [\text{каждый супремум не более } M] \ \leq \ 2 \left\lvert x_j - 
+  x_{j - 1} \right\rvert M \ \leq \ 2M \cdot l(T) \ < \ \frac{\varepsilon}{2}\]
+  Совместим и получим:
+  \[\forall \varepsilon > 0 \quad \exists \delta(\varepsilon) = \min 
+  \{\delta_1(\varepsilon), \delta_2(\varepsilon), \frac{\varepsilon}{4M}\}: 
+  \quad \forall T \in \mathcal{T}([a, b]): \ l(T) < \delta(\varepsilon)\]
+  \[\hookrightarrow \quad \left\lvert S_f(T) \ - \int_{a}^{c} f(x)\,dx \ - 
+  \int_{c}^{b} f(x)\,dx \right\rvert \ < \ \varepsilon\]
+  Аналогично получим \[\left\lvert s_f(T) \ - \int_{a}^{c} f(x)\,dx \ - 
+  \int_{c}^{b} f(x)\,dx \right\rvert \ < \ \varepsilon\]
+  $\implies$ из произвольности $\varepsilon$ по определению интеграла Римана 
+  получаем, что $f \in \mathcal{R}([a, b])$ и 
+  \[\int_{a}^{b} f(x)\,dx \ = \ \int_{a}^{c} f(x)\,dx \ + \ \int_{c}^{b} f(x)\,dx \] 
+\end{proof}
+
+\begin{remark}
+  Примем соглашение, что 
+  \[\int_{a}^{a} f(x)\,dx = 0\]
+  \[\int_{b}^{a} f(x)\,dx = - \int_{a}^{b} f(x)\,dx \quad a < b\]
+\end{remark}
+
+\begin{lemma}[Следствие]
+  При любом расположении точек $a, b, c$ если $f \in \mathcal{R}([a, c]) 
+  \cap \mathcal{R}([c, b])$, то $f \in \mathcal{R}([a, b])$ и справедливо 
+  неравенство \[\int_{a}^{b} f(x)\,dx \ = \ \int_{a}^{c} f(x)\,dx \ + \ 
+  \int_{c}^{b} f(x)\,dx\]
+\end{lemma}
+
+\section{Первообразные и неопределённый интеграл}
+
+\begin{definition}
+  Пусть $f \colon (a, b) \to \mathbb{R}$. Тогда $F \colon (a, b) \to \mathbb{R}$ 
+  -- первообразная функции $f$, если 
+  \[\forall x \in (a, b) \ \hookrightarrow \ F'(x) = f(x)\]
+\end{definition}
+
+\begin{lemma}
+  Если $f \equiv 0$ на $(a, b)$, то $\forall$ её первообразная есть функция 
+  вида $F(x) = const \ \ \forall x \in (a, b)$
+\end{lemma}
+
+\begin{proof}
+  Пусть $F$ -- первообразная $f$ на $(a, b)$. \\ 
+  Фиксируем произвольные точки $a < x_1 < x_2 < b$ \\
+  Тогда к отрезку $[x_1, x_2]$ применим теорему Лагранжа о среднем
+  \[\implies \exists \xi \in (x_1, x_2) \ \text{ т.ч. } \ 
+  f(\xi)(x_2 - x_1) = F(x_2) - F(x_1)\]
+  \[\implies F(x_1) = F(x_2) \text{ при произвольном выборе точек}\]
+  \[\implies \exists C \in \mathbb{R} \ \text{ т.ч. } \ F(x) = C \quad 
+  \forall x \in (a, b)\]
+\end{proof}
+
+\begin{definition}
+  Пусть $f \colon (a, b) \to \mathbb{R}$. Тогда неопределённым интегралом 
+  функции $f$ на $(a, b)$ называется множество всех первообразных функции 
+  $f$ на $(a, b)$ и обозначается \[\int f(x)\,dx\]
+\end{definition}
+
+\begin{remark}
+  Неопределённый интеграл по классике задаётся на интервале, но в голове 
+  держим, что также можно определить его на отрезке или полуинтервале. 
+\end{remark}
+
+\begin{theorem}[О структуре множества первообразных]
+  Пусть $f \colon (a, b) \to \mathbb{R}$. Если $F$ -- какая-то первообразная 
+  $f$ на $(a, b)$, то \[\int f(x)\,dx = \{F + C \ | \ C \in \mathbb{R}\}\]
+  Обычно запись упрощают до вида \[\int f(x)\,dx = F(x) + C\]
+\end{theorem}
+
+\begin{proof}
+  В силу леммы 4.1 \[\int f(x)\,dx \subset \{F + C \ | \ C \in 
+  \mathbb{R}\} \tag{$\ast$}\]
+  Действительно, если $F_1, F_2 \in \displaystyle \int f(x)\,dx$, \ то \ 
+  $F_1 - F_2 \in \displaystyle \int 0\,dx \implies F_1 - F_2 = const$. 
+  ($\ast$) доказана \\
+  В обратную сторону включение очевидно по определению неопределённого 
+  интеграла, \\ так как $C' = 0$ 
+\end{proof}
+
+\begin{remark}
+  Далее будем рассматривать \ $\displaystyle \int_{a}^{x} f(t)\,dt 
+  \quad x \in [a, b]$
+\end{remark}
+
+\begin{theorem}
+  Пусть $f \in \mathcal{R}([a, b])$. Тогда $F(x) = \displaystyle 
+  \int_{a}^{x} f(t)\,dt$ является непрерывной функцией на $[a, b]$.
+\end{theorem}
+
+\begin{proof}
+  Так как $f$ интегрируема на $[a, b]$, то $\exists M > 0$ т.ч. 
+  $\left\lvert f(x) \right\rvert \leq M \quad \forall x \in [a, b]$. \\
+  Рассмотрим произвольные точки $a < x_1 < x_2 < b$
+  \[\left\lvert F(x_2) - F(x_1) \right\rvert \ = \ \left\lvert 
+  \int_{x_1}^{x_2} f(t)\,dt \right\rvert \ \leq \ \int_{x_1}^{x_2} 
+  \left\lvert f(t) \right\rvert\,dt \ \leq \ M \int_{x_1}^{x_2} \,dt 
+  \ = \ M (x_2 - x_1)\]
+  Из этого сразу же следует равномерная непрерывность $F$ на $[a, b]$
+\end{proof}
+
+\begin{theorem}
+  Пусть $f \in C([a, b])$. Тогда $F(x) = \displaystyle \int_{a}^{x} 
+  f(t)\,dt$ дифференцируема на $[a, b]$ и \\
+  $F'(x) = f(x) \quad \forall x \in [a, b]$ 
+\end{theorem}
+
+\begin{proof}
+  Фиксируем $\underline{x} \in [a, b]$
+  \[\frac{F(x) - F(\underline{x})}{x - \underline{x}} \ = \ \frac{\displaystyle 
+  \int_{a}^{x} f(t)\,dt - \displaystyle \int_{a}^{\underline{x}} f(t)\,dt}
+  {x - \underline{x}} \ = \ \frac{\displaystyle \int_{\underline{x}}^{x} 
+  f(t)\,dt}{x - \underline{x}} \ =\]
+  \[= \ \frac{\displaystyle \int_{\underline{x}}^{x} \left[f(t) - 
+  f(\underline{x}) + f(\underline{x}) \right]\,dt}{x - \underline{x}} \ = \ 
+  \frac{\displaystyle \int_{\underline{x}}^{x} \left[f(t) - 
+  f(\underline{x}) \right]\,dt}{x - \underline{x}} \ + \ \frac{\displaystyle 
+  \int_{\underline{x}}^{x} f(\underline{x})\,dt}{x - \underline{x}} \ = \ 
+  f(\underline{x}) \ + \ \frac{\displaystyle \int_{\underline{x}}^{x} 
+  \left[f(t) - f(\underline{x})\right]\,dt}{x - \underline{x}}\] \\
+  Получили \[\frac{F(x) - F(\underline{x})}{x - \underline{x}} \ = \ 
+  f(\underline{x}) \ + \ \frac{\displaystyle \int_{\underline{x}}^{x} 
+  \left[f(t) - f(\underline{x})\right]\,dt}{x - \underline{x}}\] \\
+  Тогда \[\left\lvert \frac{F(x) - F(\underline{x})}{x - \underline{x}} \ - \ 
+  f(\underline{x}) \right\rvert \ \leq \ \left\lvert \frac{\displaystyle 
+  \int_{\underline{x}}^{x} \left[f(t) - f(\underline{x})\right]\,dt}
+  {x - \underline{x}} \right\rvert \ \leq \ \frac{\displaystyle 
+  \int_{\underline{x}}^{x} \left\lvert f(t) - f(\underline{x}) 
+  \right\rvert\,dt}{\left\lvert x - \underline{x} \right\rvert}\] \\
+  В силу непрерывности $f$ в точке $\underline{x}$
+  \[\forall \varepsilon > 0 \ \exists \delta(\varepsilon) > 0: \ \forall t 
+  \in (\underline{x} - \delta(\varepsilon), \ \underline{x} + 
+  \delta(\varepsilon)) \cap [a, b] \ \hookrightarrow \ \left\lvert f(t) - 
+  f(\underline{x}) \right\rvert < \varepsilon\]
+  \[\implies \text{если взять } x \in (\underline{x} - \delta(\varepsilon), 
+  \ \underline{x} + \delta(\varepsilon)) \cap [a, b] \text{, то }\]
+  \[\left\lvert f(t) - f(\underline{x}) \right\rvert < \varepsilon \quad 
+  \forall t \in \left[\min \{\underline{x}, x\}, \ \max \{\underline{x}, x\}
+  \right]\] \\
+  Тогда \[\frac{\displaystyle \int_{\underline{x}}^{x} \left\lvert f(t) - 
+  f(\underline{x}) \right\rvert\,dt}{\left\lvert x - \underline{x} \right\rvert} \ = \ 
+  \frac{\displaystyle \int_{\min \{\underline{x}, x\}}^{\max \{\underline{x}, 
+  x\}} \left\lvert f(t) - f(\underline{x}) \right\rvert\,dt}{\left\lvert 
+  x - \underline{x} \right\rvert} \ \leq \ \frac{\displaystyle \int_{\min 
+  \{\underline{x}, x\}}^{\max \{\underline{x}, x\}} \varepsilon\,dt}
+  {\left\lvert x - \underline{x} \right\rvert} \ = \ \varepsilon\] \\
+  В итоге 
+  \[\forall \varepsilon > 0 \ \exists \delta(\varepsilon) > 0: \ \forall x \in 
+  (\underline{x} - \delta(\varepsilon), \ \underline{x} + \delta(\varepsilon)) 
+  \cap [a, b] \ \hookrightarrow \ \left\lvert \frac{F(x) - F(\underline{x})}
+  {x - \underline{x}} \ - \ f(\underline{x}) \right\rvert \leq \varepsilon\] \\
+  Но $\underline{x}$ был выбран произвольно $\implies$ требуемое доказано
+\end{proof}
+
+\section{Автор выражает свои мысли в картинках}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{pictures/Ну погоди.jpg}
+\end{figure}
+
+\end{document}

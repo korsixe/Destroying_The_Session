@@ -1,0 +1,256 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{ulem}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\DIF}{DIF}
+\DeclareMathOperator{\rg}{rg}
+\DeclareMathOperator{\dist}{dist}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{ Гена,а давай я понесу вещи, а ты понесёшь меня:)}
+\fancyhead[R]{\href{ https://t.me/mallina_olga  }{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 10. Гладкие многообразия. Касательный вектор и касательное пространство. Экстремумы.
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Гладкие многообразия}
+
+\begin{definition}[Гладкое многообразие]
+    Пусть $1 \le k < m$. Множество $M \subset \mathbb{R}^m$ называется \textbf{$k$-мерным гладким многообразием}, если для любой точки $p \in M$ существует $m$-мерная окрестность $U \subset \mathbb{R}^m$ этой точки такая, что множество $U \cap M$ есть простое $k$-мерное гладкое многообразие.
+\end{definition}
+
+\begin{example}
+    Пусть $\mathbb{R}^m$ --- пространство. Рассмотрим единичную сферу 
+    \[ S_1^{m-1} (0) := \{x\in \mathbb{R}^m: x_1^2 + \ldots + x_m^2=1\} \] 
+    Покажем, что множество $S_1^{m-1}(0)$ является $(m-1)$-мерным гладким многообразием.
+     \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\textwidth]{pictures/картиночка 1 .png}
+    \end{figure} \leavevmode
+    \\
+    Очевидно, что 
+    \[ \forall p = (p_1, \ldots, p_m) \in S_1^{m-1}(0) \; \; \exists i\in \{1,...,m\}: \; p_i \neq 0 \]
+    Для простоты рассмотрим случай, когда $p_i>0$. Тогда по определению единичной сферы $p_i$ можно выразить следующим образом:
+    \[ p_i =\sqrt{1-p_1^2 - ... -p_{i-1}^2-p_{i+1}^2 - ... - p_m^2} \]
+    Рассмотрим тогда область
+    \[ G =\{ (p_1,...,p_{i-1},p_{i+1},...,p_m) \in \mathbb{R}^{m-1}: p_1^2+...+p_{i-1}^2+p_{i+1}^2+...+p_m^2 < 1\} \]
+    Определим на этой области отображение $\Phi \colon G \to \mathbb{R}^m$ такое, что
+    \[\mathbb{R}^{m - 1} \ni p' = (p_1, \ldots, p_{i - 1}, p_{i + 1}, \ldots, p_m) \xrightarrow{\Phi} (p_1 \ldots ,p_{i-1}, \sqrt{1-p_1^2 - ... -p_{i-1}^2-p_{i+1}^2 - ... - p_m^2},p_{i+1}, \ldots ,p_m) \]
+    Из явного вида этого отображения несложно видеть, расписав для произвольной точки $p' \in G$ матрицу Якоби $\mathcal{D}\Phi (p')$, что 
+    \[\Phi \in C^{1}(G, \mathbb{R}^m) \quad \text{ и } \quad \forall p' \in G \hookrightarrow \rg \mathcal{D} \Phi (p') = m - 1\]
+    Также, проделав рассуждения, аналогичные рассуждениям при доказательстве теоремы об эквивалентных описаниях простого гладкого многообразия из предыдущей лекции, получаем, что $\Phi$ является гомеоморфизмом $G$ на свой образ $\Phi(G) = U \cap M$, где множество $U$ есть полупространство $\mathbb{R}^m$, в котором находятся те и только те точки, у которых $i$-ая компонента положительна (очевидно, что $U$ --- открыто). Таким образом, для каждой точки $p \in S^{m - 1}_1 (0)$, у которой положительна $i$-ая компонента, найдена её $m$-мерная окрестность $U$ такая, что для множества $U \cap M$ существует параметризация $\Phi$, то есть множество $U \cap M$ является простым $(m - 1)$-мерным гладким многообразием. Следовательно, повторив те же рассуждения для остальных случаев, по определению $(m - 1)$-мерного гладкого многообразия получаем требуемое.
+\end{example}
+
+\begin{example} \label{example:1.2}
+    Пусть $1\le k<m$. Пусть множество $V$ есть $k$-мерная плоскость в $\mathbb{R}^m$, в которой выбран набор $\{e_1, \ldots, e_k\}$ линейно независимых векторов. Ясно, что
+    \[V := \left\{\sum_{i = 1}^k t_i e_i : t = (t_1, \ldots, t_k) \in \mathbb{R}^k\right\}\] \\
+    Рассмотрим область $G = \mathbb{R}^k$ и отображение $\Phi \colon G \to \mathbb{R}^m$ такое, что
+    \[ G\ni (t_1, \ldots, t_k)   \xrightarrow{\Phi} \sum_{i=1} ^k t_i e_i \in V\]
+    Увидим, что $\Phi \in C^{1}(G, \mathbb{R}^m)$. Положим $e_i = (e_i(1), \ldots, e_i(m))$ в каноническом базисе $\mathbb{R}^m$ для всех $i \in \{1, \ldots, k\}$ и распишем в произвольной точке матрицу Якоби $\mathcal{D}\Phi$:
+    \[ \mathcal{D}\Phi =
+    \begin{pmatrix}
+        e_1(1) & \cdots & e_k(1) \\
+        \vdots & \ddots & \vdots \\
+        e_1(m) & \cdots & e_k(m) 
+    \end{pmatrix} \]
+    Теперь уже несложно видеть, что все частные производные существуют и непрерывны, а значит отображение $\Phi$ действительно непрерывно дифференцируемо на $G$. При этом из явного вида матрицы Якоби в произвольной точке также легко вытекает, что $\rg \mathcal{D}\Phi = k$ в каждой точке $G$. В самом деле, больше он быть точно не может просто потому, что одно из измерений матрицы равно $k$. Но и меньше он тоже не может быть, так как в столбцах стоят координатные столбцы линейно независимых векторов. \\
+    Таким образом, для множества $V$ существует отображение $\Phi \colon G \to \mathbb{R}^m$, являющееся гомеоморфизмом $G$ на $V$ и обладающее свойствами
+    \[\Phi \in C^{1}(G, \mathbb{R}^m) \quad \text{ и } \quad \forall t \in G \hookrightarrow \rg \mathcal{D}\Phi(t) = k\]
+    Следовательно, множество $V$ является простым $k$-мерным гладким многообразием.
+
+\end{example}
+ 
+\section{Касательный вектор и касательное пространство}
+\begin{definition}[Касательный вектор]
+    Пусть $1 \leq k < m$. Пусть $M \subset \mathbb{R}^m$ есть $k$-мерное гладкое многообразие. Пусть $p \in M$.
+    Будем говорить, что вектор $\overline{\tau}$ является касательным к $M$ в точке $p$, если
+    существует кривая $\gamma \in C^{1}([a,b])$ такая, что 
+    $\gamma ([a, b]) \subset M$, $\gamma(t_0) = p$ и $\gamma'(t_0) = \overline{\tau}$
+    при некотором $t_0\in (a,b)$. Кроме того, кривая $\gamma$ не имеет особых точек, то есть её производная $\gamma'$ нигде не обращается в $0$.
+
+\end{definition}
+
+\begin{definition}
+    Множество всех касательных векторов к $M$ в точке $p$ называется \textbf{касательным пространством} к многообразию $M$ в точке $p$ и обозначается $T_pM$.
+\end{definition}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{pictures/картиночка 2.png}
+\end{figure} \leavevmode
+\\
+Пусть $1 \leq k < m$. Пусть $M \subset \mathbb{R}^m$ есть $k$-мерное гладкое многообразие, $p \in M$. По определению существует $m$-мерная окрестность $U$ точки $p$ такая, что множество $U \cap M$ есть простое $k$-мерное гладкое многообразие. Тогда существует открытое множество $G \subset \mathbb{R}^k$ и существует гомеоморфизм $\Phi \colon G \to \mathbb{R}^m$, который биективно отображает $G$ на $U \cap M$, а также
+\[\Phi \in C^{1}(G, \mathbb{R}^m) \quad \text{ и } \quad \forall x \in G \hookrightarrow \rg \mathcal{D}\Phi(x) = k\]
+Без ограничения общности считаем, что прообраз точки $p$ при отображении $\Phi$ есть $0$ (если это не так, то нашу лужицу $G$ всегда можно подвинуть). Заморозим все координаты, кроме $i$-ой, а $i$-ую начнём менять.
+Рассмотрим кривую $\gamma_i \colon (-\varepsilon,\varepsilon) \to M$, которая действует следующим образом: 
+\[
+\gamma_i(t)=\Phi\bigl(0,\ldots,0,\underset{i\text{-ое место}}{t},0,\ldots,0\bigr)
+\]  
+При этом не забываем, что $\Phi(0) = p$.
+Тогда $\gamma_i'(0)$ является касательным вектором к $M$ в точке $p$ по определению и называется \textbf{каноническим} касательным вектором к многообразию $M$ в точке $p$. \\
+Распишем теперь $\gamma'(0)$ подробнее:
+\[ \gamma_i'(0) =
+\begin{pmatrix}
+\dfrac{\partial \Phi_1}{\partial t_i}(0) \\
+\vdots \\
+\dfrac{\partial \Phi_m}{\partial t_i}(0)
+\end{pmatrix}\]
+Из этого представления нетрудно видеть, что $\gamma'(0)$ является $i$-ым столбцом матрицы Якоби $\mathcal{D}\Phi (0)$. Но $\rg \mathcal{D}\Phi (0) = k$, а значит все столбцы этой матрицы линейно независимы. Следовательно, все канонические касательные векторы являются линейно независимыми.
+
+\begin{theorem}
+    Пусть $1\le k<m$. Пусть $M \subset \mathbb{R}^m$ есть $k$-мерное гладкое многообразие. Тогда для любой точки $p \in M$ касательное пространство $T_p M$ является $k$-мерным векторным пространством.
+\end{theorem}
+
+\begin{proof}
+    Зафиксируем некоторую точку $p \in M$. Пусть $\overline{\tau}$, $\overline{\tau}_{\ast} \in T_p M$ и $c,c_{\ast}\in \mathbb{R}$. Покажем, что линейная комбинация $c\overline{\tau} +c_{\ast}\overline{\tau}_{\ast}$ тоже лежит в $T_p M$. \\
+    Так как $\overline{\tau}$ и $\overline{\tau}_{\ast}$ являются касательными векторами к многообразию $M$ в точке $p$, то по определению существуют кривые $\gamma \in C^{1} ([-\varepsilon, \varepsilon], M)$ и $\gamma_{\ast} \in C^{1}([-\varepsilon_{\ast}, \varepsilon_{\ast}], M)$ без особых точек такие, что $\gamma'(0) = \overline{\tau}$ и $\gamma_{\ast}'(0) = \overline{\tau}_{\ast}$. Здесь мы без ограничения общности полагаем, что $\gamma(0) = \gamma_{\ast} (0) = p$.
+     \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.55\textwidth]{pictures/картиночка 3.png}
+    \end{figure} \leavevmode
+    \\
+    Построим кривую такую, что у неё касательный вектор в точке $p$ равен рассматриваемой линейной комбинации $c\overline{\tau} +c_{\ast}\overline{\tau}_{\ast}$.
+    Так как $M$ есть $k$-мерное гладкое многообразие, то существует окрестность $U\ni p$ такая, что множество $U\cap M$ есть простое $k$-мерное гладкое многообразие. Это в свою очередь означает, что существует открытое множество $G \subset \mathbb{R}^k$ и существует гомеоморфизм $\Phi \colon G \to \mathbb{R}^m$, который биективно отображает $G$ на $U \cap M$, а также
+    \[\Phi \in C^{1}(G, \mathbb{R}^m) \quad \text{ и } \quad \forall t \in G \hookrightarrow \rg \mathcal{D} \Phi (t) = k\]
+    Также в силу справедливости двух условий выше отображение $\Phi$ по теореме о продолжении до диффеоморфзима можно продолжить до диффеоморфизма. Сделаем это в некоторой существующей окрестности $\Omega \subset \mathbb{R}^m$ точки $p$, без ограничения общности полагая $\Phi$ диффеоморфизмом $\Omega$ на $U$. 
+    Отсюда сразу вытекает, что $G= \Omega \cap \mathbb{R}^k$. \\
+    Положим по определению $\delta := \min \{\varepsilon, \varepsilon_{\ast}\}$. Тогда обе кривые можно считать заданными на промежутке $[-\delta,\delta]$.
+    Также без ограничения общности считаем, что $\Phi^{-1} (p) = 0$, а кривые $\gamma$ и $\gamma_{\ast}$ лежат целиком в $U \cap M$ (если это не так, то в силу непрерывности этих кривых мы сможем поджать $\delta$ так, чтобы это свойство выполнялось). Кроме того, определим
+    \[ \tilde{\gamma} := \Phi^{-1} \circ \gamma \]
+    \[ \tilde{\gamma}_{\ast} := \Phi^{-1} \circ \gamma_{\ast} \]
+    Так как кривые $\gamma$ и $\gamma_{\ast}$ лежат целиком в $U \cap M$, то по определению продолжения отображения кривые $\widetilde{\gamma}$ и $\widetilde{\gamma}_{\ast}$ лежат целиком в $G \subset \mathbb{R}^k$. Тогда рассмотрим кривую $ c\tilde{\gamma} + c_{\ast}\tilde{\gamma}_{\ast}$. Под линейной комбинацией кривых в векторном пространстве мы естественным образом понимаем кривую в этом же пространстве, образованную линейными комбинациями соответствующих векторов на данных кривых в каждый момент времени.
+     \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.35\textwidth]{pictures/картиночка 4.png}
+    \end{figure} \leavevmode
+    \\
+    Вообще говоря, кривая $c\widetilde{\gamma} + c_{\ast} \widetilde{\gamma}_{\ast}$ может вылезти за множество $G$. Но в силу фиксированности чисел $c$ и $c_{\ast}$ и непрерывности композиций $\widetilde{\gamma} = \Phi^{-1} \circ \gamma$ и $\widetilde{\gamma}_{\ast} = \Phi^{-1} \circ \gamma_{\ast}$ в достаточно малой окрестности нуля эта линейная комбинация залезет в $G$. Следовательно, уменьшая $\delta$, если это необходимо, можно считать, что $c\tilde{\gamma} + c_{\ast}\tilde{\gamma_{\ast}} \subset G$.
+    Раз так, то возьмём от этой кривой прямое отображение:
+    \[ \widehat{\gamma} := \Phi (c\tilde{\gamma} + c_{\ast}\tilde{\gamma}_{\ast}) \]
+    Покажем, что эта кривая --- искомая. Для этого продифференцируем её в нуле и убедимся, что выполнено равенство $\widehat{\gamma}'(0) = c \overline{\tau} + c_{\ast} \overline{\tau}_{\ast}$. По теореме о дифференцируемости композиции отображений:
+    \[ \widehat{\gamma}'(0) = \mathcal{D}\Phi(\underbrace{c\widetilde{\gamma}(0) + c_{\ast} \widetilde{\gamma}_{\ast} (0)}_{= 0}) \cdot [c\widetilde{\gamma}'(0) + c_{\ast}\widetilde{\gamma}_{\ast}'(0)] = \mathcal{D}\Phi(0) \cdot [c\mathcal{D}\Phi^{-1}(\underbrace{\gamma(0)}_{= p})\cdot \gamma'(0) +c_{\ast}\mathcal{D}\Phi^{-1}(\underbrace{\gamma_{\ast}(0)}_{= p})\cdot \gamma_{\ast}'(0) ] =  \]
+    \[ c \cdot [\mathcal{D}\Phi(0) \cdot \mathcal{D}\Phi^{-1}(p)] \cdot \gamma'(0) + c_{\ast} \cdot [\mathcal{D}\Phi(0) \cdot \mathcal{D}\Phi^{-1}(p)] \cdot \gamma_{\ast}'(0) = [\text{производная обратного отображения}] = \]
+    \[= c \cdot [\underbrace{\mathcal{D}\Phi(0) \cdot \left(\mathcal{D}\Phi(0)\right)^{-1}}_{= E}] \cdot \gamma'(0) + c_{\ast} \cdot [\underbrace{\mathcal{D}\Phi(0) \cdot \left(\mathcal{D}\Phi(0)\right)^{-1}}_{= E}] \cdot \gamma_{\ast}'(0) = c\gamma'(0) + c_{\ast}\gamma_{\ast}'(0) = c\overline{\tau}+ c_{\ast} \overline{\tau}_{\ast}\]
+    Тогда по определению касательного вектора получаем, что $c\overline{\tau}+ c_{\ast} \overline{\tau}_{\ast} \in T_p M$. Итого, доказали, что пространство $T_p M$ есть векторное пространство. Теперь докажем, что это $k$-мерное векторное пространство.\\
+    Получается, что $T_p M$ является векторным пространством размерности не менее $k$, так как оно содержит не менее $k$ линейно независимых касательных векторов (линейно независимые канонические касательные векторы уж точно содержатся в $T_p M$). Покажем теперь, что $\dim T_p M \leq k$.
+    Действительно, любой касательный вектор $\overline{\tau} \in T_p M$ есть $\gamma'(0)$ для некоторой кривой $\gamma \in C^{1}([a, b], \mathbb{R}^m)$ без особых точек (здесь $\gamma(0) = p$).
+    Рассмотрим тогда кривую $\tilde{\gamma} = \Phi^{-1} \circ \gamma$. Ясен пень, что из предыдущего равенства вытекает $\Phi \circ \tilde{\gamma} = \gamma$. Следовательно, по теореме о дифференцировании композиции отображений:
+    \[\gamma'(0) = \mathcal{D}\Phi (\underbrace{\widetilde{\gamma}(0)}_{=0}) \cdot \widetilde{\gamma}'(0) = \mathcal{D}\Phi (0) \cdot \widetilde{\gamma}'(0) = \mathrm{d}_0\Phi (\widetilde{\gamma}'(0)) \]
+    Таким образом, любой произвольно выбранный касательный вектор $\overline{\tau} \in T_p M$ можно реализовать как дифференциал отображения $\Phi$, вычисленный на касательном векторе $\widetilde{\gamma}'(0)$. Но каждый касательный вектор $\widetilde{\gamma}'(0)$ лежит в пространстве $\mathbb{R}^k$. Следовательно, в силу произвольного выбора $\overline{\tau} \in T_p M$ получаем, что $T_p M\subset \mathrm{d}_0\Phi(\mathbb{R}^k)$. Но дифференциал является линейным отображением, а значит размерность пространства $\mathrm{d}_0 \Phi (\mathbb{R}^k)$ не может превосходить размерность отображаемого пространства $\mathbb{R}^k$, которая в точности составляет $k$. Значит и размерность подпространства $T_p M$ не может быть более $k$, то есть $\dim T_p M \leq k$.
+    Итак, показаны два противоположных неравенства, а значит имеет место равенство, то есть $\dim T_p M = k$, что и требовалось.
+\end{proof}
+
+\begin{remark}[Отличие касательного пространства от аффиного]
+    Касательное пространство всегда проходит через $0$, а аффинное пространство --- это пространство, образованное сдвигом
+    касательного пространства на некоторый вектор. Приведём пример:
+     \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\textwidth]{pictures/картиночка 5.png}
+    \end{figure}
+\end{remark}
+
+\begin{remark}
+    Вспомним пример \ref{example:1.2} из начала лекции. В нём было показано, что при фиксированном наборе линейно независимых векторов $\{\tau_1, \ldots, \tau_k\}$ в $\mathbb{R}^m$ множество
+    \[V := \left\{\sum_{i = 1}^k t_i \tau_i: t = (t_1, \ldots, t_k) \in \mathbb{R}^k\right\}\]
+    является простым $k$-мерным гладким многообразием. При этом данное множество представляет собой $k$-мерную плоскость в $\mathbb{R}^m$. Следовательно,
+    \[\forall p \in V \hookrightarrow T_p V = V\]
+\end{remark}
+
+
+\begin{example}
+    Пусть $F\in C^1(\mathbb{R}^m, \mathbb{R})$. Пусть $M$ есть множество нулей функции $F$.
+    Пусть фиксированна точка $p\in M$ такая, что $ \nabla F(p)\neq 0$. Пусть задана кривая $\gamma \in C^{1}([-\delta, \delta], M)$ без особых точек, целиком лежащая в множестве нулей $M$.
+    Рассмотрим отображение $F \circ \gamma$. Из условия тривиально следует, что
+    \[ (F\circ \gamma)(t) =0 \quad \forall t\in [-\delta,\delta] \] 
+    Продифференцируем тогда равенство выше по $t$: 
+    \[\frac{\mathrm{d}(F\circ \gamma)}{\mathrm{d}t} (t) = 0 \quad \forall t\in [-\delta,\delta] \]
+    По теореме о дифференцировании композиции отображений:
+    \[ \frac{\mathrm{d}(F\circ \gamma)}{\mathrm{d}t} (t) = \left\langle \nabla F(\gamma(t)), \gamma'(t) \right\rangle  = 0 \quad \forall t \in [-\delta, \delta]\]
+    Вспомним, что $\gamma(0) = p$, а по условию $\nabla F(\gamma(0)) = \nabla F(p) \neq 0$. Кроме того, в силу $F \in C^{1}(\mathbb{R}^m, \mathbb{R})$ и $\gamma \in C^{1}([-\delta, \delta], M)$ имеем непрерывность градиента композиции $\nabla (F \circ \gamma)$. Следовательно, по лемме о сохранении знака получаем, что  $\nabla F(\gamma(t)) \neq 0$ при достаточно малых $t \in [-\delta, \delta]$. Таким образом, в силу произвольного выбора гладкой кривой $\gamma$ имеем, что для каждой такой кривой касательный вектор $\gamma'(0) \in T_p M$ ортогонален вектору $\nabla F(p)$. 
+    Следовательно, касательное пространство $T_p M$ ортогонально градиенту $\nabla F(p)$ и имеет размерность $(m-1)$.\\
+    Если же задана система функций $F_1, \ldots , F_{m-k}$ таких, что
+    \[\forall i \in \{1, \ldots, m - k\} \hookrightarrow F_i \in C^{1}(\mathbb{R}^m, \mathbb{R}) \quad \text{ и } \quad \{\nabla F_1(p), \ldots, \nabla F_{m - k}(p)\} \text{ --- ЛНЗ},\]
+    а множество $M$ является множеством нулей всех функций этой системы, то пространство $T_p M$ представляет собой множество решений системы
+    \[
+\begin{cases}
+\dfrac{\partial F_1}{\partial x_1}(p)h_1 + \ldots + \dfrac{\partial F_1}{\partial x_m}(p)h_m = 0 \\
+\vdots \\
+\dfrac{\partial F_{m-k}}{\partial x_1}(p)h_1 + \ldots + \dfrac{\partial F_{m-k}}{\partial x_m}(p)h_m = 0
+\end{cases}
+\]
+Отсюда сразу вытекает, что $\dim T_p M = k$. Действительно, матрица системы выше есть матрица, составленная из градиентов функций $F_1, \ldots, F_{m - k}$. Но все эти градиенты линейно независимы, а значит
+ранг этой матрицы равен $m - k$. Следовательно, размерность пространства решений этой системы равна $m - (m - k) = k$. 
+\end{example}
+
+
+\section{Экстремумы}
+
+\begin{definition}
+    Пусть $E\subset \mathbb{R}^m$, $E\neq \varnothing$, $x^0\in E$. Пусть $f \colon E\to \mathbb{R}$. 
+    Будем говорить, что точка $x^0$ является точкой локального максимума $f$ на $E$ (локального минимума $f$ на $E$), если 
+    \[ \exists \delta>0: f(x) \le f(x^0) \ \forall x\in B_{\delta}(x^0) \cap E \]
+    \[ \left(\exists \delta>0: f(x) \ge f(x^0) \ \forall x\in B_{\delta}(x^0) \cap E\right) \]
+\end{definition}
+
+\begin{definition}
+    Если $x^0$ --- внутренняя точка множества $E$, то говорят о \textbf{безусловном экстремуме}. \\
+    Если $E$ --- гладкое многообразие, то говорят об \textbf{условном или относительном экстремуме}. 
+\end{definition}
+
+\begin{definition}
+   \[ \text{Локальный экстремум} \iff   
+   \left[
+    \begin{array}{l}
+        \text{локальный минимум} \\
+        \text{локальный максимум}
+    \end{array}
+    \right. \]
+\end{definition}
+
+\subsection{Безусловный экстремум}
+
+\begin{theorem}[Необходимое условие безусловного экстремума]
+    Пусть $B_{\delta} (x^0)\subset \mathbb{R}^n$, $f \colon B_{\delta} (x^0)\to \mathbb{R}$. Пусть $x^0$ --- точка безусловного экстремума функции $f$.
+    Тогда, если
+    \[\exists \frac{\partial f}{\partial x_1} (x^0), \ldots , \exists \frac{\partial f}{\partial x_n}(x^0),\]
+    то все они равны $0$.
+\end{theorem}
+
+\begin{proof}
+    Фиксируем $i\in \{1, \ldots ,n\}$ и рассмотрим функцию 
+    \[g_i(t)= f(x_1^0, \ldots , x_{i}^0 + t, \ldots ,x_n^0) \quad \forall t \in (-\delta, \delta)\]
+    Заметим, что $0$ --- точка локального экстремума для функции $g_i$. Но просто из определения частной производной немедленно вытекает
+    \[ \exists \frac{\partial f}{\partial x_i} (x^0) \iff \exists \frac{\mathrm{d} g_i}{\mathrm{d} t} (0) \]
+    Кроме того, если $0$ --- точка локального экстремума $g_i$, то в силу необходимого условия экстремума для функции одной переменной 
+    \[\frac{\mathrm{d} g_i}{\mathrm{d} t} (0) = 0\]
+    Следовательно, если существует частная производная $f$ по $x_i$ в точке $x^0$, то существует и полноценная производная функции $g_i$ в нуле, равная нулю. Более того, в таком случае определение частной производной влечёт равенство
+    \[ \frac{\mathrm{d} g_i}{\mathrm{d} t} (0) = \frac{\partial f}{\partial x_i} (x^0) = 0 \]
+    Таким образом, в силу произвольного выбора номера $i$ теорема доказана.
+\end{proof}
+
+\end{document}

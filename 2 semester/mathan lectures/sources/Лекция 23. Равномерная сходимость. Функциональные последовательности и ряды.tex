@@ -1,0 +1,249 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{soul}
+\usepackage{multicol}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\rg}{rg}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Мама, мама, что я буду делать? Мама, мама, как я буду жить?}
+\fancyhead[R]{\href{https://t.me/lost_luna}{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 23. Равномерная сходимость. Равномерная ограниченность. Функциональные последовательности и ряды. \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Равномерная сходимость}
+
+\begin{theorem} \label{eq:theorem 1.1}
+    Пусть $X \neq \varnothing$, $\{f_n\}_{n = 1}^\infty$ --- функциональная последовательность, определенная на $X$. Пусть $f:X \to R$. Тогда 
+    \[f_n \underset{X}{\rightrightarrows} f, \ n \to \infty \Longleftrightarrow \sup_{x \in X} \left|f(x) - f_n(x)\right| \to 0, \ n \to \infty\]
+\end{theorem}
+
+\begin{proof}
+    Заметим равносильность следующих условий: \[ \left|f_n(x) - f(x)\right| \leq \varepsilon \ \forall x \in X \Longleftrightarrow \sup_{x \in X} \left|f(x) - f_n(x)\right|
+    \leq \varepsilon\] Следовательно, \[ \left\{ \begin{array}{l}
+        \displaystyle \forall \varepsilon > 0 \ \exists N(\varepsilon) \in \mathbb{N}: \ \forall n \geq N(\varepsilon), \ n \in \mathbb{N} \hookrightarrow \sup_{x \in X} 
+        \left|f(x) - f_n(x)\right| \leq \varepsilon \ (1) \\
+        \displaystyle \forall \varepsilon > 0 \ \exists N(\varepsilon) \in \mathbb{N}: \ \forall n \geq N(\varepsilon), \ n \in \mathbb{N} \hookrightarrow \left|f(x) - f_n(x)\right| 
+        \leq \varepsilon \ \forall x \in X \ (2)
+    \end{array} \right.\ \]
+    $(1)$ и $(2)$ равносильны, и мы получили утверждение теоремы, а значит, победа нас настигла.
+\end{proof}
+
+\begin{consequence}[Критерий равномерной сходимости, полезный для семинаров]
+    \[f_n \underset{X}{\rightrightarrows} f, \ n \to \infty \Longleftrightarrow \exists \{a_n\}_{n = 1}^\infty \subset \mathbb{R}:\] 
+    \begin{enumerate}
+        \item $\forall x \in X \text{ и } \forall n \in \mathbb{N} \hookrightarrow \left|f_n(x) - f(x)\right| \leq a_n$
+        \item $\displaystyle \exists \lim_{n \to \infty} a_n = 0$
+    \end{enumerate} 
+\end{consequence}
+
+\begin{proof}
+    ($\Longleftarrow$): Если выполнены условия $(1)$ и $(2)$, то \[\sup_{x \in X} |f_n(x) - f(x)| \leq a_n \quad \forall n \in \mathbb{N}\]
+    Так как $a_n \to 0, \ n \to \infty$, то $ \displaystyle \sup_{x \in X} |f_n(x) - f(x)| \to 0, \ n \to \infty$. Отсюда в силу теоремы (\ref{eq:theorem 1.1})
+    немедленно получаем, что $\displaystyle f_n \underset{X}{\rightrightarrows} f, \ n \to \infty$. \\
+    ($\Longrightarrow$): Пусть $\displaystyle f_n \underset{X}{\rightrightarrows} f, \ n \to \infty$. Покажем, что выполнены условия $(1)$ и $(2)$: для этого объявим
+    по определению \[a_n := \sup_{x \in X} |f_n(x) - f(x)|, \ n \in \mathbb{N}\]
+    В силу теоремы (\ref{eq:theorem 1.1}), \[f_n \underset{X}{\rightrightarrows} f, \ n \to \infty \Longleftrightarrow \sup_{x \in X} \left|f(x) - f_n(x)\right| \to 0, n \to \infty\]
+    Тогда $a_n \to 0, \ n \to \infty$, а значит, выполнено условие $(2)$. Условие $(1)$ очевидным образом выполняется, так как по определению супремума 
+    \[ \forall x \in X \text{ и } \forall n \in \mathbb{N} \hookrightarrow \left|f_n(x) - f(x)\right| \leq \sup_{x \in X} \left|f(x) - f_n(x)\right|\]
+\end{proof}
+
+\begin{remark}
+    Геометрическая интуиция равномерной сходимости: начиная с некоторого номера $m \in \mathbb{N}$, все точки графика функции $f_n (n \geq m)$ находятся в $\varepsilon$-трубочке
+    вокруг предельной функции $f$.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{pictures/Геометрическая_интуиция_равномерной_сходимости.png}
+    \end{figure}
+\end{remark}
+
+\begin{theorem}[Критерий отсутствия равномерной сходимости, тоже полезный для семинаров]
+    \[f_n \underset{X}{\not\rightrightarrows} f, \ n \to \infty \Longleftrightarrow \ \exists \{x_n\} \subset X: 
+    \ f_n(x_n) - f(x_n) \not\to 0, \ n \to \infty\]
+\end{theorem}
+
+\begin{proof}
+    ($\Longleftarrow$): Пусть $\exists \{x_n\} \subset X: \ f_n(x_n) - f(x_n) \not\to 0, \ n \to \infty$, тогда \[\sup_{x \in X} |f_n(x) - f(x)| \geq |f_n(x_n) - f(x_n)| \ \
+    \forall n \in \mathbb{N}\]
+    Но так как $f_n(x_n) - f(x_n) \not\to 0, \ n \to \infty$, то и $\displaystyle \sup_{x \in X} |f_n(x) - f(x)| \not\to 0, \ n \to \infty$. Значит, по теореме (\ref{eq:theorem 1.1}), 
+    $\displaystyle f_n \underset{X}{\not\rightrightarrows} f, \ n \to \infty$.\\
+    ($\Longrightarrow$): Пусть $f_n \underset{X}{\not\rightrightarrows} f, \ n \to \infty$. Тогда пусть \[\forall n \in \mathbb{N} \ \ M_n := \sup_{x \in X} |f_n(x) - f(x)|\]
+    По определению супремума, \[\forall n \in \mathbb{N} \ \exists x_n \in X: \  |f_n(x_n) - f(x_n)| > \left[\begin{array}{l}
+        \displaystyle \frac{M_n}{2}, \text{ если } M_n < +\infty \\ \displaystyle 1, \text{ если } M_n = +\infty
+    \end{array}\right. \label{eq:star1} \tag{*}\]
+    В силу отсутствия равномерной сходимости, $M_n \not\to 0, \ n \to \infty$ (по теореме \ref{eq:theorem 1.1}). Тогда существует подпоследовательность $\{M_{n_j}\} \in \mathbb{N}$
+    и $\exists \ m > 0:$ \[\ M_{n_j} \geq m \ \ \forall j \in \mathbb{N}\] Отсюда и из (\ref{eq:star1}) легко видеть, что \[|f_(x_{n_j}) - f_{n_j}(x_{n_j})| \geq \frac{\min \{1, m\}}{2} > 0 \quad \forall j \in \mathbb{N}\]
+    А это означает, что $f_n(x_n) - f(x_n) \not\to 0, \ n \to \infty$.
+\end{proof}
+
+\begin{remark}[Маэстро предупреждает!]
+    При исследовании на равномерную сходимость нужно сначала исследовать поточечную сходимость, а потом уже проверять равномерную сходимость к найденному поточечному пределу.
+    Последовательность $f_n$ не может поточечно сходиться к $f$, а равномерно к $g \neq f$.
+\end{remark}
+
+\begin{remark}
+    Из того, что $\displaystyle f_n \underset{X}{\rightrightarrows} f, \ n \to \infty$ и $\displaystyle \forall x \in X \ \exists \lim_{n \to \infty} \frac{f_n(x)}{g_n(x)} = 1$, 
+    \textbf{НЕ СЛЕДУЕТ}, что $ g_n \underset{X}{\rightrightarrows} f, \ n \to \infty$. Почему это так? Дело в том, что $\forall x \in X$ своя скорость стремления к $1$. Проиллюстрируем
+    верность сего утверждения следующим примером:
+\end{remark}
+
+\begin{example}
+    Пусть $X = (0, 1)$. Пусть $\displaystyle f_n(x) = \frac{1}{n}, \ g_n(x) = \frac{1}{n} + \frac{1}{n^2 x} \ \forall x \in X, \ \forall n \in \mathbb{N}$. Легко видеть,
+    что \[f_n \underset{X}{\rightrightarrows} 0, \ n \to \infty, \text{ но } g_n(x) \underset{X}{\not\rightrightarrows} 0, \ n \to \infty\] Так как существует такая 
+    последовательность $\displaystyle x_n = \frac{1}{n^2}$, что \[g_n(x_n) = \frac{1}{n} + 1 \to 1 \neq 0, \ n \to \infty\] При этом $g_n \underset{X}{\rightarrow} 0, \ 
+    n \to \infty$. Кроме того, \[\frac{f_n(x)}{g_n(x)} = \frac{\displaystyle \frac{1}{n}}{\displaystyle \frac{1}{n} + \frac{1}{n^2 x}} = \frac{1}{\displaystyle 1 + \frac{1}{nx}} \to 1, \ n \to \infty\]
+\end{example}
+
+\begin{theorem}[Критерий Коши]
+    Последовательность $\{f_n\} \underset{X}{\rightrightarrows} f, \ n \to \infty \ \Longleftrightarrow$ выполнено условие Коши равномерной сходимости функциональной последовательности:
+    \[\forall \varepsilon > 0 \ \exists N(\varepsilon) \in \mathbb{N}: \ \forall m, n \geq N(\varepsilon) \hookrightarrow |f_n(x) - f_m(x)| < \varepsilon \quad \forall x \in X \label{eq:star2} \tag{*}\] 
+\end{theorem}
+
+\begin{proof}
+    ($\Longrightarrow$): Пусть $\{f_n\} \underset{X}{\rightrightarrows} f, \ n \to \infty$, тогда \[ \forall \varepsilon > 0 \ \exists N(\varepsilon) \in \mathbb{N}: \ \forall 
+    n \geq N(\varepsilon), \ \forall x \in X \hookrightarrow |f(x) - f_n(x)| < \frac{\varepsilon}{2}\]
+    \[ \forall \varepsilon > 0 \ \exists N(\varepsilon) \in \mathbb{N}: \ \forall m \geq N(\varepsilon), \ \forall x \in X \hookrightarrow |f(x) - f_m(x)| < \frac{\varepsilon}{2}\]
+    Отсюда легко получаем, что \[\forall \varepsilon > 0 \ \exists N(\varepsilon) \in \mathbb{N}: \ \forall n, m \geq N(\varepsilon), \ \forall x \in X \hookrightarrow 
+    |f_n(x) - f_m(x)| =\] \[= |f_n(x) \pm f(x) - f_m(x)| \leq |f(x) - f_n(x)| + |f(x) - f_m(x)| < \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon \quad \forall x \in X\] 
+    ($\Longleftarrow$): Пусть выполнено условие Коши. Покажем, что есть равномерная сходимость. Заметим, что из (\ref{eq:star2}) $\Longrightarrow \forall x \in X \ \{f_n(x)\}$ ---
+    числовая последовательность, удовлетворяющая условию Коши для числовой последовательности. Тогда, в силу критерия Коши для числовой последовательности, \[ \forall x \in X \quad \exists \lim_{n \to \infty}
+    f_n(x) =: f(x)\] Следовательно, мы получили функцию $f: X \to \mathbb{R}$. Воспользуемся (\ref{eq:star2}):
+    \[\forall \varepsilon > 0 \ \exists N(\varepsilon) \in \mathbb{N}: \ \forall m, n \geq N(\varepsilon) \hookrightarrow |f_n(x) - f_m(x)| < \varepsilon \quad \forall x \in X\]
+    Зафиксируем $x \in X$ и $n \geq N(\varepsilon)$, а $m$ устремим в бесконечность, то есть перейдем к пределу в неравенстве $|f_n(x) - f_m(x)| < \varepsilon$
+    при $m \to \infty$. Получим, что \[|f_n(x) - f(x)| \leq \varepsilon \quad \forall x \in X, \ \forall n \geq N(\varepsilon)\] Следовательно, \[ \forall \varepsilon > 0 \ \exists
+    N(\varepsilon) \in \mathbb{N}: \ \forall n \geq N(\varepsilon) \hookrightarrow |f(x) - f_n(x)| \leq \varepsilon \quad \forall x \in X\] А это в свою очередь означает, что 
+    $\{f_n\} \underset{X}{\rightrightarrows} f, \ n \to \infty$.
+\end{proof}
+
+\section{Равномерная ограниченность}
+
+\begin{definition}
+    Пусть $\{f_n\}$ --- последовательность функций, отображающих $X$ в $\mathbb{R}$. Будем говорить, что $\{f_n\}$ равномерно ограничена на $X$, если 
+    \[\exists C > 0: \ |f_n(x)| \leq C \quad \forall n \in \mathbb{N}, \ \forall x \in X\]
+\end{definition}
+
+\begin{statement}
+    Пусть $\{f_n\}$ равномерно ограничена на $X$ и $g_n \underset{X}{\rightrightarrows} 0, \ n \to \infty$. Тогда \[f_n \cdot g_n \underset{X}{\rightrightarrows} 0, \ n \to \infty\]
+\end{statement}
+
+\begin{proof}
+    По определению, $\exists C > 0: \ |f_n(x)| \leq C \ \forall n \in \mathbb{N}, \forall x \in X$. Следовательно, \[|f_n(x) \cdot g_n(x)| \leq C \cdot \sup_{\widetilde{x} \in X}
+    |g_n(\widetilde{x})| \quad \forall n \in \mathbb{N}, \ \forall x \in X\]
+    Но в силу теоремы (\ref{eq:theorem 1.1}) $\displaystyle \sup_{\widetilde{x} \in X} |g_n(\widetilde{x})| \to 0, \ n \to \infty$. Тогда \[\sup_{x \in X}
+    |f_n(x) \cdot g_n(x)| \to 0, \ n \to \infty\] Отсюда по той же замечательной теореме (\ref{eq:theorem 1.1}) получаем, что $f_n \cdot g_n \underset{X}{\rightrightarrows} 0, \ n \to \infty$.
+\end{proof}
+
+\begin{remark}
+    Равномерную ограниченность в утверждении выше нельзя заменить на поточечную ограниченность, то есть если \[\forall x \in X \ \exists C(x) > 0: \ |f_n(x)| \leq C(x) \ \forall 
+    n \in \mathbb{N} \text{ и } g_n \underset{X}{\rightrightarrows} 0, \ n \to \infty,\] то это не означает, что $f_n \cdot g_n \underset{X}{\rightrightarrows} 0, \ n \to \infty$.
+    Покажем это в следующем примере:
+\end{remark}
+
+\begin{example}
+    Пусть $f_n(x) = \displaystyle \frac{1}{x} \ \forall x \in \left(0, 1\right), \ \forall n \in \mathbb{N}$. То есть это стационарная последовательность. Кроме того,
+    \[\forall x \in X \ \exists C(x) = \frac{1}{x}: \ |f_n(x)| \leq C(x) \ \forall n \in \mathbb{N}\] Следовательно, $f_n$ поточечно ограничена (но не равномерно!).\\
+    Пусть $\displaystyle g_n(x) := \frac{\sin(nx)}{n} \ \forall x \in X, \ 
+    \forall n \in \mathbb{N}$. При этом, по критерию равномерной сходимости, $\displaystyle g_n(x) \underset{(0, 1)}{\rightrightarrows} 0, \ n \to \infty$, так как существует 
+    последовательность \[a_n := \frac{1}{n} \to 0, \ n \to \infty: \ \sup_{x \in (0, 1)} |g_n(x)| \leq a_n\] Теперь перемножим наши функции: \[f_n(x) \cdot g_n(x) = 
+    \frac{\sin(nx)}{nx} \quad x \in (0, 1), \ \forall n \in \mathbb{N}\] Но $\displaystyle f_n(x) \cdot g_n(x) \underset{(0, 1)}{\not\rightrightarrows} 0, n \to \infty$, так 
+    как существует нехорошая последовательность \[x_n = \frac{1}{n}: \ f_n(x_n) \cdot g_n(x_n) = \sin 1 \not\to 0, \ n \to \infty\] 
+\end{example}
+
+\section{Функциональные ряды}
+
+\begin{definition}
+    Пусть $X \neq \varnothing$ --- абстрактное множество и $\{f_n\}$ --- последовательность вещественных функций на $X$. Тогда пара последовательностей $\left(\{f_n\}, \{S_n\}\right)$
+    называется функциональным рядом, если \[S_n(x) := \sum_{k = 1}^{n} f_k(x) \quad \forall n \in \mathbb{N}, \ \forall x \in X\] При этом последовательность $\{S_n\}$ 
+    называется последовательностью частичных сумм функционального ряда. \[\sum_{k = 1}^{\infty} f_k \text{ --- обозначение функционального ряда}\]
+\end{definition}
+
+\begin{definition}
+    Будем говорить, что функциональный ряд $\displaystyle \sum_{k = 1}^{\infty} f_k$ равномерно сходится на $X$, если \[\exists S: X \to \mathbb{R}: \ S_n \underset{X}{\rightrightarrows}
+    S, \ n \to \infty\]
+    Если же $S_n \underset{X}{\rightarrow} S, \ n \to \infty$, то говорят, что функциональный ряд $\displaystyle \sum_{k = 1}^{\infty} f_k$ сходится поточечно на $X$.
+\end{definition}
+    
+\begin{definition}
+    Если функциональный ряд $\displaystyle \sum_{k = 1}^{\infty} f_k$ поточечно сходится на $X$, то $n$-ым остатком назовем $\displaystyle r_n(x) := \sum_{k = n + 1}^{\infty}
+    f_k(x), \ x \in X$.
+\end{definition}
+
+\begin{theorem}[Очевидное следствие из определения] \label{theorem:3.1}
+    Пусть функциональный ряд $\displaystyle \sum_{k = 1}^{\infty} f_k$ поточечно сходится на $X$. Тогда $\displaystyle \sum_{k = 1}^{\infty} f_k$ равномерно сходится на $X$
+    $\Longleftrightarrow$ $r_n \underset{X}{\rightrightarrows} 0, \ n \to \infty$.
+\end{theorem}
+
+\begin{theorem}[Критерий Коши равномерной сходимости функционального ряда]
+    Функциональный ряд $\displaystyle \sum_{k = 1}^{\infty} f_k$ равномерно сходится на $X$ $\Longleftrightarrow$ выполнено условие Коши равномерной сходимости функционального 
+    ряда: \[\forall \varepsilon > 0: \ \exists N(\varepsilon) \in \mathbb{N}: \ \forall n \geq N(\varepsilon), \ \forall p \in \mathbb{N} \hookrightarrow \left|\sum_{k = n + 1}^{n + p}
+    f_k(x)\right| < \varepsilon \quad \forall x \in X\]
+\end{theorem}
+
+\begin{proof}
+    Для доказательства нужно воспользоваться критерием Коши для функциональных последовательностей, а именно, для последовательности частичных сумм функционального ряда.
+\end{proof}
+
+\begin{consequence}[Необходимое условие равномерной сходимости функционального ряда]
+    Если функциональный ряд $\displaystyle \sum_{k = 1}^{\infty} f_k$ равномерно сходится на $X$, то $f_k \underset{X}{\rightrightarrows} 0, \ n \to \infty$.
+\end{consequence}
+
+\begin{proof}
+    Для доказательства нужно записать условие Коши равномерной сходимости функционального ряда при $p = 1$ и увидеть, что это в чистом виде определение равномерной сходимости к 0
+    функциональной последовательности.
+\end{proof}
+
+\begin{example}
+    Пусть существует "плохая последовательность" $\ \{x_n\} \subset X$: $\displaystyle \sum_{n = 1}^{\infty} f_n(x_n)$ расходится. Верно ли, что функциональный ряд 
+    $\displaystyle \sum_{n = 1}^{\infty} f_n$ не сходится равномерно на $X$? \\
+    Казалось бы, $|f(x_n) - f_n(x_n)| \not\to 0, \ n \to \infty$, тогда равномерной сходимости нет и мы победили. Но не все так однозначно: в терминах рядов отсутствие
+    равномерной сходимости равносильно \[|S(x_n) - S_n(x_n)| \not\to 0, \ n \to \infty \ \Longleftrightarrow \sum_{k = n + 1}^{\infty} f_k(x_n) \not\to 0, \ n \to \infty\]
+    Заметим, что $x_n$ зафиксировано, а по $k$ мы суммируем, и в таком случае мы действительно можем утверждать, что ряд не сходится равномерно. Но если мы нашли такую хитрую последовательность,
+    что $k$ тоже меняется, то есть $\displaystyle \sum_{k = n + 1}^{\infty} f_k(x_k) \not\to 0, \ n \to \infty$, то это ничего не доказывает. В самом деле, рассмотрим следующий пример:
+    \[f_k(x) = \left\{\begin{array}{l}
+        \displaystyle \frac{1}{k}, \text{ если } x \in \left[\frac{1}{2^{k}}, \frac{1}{2^{k - 1}}\right), \quad k \in \mathbb{N} \\
+        \displaystyle 0, \text{ иначе}
+    \end{array}\right.\]
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{pictures/Хитрый_пример_равномерной_сходимости_фр.png}
+        \caption{вот такую бяку рассмотрим}
+    \end{figure}
+    Возьмем последовательность $\displaystyle x_k = \frac{1}{2^k}$, тогда $\displaystyle f_k(x_k) = \frac{1}{k}$, а так как ряд $\displaystyle \sum_{k = 1}^{\infty} 
+    \frac{1}{k}$ расходится, то и $\displaystyle \sum_{k = 1}^{\infty} f_k(x_k)$ расходится. Но при этом совершенно замечательным образом функциональный ряд $\displaystyle
+    \sum_{k = 1}^{\infty} f_k$ будет равномерно сходиться на $\mathbb{R}$. 
+    Положим \[ S(x) = \left\{\begin{array}{l}
+        \displaystyle \frac{1}{k}, \text{ если } x \in \left[\frac{1}{2^{k}}, \frac{1}{2^{k - 1}}\right), \quad k \in \mathbb{N} \\
+        \displaystyle 0, \text{ иначе}
+    \end{array}\right.\]
+    Тогда $\displaystyle \sum_{k = 1}^{\infty} f_k$ равномерно сходится к $S$ на $\mathbb{R}$. В самом деле, поточечная сходимость очевидна, так как $ \forall x \in \mathbb{R}$ 
+    не более одного члена ряда отлично от 0. При этом $\displaystyle |r_n(x)| \leq \frac{1}{n} \ \forall n \in \mathbb{N}, \ \forall x \in \mathbb{R}$. Тогда $r_n 
+    \underset{\mathbb{R}}{\rightrightarrows} 0, \ n \to \infty$. А значит, по теореме (\ref{theorem:3.1}) $\displaystyle \sum_{k = 1}^{\infty} f_k$ равномерно сходится
+    на $\mathbb{R}$.
+\end{example}
+
+\end{document}

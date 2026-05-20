@@ -1,0 +1,254 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\DIF}{DIF}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Чил аут ребятки, копим свагу}
+\fancyhead[R]{\href{https://t.me/ceagest}{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 6. Линейные операторы. Произведение линейных операторов. Дифференциальный линейный оператор. Формула Тейлора с
+    остаточным членом в форме Лагранжа и в форме Пеано.
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Линейные операторы. Произведение линейных операторов}
+
+\begin{theorem}
+    Пусть $A \colon \mathbb{R}^n \to \mathbb{R}^m$ --- линейное отображение (линейный оператор), причём
+    в линейных нормированных пространствах $\mathbb{R}^n$ и $\mathbb{R}^m$ берётся евклидова норма. Тогда $\left\lVert A \right\rVert < +\infty $.
+\end{theorem}
+
+\begin{proof}
+    Давайте вспомним, что любое линейное отображение в каноническом базисе однозначно определяется своей матрицей:
+    \begin{equation*}
+        A = 
+        \begin{pmatrix}
+            a_{11} & \ldots & a_{1n} \\
+            \vdots & \ddots & \vdots \\
+            a_{m1} & \ldots & a_{mn}
+        \end{pmatrix}
+    \end{equation*}
+    Здесь $i$-ый столбец есть образ $i$-го базисного вектора. Оценим же теперь норму оператора $A$,
+    разложив вектор $x$ по каноническому базису и рассмотрев следующее выражение:
+    \begin{equation*}
+        \left\lVert A(x) \right\rVert = \left\lVert A \left(\sum_{i = 1}^n x_i e_i \right)\right\rVert = \left[\text{линейность оператора}\right] = \left\lVert \sum_{i = 1}^n x_i \cdot A(e_i) \right\rVert
+        \leq
+    \end{equation*}
+    \begin{equation*}
+        \leq \left[\text{неравенство треугольника}\right] \leq \sum_{i = 1}^n \left\lvert x_i \right\rvert \cdot \left\lVert A(e_i) \right\rVert \leq [\text{неравенство КБШ}] \leq  
+    \end{equation*}
+    \begin{equation*}
+        \leq \left(\sum_{i = 1}^n \left\lvert x_i \right\rvert^2 \right)^{\frac{1}{2}} \left(\sum_{i = 1}^n \left\lVert A(e_i) \right\rVert^2 \right)^{\frac{1}{2}} = \left\lVert x \right\rVert  \left(\sum_{i = 1}^n \left\lVert A(e_i) \right\rVert^2 \right)^{\frac{1}{2}} = \left\lVert x \right\rVert \left(\sum_{i = 1}^n \sum_{j = 1}^m a_{ij}^2\right)^{\frac{1}{2}}
+    \end{equation*}
+    Пробежав глазками цепочку неравенств, заключаем:
+    \[\left\lVert A(x) \right\rVert \leq  \left\lVert x \right\rVert \left(\sum_{i = 1}^n \sum_{j = 1}^m a_{ij}^2\right)^{\frac{1}{2}}\]
+    Поделим это неравенство на $\left\lVert x \right\rVert > 0$ (рассматриваем ненулевые векторы) и возьмём супремум по всем ненулевым векторам $x$ от обеих частей полученного счастья:
+    \[\left\lVert A \right\rVert = \sup_{x \neq 0} \frac{\left\lVert A(x) \right\rVert}{\left\lVert x \right\rVert} \leq \left(\sum_{i = 1}^n \sum_{j = 1}^m a_{ij}^2\right)^{\frac{1}{2}} < +\infty \]
+\end{proof}
+
+\begin{remark}
+    Если в линейных нормированных пространствах $\mathbb{R}^n$ и $\mathbb{R}^m$ брать не евклидовы нормы, то теорема всё равно останется справедливой. Чтобы это понять, достаточно лишь вспомнить, 
+    что в конечномерных линейных пространствах все нормы эквивалентны.
+\end{remark}
+
+\begin{definition}
+    \textbf{Ядром} линейного отображения $A$ будем называть множество всех векторов, которые под действием $A$ переходят в нулевой вектор.
+    Это множество будем обозначать $\ker A$.
+\end{definition}
+
+\begin{definition}
+    Пусть $E_1$, $E_2$ и $E_3$ --- линейные пространства. Пусть $A \colon E_1 \to E_2$ --- линейный оператор. Пусть $B \colon E_2 \to E_3$ --- линейный оператор. Тогда композиция $C = B \circ A$ называется \textbf{произведением} линейных операторов $A$ и $B$.
+    Для краткости знак композиции обычно опускают и записывают $C = BA$.
+\end{definition}
+
+\begin{lemma} \label{lemma:1.1}
+    Пусть $E_1$, $E_2$ и $E_3$ --- линейные пространства. Пусть $A \colon E_1 \to E_2$ --- линейный оператор. Пусть $B \colon E_2 \to E_3$ --- линейный оператор. Тогда $C = BA$ --- линейный оператор.
+\end{lemma}
+
+\begin{proof}
+    Доказательство состоит просто в проверке определения линейного оператора для $C$, пользуясь 
+    линейностью операторов $A$ и $B$:
+    \begin{equation*}
+        \forall \alpha, \beta \in \mathbb{R} \; \; \forall x, y \in E_1 \hookrightarrow
+        C(\alpha x + \beta y) = B\left(A\left(\alpha x + \beta y\right)\right) = B\left(\alpha A(x) + \beta A(y)\right) =
+    \end{equation*}
+    \begin{equation*}
+        = \alpha B\left(A(x)\right) + \beta B\left(A(y)\right) = \alpha \left(B \circ A\right)(x) + \beta \left(B \circ A\right)(y) = \alpha C(x) + \beta C(y)
+    \end{equation*}
+\end{proof}
+
+\begin{lemma}
+    Пусть $\left(E_1, \left\lVert \; \cdot \; \right\rVert_1 \right)$, $\left(E_2, \left\lVert \; \cdot \; \right\rVert_2 \right)$, $\left(E_3, \left\lVert \; \cdot \; \right\rVert_3 \right)$ --- линейные нормированные пространства. 
+    Пусть $A \colon E_1 \to E_2$ --- ограниченный линейный оператор. Пусть $B \colon E_2 \to E_3$ --- ограниченный линейный оператор. Тогда $C = BA$ --- ограниченный линейный оператор.
+\end{lemma}
+
+\begin{proof}
+    Линейность оператора $C$ следует из леммы \ref{lemma:1.1}. Покажем ограниченность линейного оператора $C$. 
+    Для этого достаточно лишь вспомнить последнюю лемму из предыдущей лекции об оценке нормы значения ограниченного линейного оператора через его норму и норму его аргумента: 
+    \[\left\lVert C(x) \right\rVert_3 = \left\lVert B(A(x)) \right\rVert_3 \leq \left\lVert B \right\rVert \cdot \left\lVert A(x) \right\rVert_2 \leq \left\lVert B \right\rVert \cdot \left\lVert A \right\rVert \cdot \left\lVert x \right\rVert_1\]
+    Поделим обе части полученного неравенства на $\left\lVert x \right\rVert_1 > 0$, возьмём от обеих его частей супремум по все ненулевым векторам $x$ и, воспользовавшись ограниченностью линейных операторов $A$ и $B$, имеем:
+    \[\left\lVert C \right\rVert = \sup_{x \neq 0} \frac{\left\lVert C(x) \right\rVert_3}{\left\lVert x \right\rVert_1} \leq \left\lVert B \right\rVert \cdot \left\lVert A \right\rVert < +\infty\]
+    Это по определению и означает, что линейный оператор $C$ является ограниченным, что и требовалось.
+\end{proof}
+
+\section{Дифференциальный линейный оператор}
+
+\begin{definition}
+    Пусть $\Omega \subset \mathbb{R}^n$ --- открытое множество, $F \in \DIF \left(\Omega\right)$. Пусть зафиксирован вектор $\lambda = \left(\lambda_1, \ldots, \lambda_n\right) \in \mathbb{R}^n \setminus \{0\}$. Определим дифференциальный линейный оператор $A_{\lambda}$ следующим образом:
+    \[A_{\lambda} := \sum_{i = 1}^n \lambda_i \frac{\partial}{\partial x_i}\]
+    \begin{equation*}
+        A_{\lambda}[F](x) := \sum_{i = 1}^n \lambda_i \frac{\partial F}{\partial x_i} (x)
+    \end{equation*}
+\end{definition}
+
+\begin{remark}
+    Отметим, что множество $\DIF \left(\Omega\right)$ с введёнными на нём операциями поточечного сложения и умножения на число является линейным пространством. Это легко показать просто проверкой определения.
+\end{remark}
+
+\begin{remark}
+    Так как $F \in \DIF \left(\Omega\right)$, то из второго необходимого условия дифференцируемости:
+    \[A_{\lambda}[F](x) = \sum_{i = 1}^n \lambda_i \frac{\partial F}{\partial x_i} (x) = \left\langle \nabla F(x), \lambda \right\rangle = \frac{\partial F}{\partial \lambda} (x) \]
+\end{remark}
+
+\begin{remark}
+    Если при всех прежних условиях и обозначениях зафиксировать $x^0 \in \Omega$, то получим:
+    \[A_{\mathrm{d} x}[F]\left(x^0\right) = \mathrm{d}_{x^0}F(\mathrm{d} x)\]
+    Здесь $\mathrm{d} x = \Delta x = \left(x_1 - x_1^0, \ldots, x_n - x_n^0\right)$. Важно понимать, что в данном случае $\mathrm{d} x$ является фиксированным вектором.
+\end{remark}
+
+\begin{remark}
+    Дифференциальный линейный оператор $A_{\lambda}$ действует из $\DIF \left(\Omega\right)$ в множество всех функций на $\Omega$.
+\end{remark}
+
+\begin{remark}
+    Дифференциальные операторы обычно не коммутируют. В качестве примера можно рассмотреть вторые частные производные функции двух переменных, которые, 
+    как помнит из предыдущих лекций внимательный читатель, не всегда совпадают.
+\end{remark}
+
+\section{Формула Тейлора с остаточным членом в форме Лагранжа и в форме Пеано}
+
+\begin{lemma}
+    Пусть $k \in \mathbb{N}_0$, $x^0 \in \mathbb{R}^n$, $B_{\delta} \left(x^0\right) \subset \mathbb{R}^n$ и $F \in \DIF^k \left(B_{\delta} \left(x^0\right) \right)$. Тогда
+    \[\forall x^{\ast} \in B_{\delta} \left(x^0\right) \; \; \forall \mathrm{d}x = x - x^{\ast} \; \; \hookrightarrow \; \; \mathrm{d}_{x^{\ast}}^k F \left(\mathrm{d} x\right) = A_{\mathrm{d} x}^k [F] \left(x^{\ast}\right)\]
+\end{lemma}
+
+\begin{proof}
+    Покажем требуемое индукцией по $k$. 
+    \\
+    \underline{\textit{База.}} При $k = 1$ равенство, очевидно, выполнено по определению дифференциального линейного оператора и свойствам дифференциала. 
+    \\
+    \underline{\textit{Шаг.}} Пусть утверждение доказано при $k = l$. Покажем его справедливость при $k = l + 1$. Для этого зафиксируем произвольно $x^{\ast} \in B_{\delta}\left(x^0\right)$ и рассмотрим следующее выражение:
+    \[A_{\mathrm{d} x}^{l + 1} [F] \left(x^{\ast}\right) = A_{\mathrm{d} x} \left[A_{\mathrm{d} x}^l [F] \right] \left(x^{\ast}\right) = [\text{предположение индукции}] = A_{\mathrm{d} x} \left[\mathrm{d}_x^l F \left(\mathrm{d} x\right)\right] \left(x^{\ast}\right) = \]
+    \[= [\text{свойство дифференциала}] = A_{\mathrm{d} x} \left[\sum_{i_1 = 1}^n \ldots \sum_{i_l = 1}^n \frac{\partial^l F}{\partial x_{i_1} \ldots \partial x_{i_l}} (x) \cdot \mathrm{d} x_{i_l} \ldots \mathrm{d} x_{i_1}\right] \left(x^{\ast}\right) = \]
+    \[= [\text{линейность оператора}] = \sum_{i_1 = 1}^n \ldots \sum_{i_l = 1}^n A_{\mathrm{d} x} \left[\frac{\partial^l F}{\partial x_{i_1} \ldots \partial x_{i_l}} (x)\right] \left(x^{\ast}\right) \cdot \mathrm{d} x_{i_l} \ldots \mathrm{d} x_{i_1} = \]
+    \[= \sum_{i_1 = 1}^n \ldots \sum_{i_l = 1}^n \sum_{i_{l + 1} = 1}^n \frac{\partial^{l + 1} F}{\partial x_{i_{l + 1}} \partial x_{i_1} \ldots \partial x_{i_l}} \left(x^{\ast}\right) \cdot \mathrm{d} x_{i_{l + 1}} \mathrm{d} x_{i_l} \ldots \mathrm{d} x_{i_1} = [\text{переобозначение индексов}] = \]
+    \[= \sum_{i_1 = 1}^n \ldots \sum_{i_{l + 1} = 1}^n \frac{\partial^{l + 1} F}{\partial x_{i_1} \ldots \partial x_{i_{l + 1}}} \left(x^{\ast}\right) \cdot \mathrm{d} x_{i_{l + 1}} \mathrm{d} x_{i_l} \ldots \mathrm{d} x_{i_1} = \mathrm{d}_{x^{\ast}}^{l + 1} F (\mathrm{d} x)\]
+    Из вышеприведённых выкладок ясно, что требуемое доказано.
+\end{proof}
+
+\begin{theorem}[Формула Тейлора с остаточным членом в форме Лагранжа]
+    Пусть $m \in \mathbb{N}_0$, $x^0 \in \mathbb{R}^n$, $B_{\delta} \left(x^0\right) \subset \mathbb{R}^n$ и $F \in \DIF^{m + 1} \left(B_{\delta} \left(x^0\right) \right)$.
+    Тогда $\forall x \in B_{\delta} \left(x^0\right)$ справедлива формула:
+    \[F(x) = \sum_{k = 0}^m \frac{\mathrm{d}_{x^0}^k F (\mathrm{d} x)}{k !} + \frac{\mathrm{d}_{x^{\theta}}^{m + 1} F (\mathrm{d} x)}{(m + 1)!}, \quad \theta \in (0, 1), \quad x^{\theta} = x^0 + \theta \left(x - x^0\right)\]
+\end{theorem}
+
+\begin{proof}
+    Зафиксируем $x \in B_{\delta} \left(x^0\right)$ и рассмотрим функцию $\varphi$ одного скалярного аргумента такую, что:
+    \[\varphi (t) = F \left(x^0 + t\left(x - x^0\right)\right)\]
+    Ясно, что $\varphi(0) = F \left(x^0\right)$ и $\varphi(1) = F \left(x\right)$. Теперь заметим, что на $\varphi$ можно посмотреть как на композицию отображений $F \circ H$, где $H(t) = x^0 + t \left(x - x^0\right)$. Учитывая это, покажем, что 
+    функция $\varphi$ является $m + 1$ раз дифференцируемой на $(-\varepsilon, 1 + \varepsilon) \supset [0, 1]$, где $\varepsilon > 0$ достаточно мало, то есть $\forall t \in (-\varepsilon, 1 + \varepsilon)$ выполнено, что 
+    $x^0 + t \left(x - x^0 \right) \in B_{\delta} \left(x^0\right)$. Проведём доказательство по индукции (важно понимать, что индукция здесь идёт не до бесконечности, а до абсолютно конкретного значения $m + 1$, поэтому при 
+    совершении шага индукции мы понимаем, что увеличенное на один значение, для которого показывается шаг, не превосходит $m + 1$).
+    \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\linewidth]{pictures/Формула Тейлора (Лагранж).jpg}
+    \end{figure} \leavevmode
+    \\
+    \underline{\textit{База.}} При $m = 0$ верно, так как утверждение вырождается в частный случай теоремы о дифференцируемости композиции отображений:
+    \begin{equation*}
+        \frac{\mathrm{d} \varphi}{\mathrm{d} t} (t) = D \varphi (t) = D \left(F \circ H\right) (t) = [\text{дифференцируемость композиции отображений}] = 
+    \end{equation*}
+    \begin{equation*}
+        = D F \left(H(t)\right) \cdot D H(t) = [\text{умножаем строку на столбец}] =
+    \end{equation*}
+    \begin{equation*}
+        = \sum_{i = 1}^n \frac{\partial F}{\partial x_i} \left(x^0 + t \left(x - x^0\right)\right) \cdot \left(x_i - x_i^0\right) = \mathrm{d}_{x^t} F (\mathrm{d} x), \quad x^t = x^0 + t \left(x - x^0\right)
+    \end{equation*}
+    \underline{\textit{Шаг.}} Пусть известно, что функция $\varphi$ дифференцируема $l$ раз на интервале $(-\varepsilon, 1 + \varepsilon)$. Покажем, что тогда она дифференцируема $l + 1$ раз на этом интервале. Для этого рассмотрим выражение:
+    \[\frac{\mathrm{d}^{l + 1} \varphi}{(\mathrm{d} t)^{l + 1}}(t) = \frac{\mathrm{d}}{\mathrm{d} t} \left(\frac{\mathrm{d}^{l} \varphi}{(\mathrm{d} t)^{l}} (t)\right) = [\text{предположение индукции}] = \frac{\mathrm{d}}{\mathrm{d} t} \left(\mathrm{d}_{x^t}^l F (\mathrm{d} x)\right) = \]
+    \[ = [\text{свойство дифференциала}] = \frac{\mathrm{d}}{\mathrm{d} t} \left(\sum_{i_1 = 1}^n \ldots \sum_{i_l = 1}^n \frac{\partial^l F}{\partial x_{i_1} \ldots \partial x_{i_l}} \left(x^t\right) \cdot \mathrm{d} x_{i_l} \ldots \mathrm{d} x_{i_1}\right) = \]
+    \[ = [\text{линейность дифференциального оператора}] = \sum_{i_1 = 1}^n \ldots \sum_{i_l = 1}^n \underbrace{\frac{\mathrm{d}}{\mathrm{d} t} \left(\frac{\partial^l F}{\partial x_{i_1} \ldots \partial x_{i_l}} \left(x^t\right)\right)}_{(\ast)} \cdot \; \mathrm{d} x_{i_l} \ldots \mathrm{d} x_{i_1}\]
+    Давайте заметим, что прекрасное выражение $(\ast)$ можно расписать по аналогии с базой индукции:
+    \[\frac{\mathrm{d}}{\mathrm{d} t} \left(\frac{\partial^l F}{\partial x_{i_1} \ldots \partial x_{i_l}} \left(x^t\right)\right) = \frac{\mathrm{d}}{\mathrm{d} t} \left(\frac{\partial^l F}{\partial x_{i_1} \ldots \partial x_{i_l}} \circ H \right) \left(t\right) = D \left(\frac{\partial^l F}{\partial x_{i_1} \ldots \partial x_{i_l}} \circ H \right) \left(t\right) = \]
+    \[= D \left(\frac{\partial^l F}{\partial x_{i_1} \ldots \partial x_{i_l}}\right) \left(H(t)\right) \cdot D H(t) = D \left(\frac{\partial^l F}{\partial x_{i_1} \ldots \partial x_{i_l}}\right) \left(x^t\right) \cdot D H(t) = \]
+    \[= \sum_{i_{l + 1} = 1}^n \frac{\partial^{l + 1} F}{\partial x_{i_{l + 1}} \partial x_{i_1} \ldots \partial x_{i_l}} \left(x^t\right) \left(x_{i_{l + 1}} - x_{i_{l + 1}}^0\right) = \sum_{i_{l + 1} = 1}^n \frac{\partial^{l + 1} F}{\partial x_{i_{l + 1}} \partial x_{i_1} \ldots \partial x_{i_l}} \left(x^t\right) \cdot \mathrm{d} x_{i_{l + 1}}\]
+    Собирая всё полученное добро воедино, итого имеем:
+    \[\frac{\mathrm{d}^{l + 1} \varphi}{(\mathrm{d} t)^{l + 1}}(t) = \sum_{i_1 = 1}^n \ldots \sum_{i_l = 1}^n \sum_{i_{l + 1} = 1}^n \frac{\partial^{l + 1} F}{\partial x_{i_{l + 1}} \partial x_{i_1} \ldots \partial x_{i_l}} \left(x^t\right) \cdot \mathrm{d} x_{i_{l + 1}} \mathrm{d} x_{i_l} \ldots \mathrm{d} x_{i_1} = \]
+    \[= [\text{переобозначение индексов + свойство дифференциала}] = \mathrm{d}_{x^t}^{l + 1} F (\mathrm{d} x)\]
+    Легко видеть, что получили требуемое. 
+    \\
+    Коль уж мы доказали такое замечательное свойство функции $\varphi$, то со спокойной душой можем 
+    применить для неё на отрезке $[0, 1]$ одномерную формулу Тейлора с остаточным членом в форме Лагранжа:
+    \[\varphi(1) = \sum_{k = 0}^m \frac{\varphi^{(k)}(0)}{k!} \cdot (1 - 0)^k + \frac{\varphi^{(m + 1)}(\theta)}{(m + 1)!} \cdot (1 - 0)^{m + 1}, \quad \theta \in (0, 1)\]
+    Подставляя только что полученное выражение для производной $\varphi$, с учётом того, что $\varphi(1) = F(x)$, имеем:
+    \[F(x) = \sum_{k = 0}^m \frac{\mathrm{d}_{x^0}^k F (\mathrm{d} x)}{k!} + \frac{\mathrm{d}_{x^{\theta}}^{m + 1} F (\mathrm{d} x)}{(m + 1)!}, \quad \theta \in (0, 1), \quad x^{\theta} = x^0 + \theta \left(x - x^0\right)\]
+    Смекалистый читатель теперь сразу приметит, что это \textit{end of the proof}.
+\end{proof}
+
+\begin{theorem}[Формула Тейлора с остаточным членом в форме Пеано]
+    Пусть $B_{\delta}\left(x^0\right) \subset \mathbb{R}^n$ и  $F \in C^m \left(B_{\delta}\left(x^0\right)\right)$. Тогда $\forall x \in B_{\delta} \left(x^0\right)$ справедлива формула:
+    \[F(x) = \sum_{k = 0}^m \frac{\mathrm{d}_{x^0}^k F (\mathrm{d} x)}{k!} + o \left(\left\lVert x - x^0 \right\rVert^m \right), \; x \to x^0\]
+    Напомним, что: 
+    \[o \left(\left\lVert x - x^0 \right\rVert^m \right) = \varepsilon_{x^0} (x) \cdot \left\lVert x - x^0 \right\rVert^m, \quad \varepsilon_{x^0} (x) \to 0, \; x \to x^0\]
+    При этом $\forall x \in B_{\delta} \left(x^0\right)$ вектор $\mathrm{d} x = x - x^0$ фиксирован.
+\end{theorem}
+
+\begin{proof}
+    Так как функция $F$ непрерывно дифференцируема $m$ раз, то все её частные производные $m$-го порядка непрерывны в шаре $B_{\delta} \left(x^0\right)$, а значит все её 
+    частные производные порядка $(m - 1)$ по достаточному условию дифференцируемости будут дифференцируемы в шаре $B_{\delta} \left(x^0\right)$. Тогда просто по определению $F \in \DIF^m \left(B_{\delta}\left(x^0\right)\right)$. Раз так, то можем применить 
+    для функции $F$ формулу Тейлора с остаточным членом в форме Лагранжа:
+    \[F(x) = \sum_{k = 0}^{m - 1} \frac{\mathrm{d}_{x^0}^k F (\mathrm{d} x)}{k !} + \frac{\mathrm{d}_{x^{\theta}}^{m} F (\mathrm{d} x)}{m!}, \quad \theta \in (0, 1), \quad x^{\theta} = x^0 + \theta \left(x - x^0\right)\]
+    По старой традиции воспользуемся в выражении выше умным нулём и получим:
+    \[F(x) = \sum_{k = 0}^{m} \frac{\mathrm{d}_{x^0}^k F (\mathrm{d} x)}{k !} + \underbrace{\frac{\mathrm{d}_{x^{\theta}}^{m} F (\mathrm{d} x)}{m!} - \frac{\mathrm{d}_{x^0}^m F (\mathrm{d} x)}{m !}}_{R_{x^0}^m[F](\mathrm{d} x)}\]
+    Оценим теперь остаточек $R_{x^0}^m[F](\mathrm{d} x)$. Нетрудно видеть, что его можно расписать по свойству дифференциала следующим образом:
+    \begin{equation*} \label{remain:3.2} \tag{$\star$}
+        R_{x^0}^m[F](\mathrm{d} x) = \frac{1}{m!} \sum_{i_1 = 1}^n \ldots \sum_{i_m = 1}^n \left[\frac{\partial^m F}{\partial x_{i_m} \ldots \partial x_{i_1}} \left(x^{\theta}\right) - \frac{\partial^m F}{\partial x_{i_m} \ldots \partial x_{i_1}} \left(x^0\right) \right] \mathrm{d} x_{i_1} \ldots \mathrm{d} x_{i_m}
+    \end{equation*} 
+    При этом $\forall i \in \{1, \ldots, m\}$ выполнено:
+    \[\left\lvert \mathrm{d} x_i \right\rvert = \left\lvert x_i - x_i^0 \right\rvert = \left(\left\lvert x_i - x_i^0 \right\rvert^2\right)^{\frac{1}{2}} \leq \left\lVert x - x^0 \right\rVert \]
+    Тогда из условия выше получаем, что:
+    \[\left\lvert \mathrm{d} x_{i_1} \ldots \mathrm{d} x_{i_m} \right\rvert \leq \left\lVert x - x^0 \right\rVert^m \]
+    Далее методом гениального озарения положим
+    \[\varepsilon_{x^0} (x) := \max_{i_1, \ldots, i_m} \left\lvert \frac{\partial^m F}{\partial x_{i_m} \ldots \partial x_{i_1}} \left(x^{\theta}\right) - \frac{\partial^m F}{\partial x_{i_m} \ldots \partial x_{i_1}} \left(x^0\right) \right\rvert \]
+    В силу непрерывности всех частных производных функции $F$ порядка $m$ в точке $x^0$ и того, что их количество всё же конечно, сразу получаем, что $\varepsilon_{x^0} (x) \to 0, \; x \to x^0$ по совокупности переменных. Тогда, учитывая все вышеописанные выкладки и то, что в выражении (\ref{remain:3.2}) ровно $n^m$ слагаемых, находим наконец 
+    искомую оценку для этого безобразия:
+    \[\left\lvert R_{x^0}^m[F](\mathrm{d} x) \right\rvert \leq \frac{\varepsilon_{x^0}(x) \left\lVert x - x^0 \right\rVert^m n^m}{m!} = o \left(\left\lVert x - x^0 \right\rVert^m \right), \; x \to x^0\]
+    Легко видеть, что это победа, друзья!
+\end{proof}
+
+\end{document}

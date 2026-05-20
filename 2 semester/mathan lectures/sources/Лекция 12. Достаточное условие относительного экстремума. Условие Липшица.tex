@@ -1,0 +1,209 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{ulem}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\DIF}{DIF}
+\DeclareMathOperator{\rg}{rg}
+\DeclareMathOperator{\dist}{dist}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Надо жить, надо любить, надо верить, \sout{надо ботать}}
+\fancyhead[R]{\href{https://t.me/ceagest}{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 12. Достаточное условие относительного экстремума. Условие Липшица
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Условие Липшица и другие вспомогательные леммы}
+
+\begin{lemma}[Условие Липшица]
+    Пусть $B_{\delta} (x^0) \subset \mathbb{R}^n$, $\Phi \in C^{1} \left(B_{\delta} (x^0), \mathbb{R}^m \right)$. Тогда $\forall \widetilde{\delta} \in (0, \delta)$ отображение $\Phi$ удовлетворяет условию Липшица в замкнутом шаре $\overline{B}_{\widetilde{\delta}}(x^0)$, то есть:
+    \[\exists L(\widetilde{\delta}) > 0: \left\lVert \Phi (x) - \Phi (y) \right\rVert \leq L(\widetilde{\delta}) \left\lVert x - y \right\rVert \quad \forall x, y \in \overline{B}_{\widetilde{\delta}}(x^0)\]
+\end{lemma}
+
+\begin{proof}
+    Из неравенства Лагранжа 2.0, доказанного в восьмой лекции, получаем:
+    \[\forall x, y \in B_{\delta} (x^0) \; \; \exists \theta \in (0, 1): \left\lVert \Phi (x) - \Phi (y) \right\rVert \leq \left\lVert \mathcal{D} \Phi (x_{\theta}) \right\rVert \left\lVert x - y \right\rVert, \quad x_{\theta} = x + \theta (y - x)\]
+    Зафиксируем произвольно $\widetilde{\delta} \in (0, \delta)$. Так как шар является выпуклым множеством (замкнутый в том числе), то $x_{\theta} \in \overline{B}_{\widetilde{\delta}} (x^0)$. При этом в силу непрерывной дифференцируемости отображения $\Phi$ в шаре $B_{\delta} (x^0)$ получаем непрерывность $\mathcal{D} \Phi$ в этом же шаре, а значит по свойствам нормы имеем непрерывность функции $\left\lVert \mathcal{D} \Phi \right\rVert$ в $B_{\delta} (x^0)$.
+    \\
+    Теперь вспомним, что $\overline{B}_{\widetilde{\delta}} (x^0)$ --- компакт, а по доказанному выше $\left\lVert \mathcal{D} \Phi \right\rVert$ непрерывна в $\overline{B}_{\widetilde{\delta}} (x^0)$, откуда по теореме Вейерштрасса:
+    \[\exists L(\widetilde{\delta}) = \max_{z \in \overline{B}_{\widetilde{\delta}} (x^0)} \left\lVert \mathcal{D} \Phi (z) \right\rVert\]
+    Но $x_{\theta} \in \overline{B}_{\widetilde{\delta}} (x^0)$, а значит $\left\lVert \mathcal{D} \Phi (x_{\theta}) \right\rVert \leq L(\widetilde{\delta})$. Тогда окончательно:
+    \[\forall x, y \in \overline{B}_{\widetilde{\delta}} (x^0) \hookrightarrow \left\lVert \Phi (x) - \Phi (y) \right\rVert \leq \left\lVert \mathcal{D} \Phi (x_{\theta}) \right\rVert \left\lVert x - y \right\rVert \leq L(\widetilde{\delta}) \left\lVert x - y \right\rVert\]
+    Вспомнив, что $\widetilde{\delta} \in (0, \delta)$ было выбрано произвольно, заключаем, что требуемое доказано.
+\end{proof}
+
+\begin{lemma} \label{lemma:1.2}
+    Пусть $1 \leq k < n$. Пусть $M \subset \mathbb{R}^n$ --- $k$-мерное гладкое многообразие, $p \in M$. Тогда если $x \in M$, а точка $\widetilde{x}$ есть проекция $x$ на аффинное касательное пространство $L_p M$ (или ближайшая точка к $x$ на $L_p M$), то есть
+    \[\left\lVert x - \widetilde{x} \right\rVert = \dist (x, L_p M) = \inf_{y \in L_p M} \left\lVert x - y \right\rVert,\]
+    то 
+    \[\left\lVert x - \widetilde{x} \right\rVert = o \left(\left\lVert x - p \right\rVert\right), \; x \to p\]
+\end{lemma}
+
+\begin{proof}
+    Так как $M$ --- $k$-мерное гладкое многообразие, а $p \in M$, то по определению $\exists \delta > 0$ такое, что $B_{\delta} (p) \cap M$ есть простое $k$-мерное гладкое многообразие.
+    Тогда уже по определению простого гладкого многообразия существует такое открытое множество $G \subset \mathbb{R}^k$ и такой гомеоморфизм $\Phi$, что 
+    \[\Phi \colon G \to B_{\delta} (p) \cap M, \quad \Phi \in C^{1} (G), \quad \rg \mathcal{D} \Phi = k \; \text{ всюду на } G\]
+    Положим $a = \Phi^{-1} (p)$.
+    \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\linewidth]{pictures/Гомеоморфизм в лемме о проекции.jpg}
+    \end{figure} \leavevmode
+    \\
+    Так как отображение $\Phi$ непрерывно дифференцируемо на $G$ и имеет постоянный максимально возможный ранг $k$ на этом множестве, то по теореме о продолжении до диффеоморфизма:
+    \[\exists \sigma > 0 \; \; \exists \overline{\Phi} \colon B_{\sigma} (a) \to \Phi(B_{\sigma} (a)) \; \text{ такие, что } \; \overline{\Phi} \text{ --- диффеоморфизм } B_{\sigma} (a) \text{ на } U := \Phi (B_{\sigma} (a)) \text{ и }\]
+    \[\overline{\Phi} \Big|_{B_{\sigma}(a) \cap \mathbb{R}^k} = \Phi\]
+    Вспомнив вновь, что $\Phi \in C^{1} (G)$, по формуле Тейлора с остаточным членом в форме Пеано:
+    \[\Phi(t) = \Phi(a) + \mathrm{d}_a \Phi (t - a) + \overline{o} \left(\left\lVert t - a \right\rVert \right), \; t \to a\]
+    \[\overline{o} \left(\left\lVert t - a \right\rVert \right) = \varepsilon (t) \left\lVert t - a \right\rVert, \quad \varepsilon (t) \to 0, \; t \to a\]
+    При этом заметим, что точка $\Phi(a) + \mathrm{d}_a \Phi (t - a)$ лежит на касательном аффинном пространстве, так как $\Phi (a) = p \in L_p M$, а также $\mathrm{d}_a \Phi (t - a)$ --- некоторый вектор, лежащий в $T_p M$ (это было показано в предыдущих лекциях при доказательстве теоремы о том, что касательное пространство является векторным пространством).
+    Тогда, положив $\widetilde{\Phi(t)} = \widetilde{x}$ проекцией $\Phi (t) = x$ на аффинное касательное пространство $L_p M$, учитывая равенство из формулы Тейлора, получаем:
+    \[\dist (x, L_p M) = \left\lVert x - \widetilde{x} \right\rVert = \left\lVert \Phi (t) - \widetilde{\Phi (t)} \right\rVert \leq [\text{ближайшая точка не дальше, чем какая-то}] \leq \]
+    \[\leq \left\lVert \Phi (t) - \Phi (a) - \mathrm{d}_a \Phi (t - a) \right\rVert = \left\lVert \varepsilon (t) \right\rVert \cdot \left\lVert t - a \right\rVert = \left\lVert \varepsilon (\Phi^{-1} (x)) \right\rVert \cdot \left\lVert \Phi^{-1} (x) - \Phi^{-1} (p) \right\rVert \]
+    Но $\overline{\Phi}$ --- диффеоморфизм, а значит $\overline{\Phi}^{-1}$ --- непрерывно дифференцируемое отображение, причём 
+    \[\overline{\Phi}^{-1} \Big|_{M} = \Phi^{-1}\]
+    Тогда существует малая окрестность точки $p$ такая, что $\overline{\Phi}^{-1}$ удовлетворяет условию Липшица в этой окрестности, то есть:
+    \[\exists \gamma > 0 \; \; \exists L > 0: \forall x \in B_{\gamma} (p) \cap M \hookrightarrow \left\lVert \Phi^{-1} (x) - \Phi^{-1} (p) \right\rVert \leq L \left\lVert x - p \right\rVert \]
+    Более того, $\Phi^{-1}$ непрерывно на $B_{\delta} (p) \cap M$, а значит 
+    \[\Phi^{-1} (x) \to \Phi^{-1} (p), \; x \to p\]
+    Тогда по теореме о пределе композиции получаем:
+    \[\varepsilon (\Phi^{-1} (x)) \to 0, \; x \to p \implies \left\lVert \varepsilon (\Phi^{-1} (x)) \right\rVert \to 0, \; x \to p\]
+    Итого, собирая наши злоключения воедино, имеем:
+    \[\dist (x, L_p M) = \left\lVert x - \widetilde{x} \right\rVert \leq \left\lVert \varepsilon(\Phi^{-1} (x)) \right\rVert \cdot \left\lVert \Phi^{-1} (x) - \Phi^{-1} (p) \right\rVert \leq\]
+    \[\leq L \cdot \left\lVert \varepsilon(\Phi^{-1} (x)) \right\rVert \cdot \left\lVert x - p \right\rVert = o \left(\left\lVert x - p \right\rVert \right), \; x \to p\]
+    Легко видеть, что это победа, друзья!
+\end{proof}
+
+\begin{lemma} \label{lemma:1.3}
+    Пусть $K$ --- квадратичная форма, $A$ --- матрица $K$. Тогда, если $\left\lVert v \right\rVert \leq \left\lVert u \right\rVert$, то:
+    \[\left\lvert K(u + v) - K(u) \right\rvert \leq 3\left\lVert A \right\rVert \cdot \left\lVert u \right\rVert \cdot \left\lVert v \right\rVert\]
+\end{lemma}
+
+\begin{proof}
+    Так как $K$ --- квадратичная форма, то из её определения:
+    \[K(u) = \left\langle Au, u \right\rangle \]
+    При этом из симметричности матрицы $A$ легко получаем следующее:
+    \[\left\langle Au, v \right\rangle = \left\langle u, Av \right\rangle\]
+    Тогда, пользуясь этими замечательными знаниями, выражаем искомую разность:
+    \[K(u + v) - K(u) = \left\langle A(u + v), u + v \right\rangle - \left\langle Au, u \right\rangle = 
+    \left\langle Au, u \right\rangle + \left\langle Au, v \right\rangle + \left\langle Av, u \right\rangle + \left\langle Av, v \right\rangle - \left\langle Au, u \right\rangle =\]
+    \[= \left\langle Av, u \right\rangle + \left\langle u, Av \right\rangle + \left\langle Av, v \right\rangle = \left\langle Av, 2u \right\rangle + \left\langle Av, v \right\rangle = \left\langle Av, v + 2u \right\rangle\]
+    Отсюда уже несложно оценить модуль сей замечательной разности:
+    \[\left\lvert K(u + v) - K(u) \right\rvert = \left\lvert \left\langle Av, v + 2u \right\rangle \right\rvert \leq [\text{КБШ}] \leq \left\lVert Av \right\rVert \cdot \left\lVert v + 2u \right\rVert \leq\]
+    \[[\text{лемма о норме оператора + неравенство треугольника}] \leq \left\lVert A \right\rVert \cdot \left\lVert v \right\rVert \cdot (\left\lVert v \right\rVert + 2 \left\lVert u \right\rVert) \leq \]
+    \[\leq [\text{в силу } \left\lVert v \right\rVert \leq \left\lVert u \right\rVert] \leq 3\left\lVert A \right\rVert \cdot \left\lVert u \right\rVert \cdot \left\lVert v \right\rVert\]
+\end{proof}
+
+\section{Достаточное условие относительного экстремума}
+
+\begin{theorem}[Достаточное условие относительного экстремума]
+    Пусть $1 \leq k < n$. Пусть
+    \begin{enumerate}
+        \item $\varphi_1, \ldots, \varphi_{n - k} \in C^{2} (\Omega)$, где $\Omega$ --- область в $\mathbb{R}^n$
+        \item $M := \{x \in \Omega : \varphi_1 (x) = \ldots = \varphi_{n - k} (x) = 0\}$
+        \item $\forall p \in M \hookrightarrow \nabla \varphi_1 (p), \ldots, \nabla \varphi_{n - k} (p)$ --- ЛНЗ
+        \item $f \in C^{2} (\Omega)$
+    \end{enumerate}
+    Пусть $p \in M$ и $(p, \lambda^0)$ --- стационарная точка функции Лагранжа. Пусть $\mathcal{L}_{\lambda^0} (x) := \mathcal{L} (x, \lambda^0)$ (так удобно обозначить при рассмотрении фиксированного вектора $\lambda^0$ и переменного $x$). Пусть 
+    \[Q = \mathrm{d}^2_p \mathcal{L}_{\lambda^0} \Big|_{T_p M}\]
+    Тогда:
+    \begin{enumerate}
+        \item Если $Q$ --- положительно определённая квадратичная форма, то $p$ --- точка строгого относительного локального минимума
+        \item Если $Q$ --- отрицательно определённая квадратичная форма, то $p$ --- точка строгого относительного локального максимума
+        \item Если $Q$ --- знаконеопределённая квадратичная форма, то в точке $p$ нет экстремума
+        \item В остальных случаях ничего сказать нельзя
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    Заметим, что:
+    \[f(x) - f(p) = \mathcal{L}_{\lambda^0} (x) - \mathcal{L}_{\lambda^0} (p) \quad \forall x \in M\]
+    Далее, так как $\mathcal{L}_{\lambda^0} \in C^2 (\Omega)$, то по формуле Тейлора с остаточным членом в форме Пеано:
+    \begin{equation*}
+        \mathcal{L}_{\lambda^0} (x) - \mathcal{L}_{\lambda^0} (p) = \underbrace{\mathrm{d}_p \mathcal{L}_{\lambda^0} (x - p)}_{= 0} + \frac{1}{2} \mathrm{d}^2_p \mathcal{L}_{\lambda^0} (x - p) + o \left(\left\lVert x - p \right\rVert^2\right), \; x \to p
+    \end{equation*}
+    Пусть $\widetilde{x}$ --- проекция $x$ на $L_p M$. Тогда $\left(\widetilde{x} - p\right) \in T_p M$. Более того,
+    \[\left\lvert \mathrm{d}^2_p \mathcal{L}_{\lambda^0} (x - p) - \mathrm{d}^2_p \mathcal{L}_{\lambda^0} (\widetilde{x} - p)\right\rvert = \left\lvert \mathrm{d}^2_p \mathcal{L}_{\lambda^0} ((x - \widetilde{x}) + (\widetilde{x} - p)) - \mathrm{d}^2_p \mathcal{L}_{\lambda^0} (\widetilde{x} - p)\right\rvert \leq \]
+    \[\leq [\text{по лемме \ref{lemma:1.3}}] \leq C \cdot \left\lVert x - \widetilde{x} \right\rVert \cdot \left\lVert \widetilde{x} - p \right\rVert \]
+    Легко видеть, что из леммы \ref{lemma:1.2} вытекают следующие неравенства для всех $x$, достаточно близких к $p$:
+    \[\left\lVert \widetilde{x} - p \right\rVert - o \left(\left\lVert x - p \right\rVert \right) = \left\lVert \widetilde{x} - p \right\rVert - \left\lVert x - \widetilde{x} \right\rVert \leq \left\lVert x - p \right\rVert  \leq \left\lVert \widetilde{x} - p \right\rVert + \left\lVert x - \widetilde{x} \right\rVert = \left\lVert \widetilde{x} - p \right\rVert + o \left(\left\lVert x - p \right\rVert \right)\]
+    \[\Longrightarrow\]
+    \begin{equation*} \label{eq:2.1} \tag{$\ast$}
+        \frac{1}{2} \left\lVert x - p \right\rVert \leq \left\lVert \widetilde{x} - p \right\rVert \leq \frac{3}{2} \left\lVert x - p \right\rVert
+    \end{equation*}
+    Тогда, возвращаясь к оценке модуля разности вторых дифференциалов и учитывая лемму \ref{lemma:1.2} и неравенства выше, получаем:
+    \[\left\lvert \mathrm{d}^2_p \mathcal{L}_{\lambda^0} (x - p) - \mathrm{d}^2_p \mathcal{L}_{\lambda^0} (\widetilde{x} - p)\right\rvert \leq C \cdot \left\lVert x - \widetilde{x} \right\rVert \cdot \left\lVert \widetilde{x} - p \right\rVert \leq \frac{3}{2} \cdot C \cdot o \left(\left\lVert x - p \right\rVert \right) \cdot \left\lVert x - p \right\rVert \leq o \left(\left\lVert x - p \right\rVert^2 \right), \; x \to p\]
+    Итого, суммируя выкладки выше, имеем:
+    \[f(x) - f(p) = \frac{1}{2} \mathrm{d}^2_p \mathcal{L}_{\lambda^0} (\widetilde{x} - p) + \underbrace{\frac{1}{2} (\mathrm{d}^2_p \mathcal{L}_{\lambda^0} (x - p) - \mathrm{d}^2_p \mathcal{L}_{\lambda^0} (\widetilde{x} - p))}_{= o \left(\left\lVert x - p \right\rVert^2\right)} +  o \left(\left\lVert x - p \right\rVert^2\right) = \]
+    \[= [\text{из определения } Q \text{ и того, что } (\widetilde{x} - p) \in T_p M] = \frac{1}{2} Q (\widetilde{x} - p) + o \left(\left\lVert x - p \right\rVert^2\right), \; x \to p\]
+    Теперь мы можем перейти к разбору случаев и доказательству требуемого в каждом из них.
+    \begin{enumerate}
+        \item Пусть $Q$ --- положительно определённая квадратичная форма на $T_p M$. Тогда по лемме, доказанной в предыдущей лекции, получаем:
+        \[\exists m > 0: Q(\widetilde{x} - p) \geq m \cdot \left\lVert \widetilde{x} - p \right\rVert^2 \quad \forall (\widetilde{x} - p) \in T_p M\]
+        Здесь $m > 0$ не зависит от выбора $\widetilde{x}$. При этом для всех $x$, достаточно близких к $p$, справедливы оценки (\ref{eq:2.1}), откуда:
+        \[Q(\widetilde{x} - p) \geq \frac{m}{4} \left\lVert x - p \right\rVert^2\]
+        Тогда:
+        \[f(x) - f(p) = \frac{1}{2} Q (\widetilde{x} - p) + o \left(\left\lVert x - p \right\rVert^2\right) \geq \frac{m}{8} \left\lVert x - p \right\rVert^2 + o (1) \cdot \left\lVert x - p \right\rVert^2, \; x \to p\]
+        Кроме того, по определению $o$-малого существует малый шар $B_{\beta} (p)$, $\beta > 0$ такой, что в его пересечении с $M$ справедливо неравенство выше, а также:
+        \[o (1) \cdot \left\lVert x - p \right\rVert^2 \geq - \frac{m}{16} \left\lVert x - p \right\rVert^2\]
+        Значит, для всех $x$ из $B_{\beta} (p) \cap M$ выполнено:
+        \[f(x) - f(p) \geq \frac{m}{16} \left\lVert x - p \right\rVert^2\]
+        Таким образом, $p$ --- точка строгого относительного локального минимума, что и требовалось.
+        \item Доказательство аналогично пункту выше, так как, умножив положительно определённую квадратичную форму на $(-1)$, получим отрицательно определённую квадратичную форму.
+        \item Пусть $Q$ --- знаконеопределённая квадратичная форма на $T_p M$. От противного предположим, что в точке $p$ есть нестрогий относительный локальный минимум (для максимума доказательство аналогично). Тогда покажем, что 
+        \[Q (h) \geq 0 \quad  \forall h \in T_p M\]
+        Фиксируем произвольно $h \in T_p M$ и по определению касательного вектора к многообразию $M$ в точке $p$ получаем, что существует непрерывно дифференцируемая кривая $\gamma \colon [-1, 1] \to M$ без особых точек такая, что:
+        \[\gamma (0) = p, \; \;  \gamma'(0) = h\]
+        Тогда по формуле Тейлора с остаточным членом в форме Пеано:
+        \begin{equation*} \label{eq2:2.1} \tag{$\star$}
+            \gamma (t) = \gamma (0) + t \gamma'(0) + \overline{o} (t) = p + th + \overline{o}(t), \; t \to 0
+        \end{equation*}
+        Кроме того, по предположению точка $p$ есть точка нестрогого относительного локального минимума, откуда
+        \[\exists \delta > 0: f(\gamma(t)) - f(\gamma(0)) \geq 0 \quad \forall t \in [-\delta, \delta]\]
+        Распишем теперь левую часть неравенства выше, вновь пользуясь формулой Тейлора:
+        \begin{equation*} \label{eq3:2.1} \tag{$\star \star$}
+            f(\gamma(t)) - f(\gamma(0)) = \frac{1}{2} \mathrm{d}^2_p \mathcal{L}_{\lambda^0} (\gamma (t) - \gamma (0)) + o \left(\left\lVert \gamma (t) - \gamma (0) \right\rVert^2\right), \; t \to 0
+        \end{equation*}
+        При этом из (\ref{eq2:2.1}) следует, что:
+        \[o \left(\left\lVert \gamma (t) - \gamma (0) \right\rVert^2\right) = o \left(\left\lVert th + \overline{o}(t) \right\rVert^2 \right) = o(t^2), \; t \to 0\]
+        Также по многострадальной лемме \ref{lemma:1.3} имеем:
+        \[\left\lvert \mathrm{d}^2_p \mathcal{L}_{\lambda^0} (\gamma (t) - \gamma (0)) - \mathrm{d}^2_p \mathcal{L}_{\lambda^0} (th) \right\rvert = \left\lvert \mathrm{d}^2_p \mathcal{L}_{\lambda^0} (th + \overline{o}(t)) - \mathrm{d}^2_p \mathcal{L}_{\lambda^0} (th) \right\rvert \leq C \cdot \left\lVert th \right\rVert \cdot \left\lVert \overline{o}(t) \right\rVert = o(t^2), \; t \to 0 \]
+        Тогда, так как $th \in T_p M$ для всех $t > 0$, то, учитывая все результаты выше, можем продолжить равенство (\ref{eq3:2.1}):
+        \[f(\gamma(t)) - f(\gamma(0)) = \frac{1}{2} \mathrm{d}^2_p \mathcal{L}_{\lambda^0} (\gamma (t) - \gamma (0)) + o \left(\left\lVert \gamma (t) - \gamma (0) \right\rVert^2\right) = \]
+        \[\frac{1}{2} \mathrm{d}^2_p \mathcal{L}_{\lambda^0} (th) + \underbrace{\frac{1}{2} (\mathrm{d}^2_p \mathcal{L}_{\lambda^0} (\gamma (t) - \gamma (0)) - \mathrm{d}^2_p \mathcal{L}_{\lambda^0} (th))}_{= o(t^2)} + o(t^2) = \]
+        \[= [\text{по определению } Q] = \frac{1}{2} Q(th) + o(t^2), \; t \to 0\]
+        Осталось лишь вспомнить про неотрицательность $f(\gamma(t)) - f(\gamma(0))$ и про то, что скаляр из под аргумента квадратичной формы выносится в квадрате, и получить:
+        \[\exists \varepsilon > 0: \frac{1}{2} t^2 Q(h) + o (t^2) \geq 0 \quad \forall t \in (-\varepsilon, \varepsilon)\]
+        \[\Longrightarrow\]
+        \[Q(h) + o(1) \geq 0 \quad \forall t \in (-\varepsilon, \varepsilon)\]
+        Тогда, переходя к пределу при $t \to 0$ в неравенстве выше, окончательно получаем, что 
+        \[Q(h) \geq 0\]
+        Но $h \in T_p M$ было выбрано произвольно, а значит получили нужную оценку. Из этой оценки сразу же следует, что $Q$ не является знаконеопределённой квадратичной формой на $T_p M$, откуда получаем противоречие. Значит в этом случае в точке $p$ нет экстремума, что и требовалось. 
+    \end{enumerate}
+\end{proof}
+
+\end{document}

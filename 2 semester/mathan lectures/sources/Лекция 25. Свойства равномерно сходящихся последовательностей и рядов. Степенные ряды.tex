@@ -1,0 +1,387 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\DIF}{DIF}
+\DeclareMathOperator{\rg}{rg}
+\DeclareMathOperator{\gr}{gr}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Разве не здорово быть плохой?}
+\fancyhead[R]{\href{https://t.me/sol_m_07}{Соля}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 25. Свойства равномерно сходящихся последовательностей 
+    и рядов. Степенные ряды}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Продолжим исследование примера с предыдущей лекции}
+
+Покажем, что при $\alpha \in (0, 1]$ функциональный ряд $\displaystyle 
+\sum_{k = 1}^{\infty} \frac{\sin(kx)}{k^{\alpha}}$ не является 
+равномерно сходящимся на $(0, \pi)$. Будем использовать отрицание к 
+условию Коши:
+\[\exists \varepsilon > 0: \ \forall N \in \mathbb{N} \ \exists n \geq 
+N \text{ и } \exists p \in \mathbb{N} \text{ и } \exists \underline{x} 
+\in (0, \pi) \text{ т.ч. } \left\lvert \sum_{k = n + 1}^{n + p} 
+\frac{\sin(k\underline{x})}{k^{\alpha}} \right\rvert \geq \varepsilon\]
+Действительно, возьмём $\underline{x} = \displaystyle \frac{\pi}{4N}$ и 
+$n = p = N$. Тогда получим $k$ в диапазоне от $N + 1$ до $2N$, 
+следовательно, $\sin(k\underline{x}) \in \left(\displaystyle 
+\frac{\sqrt{2}}{2}, 1\right]$. Тогда оценим:
+\[\left\lvert \sum_{k = N + 1}^{2N} \frac{\sin(k\underline{x})}
+{k^{\alpha}} \right\rvert \ \geq \ \frac{\sqrt{2}}{2} 
+\sum_{k = N + 1}^{2N} \frac{1}{k^{\alpha}} \ \geq \ \left[\text{при } 
+\alpha \in (0, 1] \quad \frac{1}{k^{\alpha}} \geq \frac{1}{k}\right] \ 
+\geq \ \frac{\sqrt{2}}{2} \sum_{k = N + 1}^{2N} \frac{1}{k} \ \geq \ 
+\frac{\sqrt{2}}{2} \cdot \frac{N}{2N} \ \geq \ \frac{\sqrt{2}}{4}\]
+Итого:
+\[\exists \varepsilon = \frac{\sqrt{2}}{4}: \ \forall N \in \mathbb{N} \ 
+\exists n = N, p = N \text{ и } \exists \underline{x} = \frac{\pi}{4N}
+\text{ т.ч. } \left\lvert \sum_{k = n + 1}^{n + p} 
+\frac{\sin(k\underline{x})}{k^{\alpha}} \right\rvert \geq \frac{\sqrt{2}}
+{4} = \varepsilon\]
+Ответ: \begin{enumerate}
+  \item при $\alpha > 1$ ряд сходится равномерно на $\mathbb{R}$
+  \item при $\alpha \leq 0$ ряд не является даже поточечно сходящимся на 
+  $(\delta, \pi)$ при $\delta \in (0, \pi)$
+  \item при $\alpha \in (0, 1]$ ряд сходится поточечно на $(0, \pi)$, но 
+  не сходится равномерно на $(0, \pi)$
+  \item при $\alpha > 0$ ряд является равномерно сходящимся на $[\delta, 
+  \pi]$ при $\delta \in (0, \pi)$
+\end{enumerate}
+
+\section{Свойства равномерно сходящихся последовательностей и рядов}
+
+\begin{lemma}
+    Пусть $X = (X, d)$ -- метрическое пространство. Пусть $\{f_n\}$ -- 
+    последовательность функций на $X$, равномерно сходящихся к $f \colon 
+    X \to \mathbb{R}$. Пусть $\underline{x} \in \mathbb{N}$ т.ч. все 
+    функции $f_n, \ n \in \mathbb{N}$ непрерывны в точке $\underline{x}$. 
+    Тогда $f$ непрерывна в точке $\underline{x}$. 
+\end{lemma}
+
+\begin{proof}
+    По определению равномерной сходимости 
+    \[\forall \varepsilon > 0 \ \exists N(\varepsilon) \in \mathbb{N}: 
+    \ \forall n \geq N(\varepsilon) \ \hookrightarrow \ \left\lvert f(x) 
+    - f_n(x) \right\rvert < \varepsilon \ \forall x \in X \tag{$\ast$}\]
+    Так как все функции $f_n$ непрерывны в точке $\underline{x}$, то 
+    рассмотрим уловие непрерывности для функции $f_n$ при $n = 
+    N(\varepsilon)$:
+    \[\forall \varepsilon > 0 \ \exists \delta(\varepsilon) > 0: \ 
+    \forall x \in B_{\delta(\varepsilon)}(\underline{x}) \ \hookrightarrow 
+    \ \left\lvert f_n(x) - f_n(\underline{x}) \right\rvert < \varepsilon 
+    \tag{$\vee$}\] \[\]
+    \[\implies \left\lvert f(x) - f(\underline{x}) \right\rvert \ \leq \ 
+    \left\lvert f(x) - f_{N(\varepsilon)}(x) \right\rvert + \left\lvert 
+    f_{N(\varepsilon)}(x) - f(\underline{x}) \right\rvert \ \leq\]
+    \[\leq \ \left\lvert f(x) - f_{N(\varepsilon)}(x) \right\rvert + 
+    \left\lvert f_{N(\varepsilon)}(x) - f_{N(\varepsilon)}(\underline{x}) 
+    \right\rvert + \left\lvert f_{N(\varepsilon)}(\underline{x}) - 
+    f(\underline{x}) \right\rvert \ \leq\]
+    \[\leq \ \text{[в силу $(\ast)$ и $(\vee$)]} \ \leq \ 3\varepsilon\]
+    Итого:
+    \[\forall \varepsilon > 0 \ \exists \delta(\varepsilon) > 0: \ 
+    \forall x \in B_{\delta(\varepsilon)}(\underline{x}) \ \hookrightarrow 
+    \ \left\lvert f(x) - f(\underline{x}) \right\rvert < 3\varepsilon\]
+\end{proof}
+
+\begin{lemma}[следствие леммы 2.1]
+    Пусть $\{f_n\} \subset C(X)$. Пусть $f_n \underset{X}
+    {\rightrightarrows} f, \ n \to \infty$. Тогда $f \in C(X)$.
+\end{lemma}
+
+\begin{proof}
+    Доказательство сводится к применению предыдущей леммы в каждой точке 
+    $\underline{x} \in X$.
+\end{proof}
+
+\begin{theorem}
+    Пусть $\{f_n\} \subset \mathcal{R}([a, b])$. Пусть $f \colon [a, b] 
+    \to \mathbb{R}$ и $f_n \underset{[a, b]}{\rightrightarrows} f, \ 
+    n \to \infty$. Тогда $f \in \mathcal{R}([a, b])$ и 
+    \[\lim_{n \to \infty} \int_{a}^{b} f_n(x) \,dx \ = \int_{a}^{b} 
+    \lim_{n \to \infty} f_n(x) \,dx \ = \int_{a}^{b} f(x) \,dx\]
+\end{theorem}
+
+\begin{proof}
+    $\forall n \in \mathbb{N}$ по критерию Лебега $f_n$ ограничена на 
+    $[a, b]$ и $\mathcal{D}_n$ (множество её точек разрыва на $[a, b]$) 
+    имеет лебегову меру ноль. \\ \\
+    Положим $\mathcal{D} := \displaystyle \bigcup_{n = 1}^{\infty} 
+    \mathcal{D}_n$ \\ \\
+    Множество $\mathcal{D}$ имеет лебегову меру ноль как счётное 
+    объединение множеств лебеговой меры ноль. \\ \\
+    Рассмотрим $\forall \underline{x} \in [a, b] \ \backslash \ 
+    \mathcal{D} = \displaystyle \bigcap_{n = 1}^{\infty} \ [a, b] \ 
+    \backslash \ \mathcal{D}_n$ \\ \\
+    Все функции $f_n$ непрерывны в точке $\underline{x}$. Кроме того, 
+    $f_n \underset{[a, b]}{\rightrightarrows} f, \ n \to \infty$. \\ \\
+    Применим лемму 2.1 при $X = [a, b]$. Получим, что $f$ непрерывна в 
+    точке $\underline{x}$. Но $\underline{x}$ была выбрана произвольно 
+    $\implies$ получили, что $f$ непрерывна всюду на $[a, b] \ \backslash 
+    \ \mathcal{D}$, т.е. всюду за исключением точек лебеговой меры ноль. \\
+    Покажем, что $f$ ограничена на $[a, b]$. Распишем условие равномерной 
+    сходимости:
+    \[\forall \varepsilon > 0 \ \exists N(\varepsilon) \in \mathbb{N}: \ 
+    \forall n \geq N(\varepsilon) \ \hookrightarrow \ \left\lvert f(x) - 
+    f_n(x) \right\rvert < \varepsilon \quad \forall x \in [a, b] \tag{$\ast$}\]
+    Возьмём $\varepsilon = 1$. $f_{N(1)}$ интегрируема по Риману на $[a, 
+    b] \implies$ ограничена на $[a, b]$ \\
+    $\implies \exists M > 0: \ \left\lvert f_{N(1)}(x) \right\rvert 
+    \leq M \quad \forall x \in [a, b]$ \\ \\
+    В силу $(\ast)$ и нашей оценки получим
+    \[\left\lvert f(x) \right\rvert \ \leq \ \left\lvert f(x) - 
+    f_{N(1)}(x) \right\rvert + \left\lvert f_{N(1)}(x) \right\rvert \ 
+    < \ M + 1 \quad \forall x \in [a, b]\]
+    \[\left\lvert f(x) \right\rvert \leq M + 1 \quad \forall x \in [a, b] 
+    \implies f \text{ -- ограничена}\]
+    В итоге $f$ ограничена на $[a, b]$ и множество точек разрыва имеет 
+    лебегову меру 0 $\implies f \in \mathcal{R}([a, b])$ \\ \\
+    Установим ключевое равенство. Фиксируем $n \in \mathbb{N}$.
+    \[\left\lvert \int_{a}^{b} f(x) \,dx \ - \ \int_{a}^{b} f_n(x) \,dx 
+    \right\rvert \ = \ [\text{линейность интеграла}] \ = \ \left\lvert 
+    \int_{a}^{b} (f(x) - f_n(x)) \,dx \right\rvert \ \leq\]
+    \[\leq \ [\text{теорема о свойствах интеграла, связанных с модулем}] 
+    \ \leq \ \int_{a}^{b} \left\lvert f(x) - f_n(x) \right\rvert  \,dx \ 
+    \leq\]
+    \[\leq \ \int_{a}^{b} \sup_{x \in [a, b]} \left\lvert f(x) - f_n(x) 
+    \right\rvert \,dx \ =\]
+    \[= \ [\text{в силу равномерной сходимости $f_n$ супремум стремится 
+    к 0 $\implies$ можем вынести как число}] \ =\]
+    \[= \ \sup_{x \in [a, b]} \left\lvert f(x) - f_n(x) \right\rvert 
+    (b - a) \to 0, \ n \to \infty \text{ в силу равномерной сходимости}\]
+    В силу теоремы о двух милиционерах $\displaystyle \left\lvert \int_{a}^{b} f(x) 
+    \,dx \ - \ \int_{a}^{b} f_n(x) \,dx \right\rvert \to 0, \ n \to \infty$
+\end{proof}
+
+\begin{theorem}[следствие из теоремы 2.1]
+    Пусть $\{f_n\} \subset C([a, b])$. Пусть $f \colon [a, b] \to 
+    \mathbb{R}$ и $f_n \underset{[a, b]}{\rightrightarrows} f, \ n \to 
+    \infty$. Тогда $f \in C([a, b])$ и 
+    \[\lim_{n \to \infty} \int_{a}^{b} f_n(x) \,dx \ = \int_{a}^{b} 
+    f(x) \,dx\]
+\end{theorem}
+
+\begin{proof}
+    Вытекает из предыдущей теоремы.
+\end{proof}
+
+\begin{theorem}
+    Пусть $\{f_n\} \subset \DIF([a, b])$. Пусть $\underline{x} \in [a, b]$ 
+    т.ч. $\exists \displaystyle \lim_{n \to \infty} f_n(\underline{x}) \in 
+    \mathbb{R}$. Пусть $\exists g \colon [a, b] \to \mathbb{R}$ т.ч. 
+    $f_n' \underset{[a, b]}{\rightrightarrows} g, \ n \to \infty$. \\ \\
+    Тогда $\{f_n\}$ равномерно сходится на $[a, b]$ к некоторой функции 
+    $f \in \DIF([a, b])$. Более того, $\forall x \in [a, b]$
+    \[\lim_{n \to \infty} f_n'(x) = f'(x) = g(x)\]
+\end{theorem}
+
+\begin{proof}
+    Доказательство разобьём на несколько шагов:
+
+    \paragraph{Шаг 1}
+
+    $\forall n \in \mathbb{N}$ определим функцию $\varphi_n \colon [a, b] 
+    \to \mathbb{R}$ с помощью равенства:
+    \[\varphi_n(x) := 
+    \begin{cases}
+        \displaystyle \frac{f_n(x) - f_n(\underline{x})}{x - \underline{x}}, 
+        & x \neq \underline{x} \\
+        f_n'(\underline{x}), & x = \underline{x}
+    \end{cases}\]
+    $\exists \displaystyle \lim_{x \to \underline{x}} \varphi_n(x) = 
+    \varphi_n(\underline{x}) \implies \varphi_n$ непрерывна в точке 
+    $\underline{x}$ \\ \\
+    Но $f_n$ дифференцируема $\implies$ непрерывна в каждой точке отрезка 
+    $\implies \varphi_n$ непрерывна $\forall x \neq \underline{x}$ как 
+    частное двух непрерывных функций (знаменатель не обращается в ноль) \\ \\
+    $\implies \varphi_n \in C([a, b]) \quad \forall n \in \mathbb{N}$
+
+    \paragraph{Шаг 2}
+
+    Фиксируем произвольные $n, m \in \mathbb{N}$ и $\forall x \in [a, b] \ 
+    \backslash \ \{\underline{x}\}$
+    \[\left\lvert \varphi_n(x) - \varphi_m(x) \right\rvert \ = \ 
+    \left\lvert \frac{f_n(x) - f_n(\underline{x})}{x - \underline{x}} - 
+    \frac{f_m(x) - f_m(\underline{x})}{x - \underline{x}} \right\rvert \ 
+    = \ \left\lvert \frac{f_n(x) - f_m(x) - (f_n(\underline{x}) - f_m
+    (\underline{x}))}{x - \underline{x}} \right\rvert \ =\]
+    \[= \ \left\lvert \frac{(f_n - f_m)(x) - (f_n - f_m)(\underline{x})}{x - 
+    \underline{x}} \right\rvert \ = \ [\text{по теореме Лагранжа о среднем 
+    для $f_n - f_m$}] \ =\]
+    \[= \ \left\lvert (f_n - f_m)'(\xi) \right\rvert \text{, где } \xi \in 
+    (x, \underline{x}) \tag{$\ast$}\]
+    В сиоу критерия Коши для функциональной последовательности 
+    \[\forall \varepsilon > 0 \ \exists N(\varepsilon) \in \mathbb{N}: \ 
+    \forall n, m \geq N(\varepsilon) \ \hookrightarrow \ \left\lvert 
+    f_n'(\xi) - f_m'(\xi) \right\rvert < \varepsilon \quad \forall \xi 
+    \in [a, b] \tag{$\vee$}\]
+    Объединим ($\ast$) и ($\vee$) и получим 
+    \[\forall \varepsilon > 0 \ \exists N(\varepsilon) \in \mathbb{N}: \ 
+    \forall n, m \geq N(\varepsilon) \ \hookrightarrow \ \left\lvert 
+    \varphi_n(x) - \varphi_m(x) \right\rvert < \varepsilon \quad \forall 
+    x \in [a, b] \ \backslash \ \{\underline{x}\}\]
+    $\implies \{\varphi_n\}$ равномерно сходится на $[a, b] \ \backslash \ 
+    \{\underline{x}\}$ в силу критерия Коши. \\ \\
+    В самой точке $\underline{x}$ \ $\varphi_n(\underline{x}) \to 
+    g(\underline{x}), \ n \to \infty$. Тогда из сходимости в этой точке и 
+    равномерной сходимости на отрезке без неё можем сделать вывод, что 
+    $\{\varphi_n\}$ равномерно сходится на $[a, b]$ к некоторой функции 
+    $\varphi$. При этом $\varphi \in C([a, b])$, так как все функции 
+    $\varphi_n$ непрерывны на $[a, b]$.
+
+    \paragraph{Шаг 3}
+
+    $\forall n \in \mathbb{N} \quad f_n(x) = f_n(\underline{x}) + 
+    \varphi_n(x)(x - \underline{x}) \quad \forall x \in [a, b]$ \\ \\
+    $\implies \{f_n\}$ равномерно сходится к некоторой функции $f$
+    \[f(x) = f(\underline{x}) + \varphi(x)(x - \underline{x}) \tag{$\star$}\]
+
+    \paragraph{Шаг 4}
+
+    Продолжим ($\star$):
+    \[\frac{f(x) - f(\underline{x})}{x - \underline{x}} = \varphi(x)\]
+    Но $\varphi$ непрерывна в точке $\underline{x} \implies \exists 
+    \displaystyle \lim_{x \to \underline{x}} \varphi(x) = \varphi
+    (\underline{x}) = g(\underline{x})$ \\ \\
+    Тогда $\exists \displaystyle \lim_{x \to \underline{x}} \frac{f(x) - 
+    f(\underline{x})}{x - \underline{x}} = g(\underline{x}) \implies 
+    \exists f'(\underline{x}) = g(\underline{x})$
+
+    \paragraph{Шаг 5}
+
+    Теперь мы уже знаем, что $\{f_n(x)\}$ сходится не только при $x = 
+    \underline{x}$, но и при $\forall x \in [a, b]$. Следовательно, можно 
+    повторить все предыдущие рассуждения, взяв в качестве $\underline{x}$ 
+    произвольную точку отрезка $[a, b]$. Получим, что \ $\exists f'(x) = 
+    g(x) \quad \forall x \in [a, b]$
+\end{proof}
+
+\begin{remark}
+    Пусть $f_n \underset{[a, b]}{\rightrightarrows} f, \ n \to \infty$. 
+    Пусть $f \in \DIF([a, b]), \ \{f_n\} \subset \DIF([a, b])$ \ и \
+    $f_n' \xrightarrow[{[a, b]}]{} g, \ n \to \infty$. Верно ли, что 
+    \[\lim_{n \to \infty}f_n'(x) = \left(\lim_{n \to \infty}f_n(x)\right)' 
+    \ ?\]
+    Нет, неверно. Пример: $f_n(x) = \displaystyle \frac{x^n}{n}, \ x \in 
+    [0, 1]$ \\ \\
+    $f_n \underset{[0, 1]}{\rightrightarrows} 0, \ n \to \infty \quad 
+    \quad \forall n \in \mathbb{N} \quad f_n'(x) = x^{n - 1}, \ x \in 
+    [0, 1]$
+    \[f_n' \xrightarrow[{[0, 1]}]{} 
+    \begin{cases}
+        0, & x \in [0, 1) \\
+        1, & x = 1
+    \end{cases}, \ n \to \infty\]
+    $f'(1) = 0 \ \neq \ g(1) = 1$
+\end{remark}
+
+\begin{lemma}
+    Пусть функциональный ряд $\displaystyle \sum_{n = 1}^{\infty} u_n$ 
+    равномерно сходится на метрическом пространстве $X$ и все функции 
+    $u_n$ непрерывны в $\underline{x} \in X$. Тогда сумма ряда $S$ 
+    непрерывна в $\underline{x}$.
+\end{lemma}
+
+\begin{theorem}
+    Пусть $\{u_n\} \subset \mathcal{R}([a, b])$, функциональный ряд 
+    $\displaystyle \sum_{n = 1}^{\infty} u_n$ равномерно сходится на 
+    $[a, b]$. Тогда его сумма $S$ интегрируема по Риману на $[a, b]$ и 
+    \[\sum_{n = 1}^{\infty} \int_{a}^{b} u_n(x) \,dx \ = \ \int_{a}^{b} 
+    \sum_{n = 1}^{\infty} u_n(x) \,dx \ = \ \int_{a}^{b} S(x) \,dx\]
+\end{theorem}
+
+\begin{theorem}
+    Пусть $\{u_n\} \subset \DIF([a, b])$. Пусть $\exists \underline{x} \in 
+    [a, b]$ т.ч. $\displaystyle \sum_{n = 1}^{\infty} u_n(\underline{x})$ 
+    сходится, а функциональный ряд $\displaystyle \sum_{n = 1}^{\infty} 
+    u_n'$ равномерно сходится на $[a, b]$ к некоторой функции $g$. Тогда 
+    функциональный ряд $\displaystyle \sum_{n = 1}^{\infty} u_n$ равномерно 
+    сходится на $[a, b]$ к некоторой функции $S \in \DIF([a, b])$ и $S'(x) 
+    = g(x) \ \forall x \in [a, b]$, то есть 
+    \[\left.\left( \sum_{n = 1}^{\infty} u_n(x) \right)'\right|_{x = 
+    \underline{x}} = \ \ \sum_{n = 1}^{\infty} u_n'(\underline{x}) \quad 
+    \forall \underline{x} \in [a, b]\]
+\end{theorem}
+
+\section{Степенные ряды}
+
+\begin{remark}
+    Комплексные числа изучайте сами, хохохо)))
+\end{remark}
+
+\begin{theorem}[обобщённый признак Коши]
+    Пусть $\{a_k\} \subset [0, +\infty)$ и $q := \displaystyle 
+    \varlimsup_{k \to \infty} \sqrt[k]{a_k} \in [0, +\infty]$. \\
+    Тогда 
+    \begin{enumerate}
+        \item Если $q < 1$, то ряд $\displaystyle \sum_{k = 1}^{\infty} a_k$ 
+        сходится
+        \item Если $q > 1$, то $a_k \nrightarrow 0, \ k \to \infty$ и ряд 
+        $\displaystyle \sum_{k = 1}^{\infty} a_k$ расходится
+        \item Если $q = 1$, то ряд $\displaystyle \sum_{k = 1}^{\infty} a_k$ 
+        может сходиться, а может расходиться
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    (1) $\displaystyle \varlimsup_{k \to \infty} \sqrt[k]{a_k} \ = \ \inf_{n 
+    \in \mathbb{N}} \sup_{k \geq n} \sqrt[k]{a_k} \ < \ 1$ \\ \\
+    Положим $b_n := \displaystyle \sup_{k \geq n} \sqrt[k]{a_k}$. Тогда 
+    заметим, что $b_{n + 1} \leq b_n \quad \forall n \in \mathbb{N}$ \\ \\
+    $\implies \exists n_0 \in \mathbb{N}$ т.ч. $b_{n_0} < 1 \implies 
+    \displaystyle \sup_{k \geq n_0} \sqrt[k]{a_k} < 1$ \\ \\
+    Пусть $q' := b_{n_0}$. Выходит, что $a_k \leq (q')^k \quad \forall k 
+    \geq n_0$, \ но $0 < q' < 1$ \\ \\
+    $\displaystyle \sum_{k = n_0}^{\infty} (q')^k$ сходится $\implies$ 
+    по признаку сравнения и принципу локализации $\displaystyle 
+    \sum_{k = 1}^{\infty} a_k$ сходится. \\ \\ \\
+    (2) Так как верхний предел сам является частичным пределом, то 
+    \[\varlimsup_{k \to \infty} \sqrt[k]{a_k} = q > 1 \text{ означает, что } 
+    \exists \{k_j\} \subset \mathbb{N} \text{ строго возрастающая}\]
+    \[\text{т.ч. } \exists \varlimsup_{j \to \infty} \sqrt[\raise 
+    0.8ex\hbox{$k_j$}]{a_{k_j}} = q > 1\]
+    $\implies$ по определению предела $\exists j_0 \in \mathbb{N}$ т.ч. 
+    $\forall j \geq j_0 \ \hookrightarrow \ (a_{k_j})^{\frac{1}{k_j}} \geq 
+    1 \implies a_{k_j} \geq 1 \quad \forall j \geq j_0$ \\ \\
+    $\implies a_k \nrightarrow 0, \ k \to \infty \implies \displaystyle 
+    \sum_{k = 1}^{\infty} a_k$ расходится. \\ \\ \\
+    (3) Рассмотрим \ $\displaystyle \sum_{k = 1}^{\infty} \frac{1}
+    {k^{\alpha}}$ --- сходится при $\alpha > 1$ и расходится при $\alpha 
+    \in (0, 1]$ \\ \\
+    При этом же \ $\forall \alpha > 0 \quad \displaystyle \sqrt[k]
+    {\frac{1}{k^{\alpha}}} \to 1, \ k \to \infty$
+\end{proof}
+
+\section{Мы в первый день лета перед добрейшими людьми этой планеты}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{pictures/Миньоны.jpg}
+\end{figure}
+
+\end{document}

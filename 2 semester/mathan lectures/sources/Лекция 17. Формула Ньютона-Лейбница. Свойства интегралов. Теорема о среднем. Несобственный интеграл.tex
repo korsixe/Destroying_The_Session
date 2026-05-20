@@ -1,0 +1,250 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{soul}
+\usepackage{multicol}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\rg}{rg}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Ширли-мырли, шир-манирли, шир-матыркин, мур-мур-кин}
+\fancyhead[R]{\href{https://t.me/lost_luna}{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 17. Формула Ньютона-Лейбница. Свойства интегралов. 
+    Теорема о среднем для определённого интеграла Римана. Несобственный интеграл.
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Дополнение к предыдущей серии}
+
+\begin{consequence}[из теоремы 4.3] \label{consequence:1}
+    Пусть $f \in C([a, b])$, тогда \[\int f(x) \,dx = \int_{a}^{x}  f(t)\,dt  + C, 
+    \ \ C \in \mathbb{R}\]  
+\end{consequence}
+
+\begin{theorem}[формула Ньютона-Лейбница]
+    Пусть $f \in C([a, b])$, тогда \[\int_{a}^{b} f(x)\,dx = F(b) - F(a),
+    \text{ где } F \text{ --- произвольная первообразная функции } f\]
+\end{theorem}
+
+\begin{proof}
+    В силу следствия \ref{consequence:1}, если $F$ --- первообразная, то 
+    \[\exists C \in \mathbb{R}: \ F(x) =  \int_{a}^{x} f(t)\,dt + C\]
+    тогда \[F(b) - F(a) = \int_{a}^{b} f(t)\,dt + C - \left(\int_{a}^{a} f(t)\,dt + C\right) =\] 
+    \[= \int_{a}^{b} f(t)\,dt - \int_{a}^{a} f(t)\,dt = \left[\text{по определению }
+    \int_{a}^{a} f(t)\,dt = 0\right] = \int_{a}^{b} f(t)\,dt\]
+\end{proof}
+
+\begin{remark}
+    Как связаны множество функций, интегрируемых по Риману на $[a, b]$, и множество 
+    функций, имеющих первообразную на $[a, b]$? Дела обстоят так:
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{pictures/Вот такие пироги.png}
+        \caption{вот так они обстоят}
+    \end{figure}
+\end{remark}
+
+\begin{example}
+    Напомним следствие из теоремы Лагранжа о среднем: если $F \in DIF([a, b])$,
+    то ее производная $f = F'$ не может иметь разрывов первого рода. \\ 
+    Рассмотрим функцию 
+    \[\sign x = \left\{ \begin{array}{l}
+        1, \ x > 0 \\ 0, \ x = 0 \\ -1, \ x < 0 
+    \end{array} \right. \text{ на } [-1, 1] \]
+    Эта функция интегрируема на $[-1, 1]$ по критерию Лебега, но у нее нет первообразной
+    на $[-1, 1]$. \\ Действительно, если бы \[\exists F: [a, b] \to \mathbb{R}, 
+    \text{ т. ч. } F'(x) = \sign x \text{ на } [-1, 1],\]
+    то это противоречило бы следствию из теоремы Лагранжа о среднем.
+\end{example}
+
+\begin{example}
+    Рассмотрим \[F(x) = \left\{ \begin{array}{l}
+        \displaystyle x^2 \cdot \sin \frac{1}{x^2}, \ x \neq 0 \\ 
+        \displaystyle 0, \ x = 0
+    \end{array}\right. \text{ на } [-1, 1]\]
+    Если $x \neq 0$, то \[F'(x) = 2x \cdot \sin \frac{1}{x^2} + x^2 \cdot 
+    \cos \frac{1}{x^2} \cdot \left(- \frac{2}{x^3}\right)\]
+    \[F'(0) = \lim_{x \to 0} \frac{\displaystyle x^2 \cdot \sin 
+    \frac{1}{x^2} - 0}{x} = \lim_{x \to 0} x \cdot \sin \frac{1}{x^2} = 0\]
+    Теперь рассмотрим \[f(x) = \left\{\begin{array}{l}
+        \displaystyle 2x \cdot \sin \frac{1}{x^2} - \frac{2}{x} \cdot \cos \frac{1}{x^2}, \ x \neq 0 \\ 
+        \displaystyle 0, \ x = 0
+    \end{array}\right.\]
+    Легко видеть, что $f$ имеет первообразную на $[-1, 1]$, но $f \notin \mathcal{R}([-1, 1])$, 
+    так как $f$ не ограничена в любой окрестности нуля.
+\end{example}
+
+\section{Свойства неопределённого интеграла}
+
+\begin{theorem}[Линейность]
+    Пусть $f_1, f_2$ имеют первообразные на $(a, b)$. Тогда \[\alpha f_1 + \beta f_2, 
+    \text{ где } \alpha, \beta \in \mathbb{R}, \ |\alpha| + |\beta| > 0\] имеет 
+    первообразную на $(a, b)$. Более того, справедливо равенство 
+    \[\int \left(\alpha f_1(x) + \beta f_2(x)\right) \,dx = \alpha \int f_1(x) \,dx + \beta \int f_2(x) \,dx \] 
+\end{theorem}
+
+\begin{proof}
+    По условию, $\exists F_1, F_2: (a, b) \to \mathbb{R}$ такие, что \[F_1'(x) = f_1(x)
+    \text{ и } F_2'(x) = f_2(x) \quad \forall x \in (a, b)\] Тогда, в силу линейности 
+    дифференцирования, \[(\alpha F_1(x) + \beta F_2(x))' = \alpha f_1(x) + \beta f_2(x) \quad \forall x \in (a, b)\]
+    А в силу теоремы о структуре множества первообразных, \[\int f_1(x)\,dx = F_1(x) + C_1\] 
+    \[\int f_2(x)\,dx = F_2(x) + C_2\] Отсюда немедленно следует, что 
+    \[\alpha \int f_1(x)\,dx + \beta \int f_2(x)\,dx = \alpha F_1(x) + \beta F_2 (x) + (\alpha C_1 + \beta C_2) =\] 
+    \[= \left[\text{положим } C = \alpha C_1 + \beta C_2 \right] = \alpha F_1(x) + \beta F_2(x) + C = \int \left(\alpha f_1(x) + \beta f_2(x)\right) \,dx \]
+\end{proof}
+
+\begin{theorem}[Замена переменной в неопределённом интеграле]
+    Пусть $F$ --- первообразная $f$ на $(a, b)$. Пусть $\varphi : (t_1, t_2) \to (a, b)$ 
+    и $\varphi$ дифференцируема на $(t_1, t_2)$. Тогда \[\int f(\varphi(t)) \cdot \varphi'
+    (t)\,dt = F(\varphi(t)) + C, \ C \in \mathbb{R} \label{eq:star1} \tag{$\ast$}\]
+\end{theorem}
+
+\begin{proof}
+    Так как $F$ дифференцируема на $(a, b)$ и $\varphi$ дифференцируема на $(t_1, t_2)$, 
+    то по теореме о производной сложной функции, \[\frac{dF(\varphi(t))}{dt} = 
+    F'(\varphi(t)) \cdot \varphi'(t) = f(\varphi(t)) \cdot \varphi'(t)\]
+    Следовательно, $F \circ \varphi$ будет первообразной для $(f \circ \varphi) 
+    \cdot \varphi'$, тогда по теореме о структуре множества первообразных, получаем (\ref{eq:star1}).
+\end{proof}
+
+\begin{theorem}[Интегрирование по частям]
+    Пусть $u, v$ дифференцируемы на $(a, b)$. Пусть существуют первообразные функций $u \cdot v'$
+    и $u' \cdot v$ на $(a, b)$. Тогда \[\int u(x) \cdot v'(x)\,dx = u(x) \cdot v(x) -
+    \int u'(x) \cdot v(x)\,dx\]
+\end{theorem}
+
+\begin{proof}
+    По правилу дифференцирования произведения, \[(u \cdot v)'(x) = u'(x) \cdot v(x)
+    + v'(x) \cdot u(x) \quad \forall x \in (a, b)\] 
+    Следовательно, \[\int (u \cdot v)' (x)\,dx = u(x) \cdot v(x) + C\]
+    В силу линейности неопределённого интеграла, \[\int (u \cdot v)'(x)\,dx = 
+    \int u'(x) \cdot v(x)\,dx + \int u(x) \cdot v'(x)\,dx\]
+    Теперь аккуратно перепишем это великолепие: \[\int u(x) \cdot v'(x)\,dx = u(x) \cdot v(x) -
+    \int u'(x) \cdot v(x)\,dx\] Куда делась константа $C$, спросите вы: а мы 
+    филигранно перегнали ее в \[\int u'(x) \cdot v(x)\,dx\]
+    Это правомерно потому, что за каждым интегралом скрывается первообразная с константой,
+    пробегающей все вещественные числа, и мы можем спокойно складывать и вычитать эти константы.
+    А так как каждая константа независимо пробегает все вещественные числа, то в итоге 
+    мы получим константу, тоже пробегающую все вещественные числа.
+\end{proof}
+
+\section{Свойства определённого интеграла}
+
+\begin{theorem}[Замена переменной в определённом интеграле]
+    Пусть $f \in C([\varphi(a), \varphi(b)])$. Пусть $\varphi \in C^1([a, b])$. 
+    Тогда \[\int_{a}^{b} f(\varphi(t)) \cdot \varphi'(t)\,dt = F(\varphi(b)) - F(\varphi(a))\] 
+\end{theorem}
+
+\begin{proof}
+    Из условия теоремы, $(f \circ \varphi) \cdot \varphi'$ непрерывна на $[a, b]$, 
+    значит, она интегрируема по Риману. Более того, она имеет первообразную на $[a, b]$,
+    равную $F \circ \varphi$ (показано выше). Тогда по формуле Ньютона-Лейбница получаем требуемое.
+\end{proof}
+
+\begin{theorem}[Интегрирование по частям]
+    Пусть $u, v \in C^1([a, b])$. Тогда \[\int_{a}^{b}u(x) \cdot v'(x)\,dx = u(x)
+    \cdot v(x) \bigg|_a^b - \int_{a}^{b} u'(x) \cdot v(x)\,dx \]
+\end{theorem}
+
+\begin{proof}
+    Заметим, что $u\cdot v', \ u' \cdot v, \ (u \cdot v)' \in C([a, b])$. Следовательно, у всех
+    троих есть первообразные и все три интегрируемы по Риману на $[a, b]$. Тогда 
+    в силу линейности определённого интеграла, \[\int_{a}^{b} (u \cdot v)'\,dx =
+    \int_{a}^{b} u'(x) \cdot v(x)\,dx + \int_{a}^{b} u(x) \cdot v'(x)\,dx\] 
+    Используем формулу Ньютона-Лейбница и тайные знания того, что $u \cdot v$ --- 
+    первообразная для $(u \cdot v)'$, а также того, что $(u \cdot v)' \in C([a, b])$: \[\int_{a}^{b} (u \cdot v)'\,dx = u(b) \cdot 
+    v(b) - u(a) \cdot v(a) = u(x) \cdot v(x) \bigg|_a^b\] Тогда из равенства
+    \[u(x) \cdot v(x) \bigg|_a^b = \int_{a}^{b} u'(x) \cdot v(x)\,dx + \int_{a}^{b} 
+    u(x) \cdot v'(x)\,dx\] легко получаем требуемое.
+\end{proof}
+
+\section{Теорема о среднем для определённого интеграла}
+
+\begin{theorem}
+    Пусть $f, g \in C([a, b])$ и $g(x) \neq 0 \ \forall x \in [a, b]$. Тогда 
+    \[\exists \xi \in (a, b): \ \int_{a}^{b} f(x) \cdot g(x)\,dx = f(\xi) \cdot 
+    \int_{a}^{b} g(x)\,dx\] 
+\end{theorem}
+
+\begin{proof}
+    Так как $f \cdot g \in C([a, b])$, то они интегрируемы по Риману на $[a, b]$ и существует
+    первообразная $H \in C^1([a, b])$. Следовательно, по формуле Ньютона-Лейбница,
+    \[H(b) - H(a) = \int_{a}^{b} f(x) \cdot g(x)\,dx\]
+    Но $g \in C([a, b])$, тогда $g \in \mathcal{R}([a, b])$ и существует первообразная
+    $G \in C^1([a, b]) \Longrightarrow$ по формуле Ньютона-Лейбница, 
+    \[G(b) - G(a) = \int_{a}^{b} g(x)\,dx\] Применим теорему Коши о среднем, мы имеем
+    на это право, так как $H, G \in C^1([a, b])$ и \[G'(x) = g(x) \neq 0 \ \forall
+    x \in [a, b]\] Получим, что \[\exists \xi \in (a, b): \frac{H(b) - H(a)}{G(b) - G(a)}
+    = \frac{H'(\xi)}{G'(\xi)} = \frac{f(\xi) \cdot g(\xi)}{g(\xi)} = f(\xi)\]
+    Следовательно, \[\int_{a}^{b} f(x) \cdot g(x)\,dx =H(b) - H(a) = f(\xi) \cdot 
+    \bigg[ G(b) - G(a)\bigg] = f(\xi) \cdot \int_{a}^{b} g(x)\,dx\]
+\end{proof}
+
+\section{Несобственный интеграл}
+
+\begin{example}
+    Рассмотрим $f(x) = \displaystyle \frac{1}{x}$ при $x \in (0, 1)$. Можно ли 
+    написать $\displaystyle \int_{0}^{1} \frac{1}{x}\,dx$ ? \\ Нельзя понимать это 
+    как интеграл Римана, так как $\displaystyle \frac{1}{x}$ неограничена в любой
+    окрестности нуля. \\ Посмотрим теперь на $\displaystyle \frac{1}{x^2}$ при 
+    $x \in (1, +\infty)$: $\displaystyle \int_{1}^{+\infty} \frac{dx}{x^2}$
+    тоже нельзя понимать как интеграл Римана, потому что мы не можем говорить о 
+    разбиении луча (так как всегда будет промежуток бесконечной длины).
+\end{example}
+
+\begin{theorem}
+    Пусть $f \colon [a, b) \to \mathbb{R}$ ограниченна на $[a, b)$, причем $-\infty < a < b < + \infty$. Пусть 
+    \[f \in \mathcal{R}([a, b']) \; \; \forall b' \in (a, b)\]
+    Тогда при любом доопределении
+    функции $f$ в точке $b$ функция $f$ становится интегрируемой по Риману на $[a, b]$. 
+    Более того, \[\int_{a}^{b} f(x)\,dx = \lim_{b' \to b - 0} \int_{a}^{b'} f(x)\,dx \label{eq:star2} \tag{$\ast \ast$}\]
+\end{theorem}
+
+\begin{proof}
+    Доопределим любым числом $f$ в точке $b$. Рассмотрим $\displaystyle I_n = 
+    \left[a, b - \frac{1}{n}\right], \ n \geq N$. Так как $f \in \mathcal{R}(I_n)$, 
+    то множество точек разрыва $f$ на $I_n$ имеет лебегову меру ноль. \\ 
+    Пусть $D_n(f)$ --- множество точек разрыва $f$ на $I_n$, $D(f)$ --- множество 
+    всех точек разрыва на $[a, b]$. Поскольку 
+    \[D(f) \subset \bigcup_{n = N}^{\infty} D_n(f) \cup \{b\}\] 
+    Множество $D(f)$ имеет лебегову меру ноль, так как содержится в 
+    счетном объединении множеств лебеговой меры ноль. В силу ограниченности $f$ 
+    на $[a, b]$ получаем, что $f \in \mathcal{R}([a, b])$ по критерию Лебега.
+    \\
+    Покажем (\ref{eq:star2}): \[\exists M > 0: \ \left|f(x)\right| \leq M \ \forall
+    x \in [a, b] \Longrightarrow \int_{a}^{b}f(x)\,dx = \big[\text{аддитивность}\big]
+    = \int_{a}^{b'} f(x)\,dx + \int_{b'}^{b} f(x)\,dx \Longrightarrow\]
+    \[\Longrightarrow \left|\int_{a}^{b}f(x)\,dx - \int_{a}^{b'} f(x)\,dx\right| \leq
+    \left|\int_{b'}^{b} f(x)\,dx\right| \leq \big[\text{теорема об интегрируемости модуля}\big] \leq\]
+    \[\leq \int_{b'}^{b} |f(x)|\,dx \leq M \cdot (b - b') \to 0 \text{ при } b' \to b-0\]
+    Следовательно, по теореме о двух милиционерах получаем требуемое.
+\end{proof}
+
+\begin{remark}
+    Аналогичное утверждение справедливо для конечного полуинтервала $(a, b]$.
+\end{remark}
+\end{document}

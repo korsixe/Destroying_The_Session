@@ -1,0 +1,265 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{soul}
+\usepackage{multicol}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\rg}{rg}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Улыбайтесь, господа! Улыбайтесь!}
+\fancyhead[R]{\href{https://t.me/lost_luna}{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 26. Комплексные числа. \\ Степенные ряды. \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Комплексные числа}
+ 
+\begin{definition}
+    $\mathbb{C}$ (множество комплексных чисел) --- это множество пар вещественных чисел $(x, y)$ с введёнными следующим образом операциями:
+    \begin{enumerate}
+        \item $(x_1, y_1) \pm (x_2, y_2) := (x_1 \pm x_2, y_1 \pm y_2)$
+        \item $(x_1, y_1) \cdot (x_2, y_2) := (x_1 \cdot x_2 - y_1 \cdot y_2, x_1 \cdot y_2 + x_2 \cdot y_1)$
+    \end{enumerate} 
+\end{definition}
+
+\begin{remark}
+    Непосредственно проверяется, что полученное множество является полем.
+\end{remark}
+
+\begin{remark}
+    Мы отождествляем $\mathbb{R}$ с парами вида $(x, 0)$. Тогда при $t \in \mathbb{R}$: \[t (x, y) = (t, 0) \cdot (x, y) = (tx, ty)\]
+\end{remark}
+
+\begin{definition}
+    Положим $i := (0, 1)$.
+\end{definition}
+
+\begin{remark}
+    Покажем, что $\forall (x, y) \neq 0$ существует обратный элемент \[(x, y)^{-1} = (\widetilde{x}, \widetilde{y}): \ (x, y) \cdot (\widetilde{x}, \widetilde{y}) = (1, 0)\]
+\end{remark}
+
+\begin{proof}
+    В силу правил умножения получаем, что $i^2 = (-1, 0) = -1$. Тогда любую пару $(x, y)$ можно расписать следующим образом: \[(x, y) = (x, 0) + (0, y) = (x, 0) + y \cdot i = x + i \cdot y\]
+    Тогда проделаем вот такой финт ушами: \[\frac{1}{(x + i \cdot y)} = \frac{x - i \cdot y}{x^2 + y^2} = \left( \frac{x}{x^2 + y^2}, \frac{-y}{x^2 + y^2}\right) \text{ --- обратный элемент к } (x, y)\]
+    В самом деле,  $\displaystyle \left(\frac{x - i\cdot y}{x^2 + y^2}\right) \cdot \left(x + i\cdot y\right) = \frac{1}{x^2 + y^2} (x^2 + i y x - i y x + y^2) = 1$.
+\end{proof}
+
+\begin{remark}
+    Обозначим за $z$ произвольную комплексную переменную.
+\end{remark}
+
+\begin{definition}
+    Если $z \in \mathbb{C}$, то модуль комплексного числа $z$:  \[|z| := \sqrt{x^2 + y^2}\]
+\end{definition}
+
+\begin{definition}
+    Сопряженным к $z = x + i\cdot y \in \mathbb{C}$ называется комплексное число $\overline{z} := x - i \cdot y$.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{pictures/Комплексно сопряженные.png}
+    \end{figure}
+\end{definition}
+
+\begin{remark}
+    $z \cdot \overline{z} = |z|^2$.
+\end{remark}
+
+\begin{definition}
+    Последовательность комплексных чисел $\{z_n\} \subset \mathbb{C}$ называется сходящейся к комплексному числу $z$, если \[|z_n - z| \to 0, \ n \to \infty\]
+\end{definition}
+
+\begin{definition}
+    Комплексным рядом $\displaystyle \sum_{k = 1}^\infty z_k$ называется пара последовательностей
+    \begin{enumerate}
+        \item $\{z_k\}_{k = 1}^\infty$ --- последовательность членов ряда
+        \item $\displaystyle \left\{\sum_{k = 1}^{n} z_k\right\}$ --- последовательность частичных сумм ряда
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}
+    Будем говорить, что $\displaystyle \sum_{k = 1}^{\infty} z_k$ сходится, если \[\exists S \in \mathbb{C}: \ \left|S - \sum_{k = 1}^{n} z_k\right| \to 0, \ n \to \infty\]
+\end{definition}
+
+\begin{definition}
+    Если $z = x + i \cdot y$, то $x$ называется вещественной частью комплексного числа $z$, а $y$ называется мнимой частью $z$: \[x = \Re z, \quad y = \Im z\]
+\end{definition}
+
+\begin{lemma} \label{eq:lemma1.1}
+    Последовательность $\{z_n\}_{n = 1}^\infty$ сходится к $z \in \mathbb{C} \ \Longleftrightarrow$ \[ \Longleftrightarrow \left\{\begin{array}{l}
+        \Re z_n \to \Re z, \ n \to \infty \\ \Im z_n \to Im z, \ n \to \infty    
+    \end{array}\right.\ \]
+\end{lemma}
+
+\begin{proof}
+    Доказательство состоит в гениальном наблюдении: \[\left|\Re z_n - \Re z \right| \leq |z_n - z|\] \[\left|\Im z_n - \Im z\right| \leq |z_n - z|\]
+    \[|z - z_n| \leq \left|\Re z_n - \Re z \right| + \left|\Im z_n - \Im z\right|\]
+\end{proof}
+
+\subsection{Тригонометрическая форма записи комплексных чисел}
+\leavevmode
+Если отождествить комплексные числа с векторами из $\mathbb{R}^2$ (в геометрическом смысле) и ввести полярные координаты, то получится, что число $z = (x, y)$ можно 
+записать в виде: \[z = x + i \cdot y = r \cdot \cos \varphi + i \cdot r \cdot \sin \varphi, \quad r = \sqrt{x^2 + y^2} \label{eq:star1} \tag{*}\]
+В нуле $\varphi$ не определен, а если $z \neq 0$, то $\varphi$ не определен однозначно. Изящно решим эту проблему: пусть \[\arg z \text{ --- угол } \varphi \text{ в промежутке }
+(-\pi, \pi] \text{ такой, что выполнена (\ref{eq:star1})}\]
+Тогда Arg $\displaystyle z := \left\{ \varphi \in \mathbb{R}: \left\{ \begin{array}{l}
+    r \cdot \cos \varphi = x \\ r \cdot \sin \varphi = y    
+\end{array} \right.\ \right\} = \{ \arg z + 2\pi \cdot k, \ k \in \mathbb{Z}\}$. \\
+По определению введём обозначение: \[e^{i \varphi} := \cos \varphi + i \cdot \sin \varphi\] Если $z = x + i \cdot y$, то $e^z := e^x \cdot (\cos y + i \cdot \sin y)$. \\
+Если рассмотреть на комплексной плоскости уравнение \[f(z + y) = f(z) \cdot f(y)\] и потребовать непрерывность функции $f$, то $e^z$ является единственным решением.
+
+\begin{remark}
+    Мы ввели комплексное пространство, чтобы любой полином $\displaystyle P_n(z) = \sum_{k = 1}^{n} a_k \cdot z^k$ имел корень в $\mathbb{C}$ (на самом деле, полином имеет
+    $n$ корней с учётом кратности).
+\end{remark}
+
+\section{Комплексные функциональные ряды} \leavevmode
+Рассматриваем комплексные функциональные ряды $\displaystyle \sum_{k = 1}^{\infty} u_k$, где $u_k: \ E \to \mathbb{C}, \ E \subset \mathbb{C}$.
+
+\begin{definition}
+    Функциональный ряд $\displaystyle \sum_{k = 1}^{\infty} u_k$ сходится равномерно на $E$, если \[\exists S: \ E \to \mathbb{C}: \ \sup_{z \in E} \left|S(z) - 
+    \sum_{k = 1}^{n} u_k(z)\right| \to 0, \quad n \to \infty\]
+\end{definition}
+
+\begin{definition}
+    Комплексный ряд $\displaystyle \sum_{k = 1}^{\infty} z_k$ называется абсолютно сходящимся, если ряд $\displaystyle \sum_{k = 1}^{\infty} |z_k|$ сходится.
+\end{definition}
+
+\begin{lemma}
+    Если комплексный ряд $\displaystyle \sum_{k = 1}^{\infty} z_k$ абсолютно сходится, то он сходится.
+\end{lemma}
+
+\begin{proof}
+    Вспомним, что $z_k = x_k + i \cdot y_k \ \forall k \in \mathbb{N}$. При этом \[|x_k| \leq |z_k|, \quad |y_k| \leq |z_k|\] Тогда если $\displaystyle \sum_{k = 1}^{\infty} z_k$
+    абсолютно сходится, то и ряды $\displaystyle \sum_{k = 1}^{\infty} x_k$, $\displaystyle \sum_{k = 1}^{\infty} y_k$ абсолютно сходятся. Значит, $\displaystyle \sum_{k = 1}^{\infty} x_k$
+    и $\displaystyle \sum_{k = 1}^{\infty} y_k$ просто сходятся. Следовательно, $\displaystyle \exists \lim_{n \to \infty} \sum_{k = 1}^{n} x_k = x \in \mathbb{R}, \ 
+    \exists \lim_{n \to \infty} \sum_{k = 1}^{n} y_k = y \in \mathbb{R}$. Поскольку \[\Re \left(\sum_{k = 1}^{n}z_k\right) = \sum_{k = 1}^{n} x_k\] 
+    \[\Im \left(\sum_{k = 1}^{n}z_k\right) = \sum_{k = 1}^{n} y_k\] по лемме \ref{eq:lemma1.1} немедленно получаем, что $\displaystyle \exists \lim_{n \to \infty} 
+    \sum_{k = 1}^{n} z_k = x + i \cdot y =: z$, то есть ряд $\displaystyle \sum_{k = 1}^{\infty} z_k$ сходится.
+\end{proof}
+
+\begin{theorem}[признак Вейерштрасса]
+    Пусть $\{a_k\} \subset [0, +\infty], \ \displaystyle \sum_{k = 1}^{\infty} a_k$ сходится. Пусть функциональный комплексный ряд $\displaystyle \sum_{k = 1}^{\infty} u_k$ 
+    таков, что $|u_k(z)| \leq a_k \ \forall k \in \mathbb{N}, \ \forall z \in E \subset \mathbb{C}$. Тогда ряд $\displaystyle \sum_{k = 1}^{\infty} u_k$  равномерно сходится на $E$.
+\end{theorem}
+
+\begin{proof}
+    Заметим, что $\forall z \in E$ комплексный ряд $\displaystyle \sum_{k = 1}^{\infty} u_k(z)$ сходится абсолютно. Значит, $\forall z \in E$ ряд $\displaystyle \sum_{k = 1}^{\infty} u_k(z)$ 
+    сходится к $S(z) \in \mathbb{C}$. Тогда \[ \left|S(z) - \sum_{k = 1}^{n}u_k(z)\right| \leq \sum_{k = n + 1}^{\infty} |u_k(z)| \leq \sum_{k = n + 1}^{\infty} a_k \to 0, \quad n \to \infty\]
+    Так как оценки выше справедливы $\forall z \in E$, то мы с чистой душой можем взять супремум по всем $z \in E$: 
+    \[\sup_{z \in E} \left|S(z) - \sum_{k = 1}^{n}u_k(z)\right| \leq \sup_{z \in E} \sum_{k = n + 1}^{\infty} |u_k(z)| \leq \sum_{k = n + 1}^{\infty} a_k \to 0, \quad n \to \infty\] 
+    Следовательно, $\displaystyle \sum_{k = 1}^{n} u_k \underset{E}{\rightrightarrows} S, \ n \to \infty$. А это и означает, что ряд $\displaystyle \sum_{k = 1}^{\infty} u_k$  равномерно сходится на $E$.
+\end{proof}
+
+\section{Степенные ряды}
+
+\begin{definition}
+    Пусть $z_0 \in \mathbb{C}$. Пусть $\{a_k\} \subset \mathbb{C}$. Функциональный ряд $\displaystyle \sum_{k = 0}^{\infty} a_k \cdot (z - z_0)^k$ называется степенным рядом.
+\end{definition}
+
+\begin{definition}
+    Пусть $\displaystyle \sum_{k = 0}^{\infty} a_k \cdot (z - z_0)^k$ --- степенной ряд. Радиусом сходимости степенного ряда назовем \[R_{\text{сх}} := 
+    \frac{1}{\underset{k \to \infty}{\overline{\lim}} \sqrt[k]{|a_k|}} \in [0, +\infty] \text{ (формула Коши-Адамара)}\] По определению считаем, что $\displaystyle \frac{1}{0}
+    := +\infty, \ \frac{1}{+\infty} := 0$.
+\end{definition}
+
+\begin{remark}
+    Любой степенной ряд $\displaystyle \sum_{k = 0}^{\infty} a_k \cdot (z - z_0)^k$ сводится к степенному ряду $\displaystyle \sum_{k = 0}^{\infty} a_k \cdot \widetilde{z}^k$,
+    если сделать замену $\widetilde{z} = z - z_0$.
+\end{remark}
+
+\begin{theorem}[о круге сходимости степенного ряда]
+    Пусть $\displaystyle \sum_{k = 0}^{\infty} a_k \cdot z^k$ --- степенной ряд. Тогда 
+    \begin{enumerate}
+        \item $\displaystyle \forall z \in B_{R_{\text{сх}}}(0) \hookrightarrow \sum_{k = 0}^{\infty} a_k \cdot z^k$ сходится абсолютно
+        \item $\displaystyle \forall z \in \mathbb{C} \ \backslash \ \overline{B}_{R_{\text{сх}}} \hookrightarrow \sum_{k = 0}^{\infty} a_k \cdot z^k$ расходится (более того,
+        $a_k \cdot z^k \nrightarrow 0, \ k \to \infty$)
+        \item На $\partial B_{R_{\text{сх}}}(0)$ степенной ряд может как сходиться, так и расходиться
+        \item $\forall r \in (0, R_{\text{сх}}) \hookrightarrow$ в $\overline{B_r}(0)$ степенной ряд сходится равномерно
+    \end{enumerate}
+\end{theorem}
+    
+\begin{proof}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{pictures/Теорема о круге сходимости.png}
+        \caption{вот так обстоят дела}
+    \end{figure}
+    \begin{enumerate}
+        \item Рассмотрим $\displaystyle q = \underset{k \to \infty}{\overline{\lim}} \sqrt[k]{|a_k \cdot z^k|}$. Несложно увидеть, что 
+        $|z^k| = |z|^k$ и $|a_k \cdot z^k| = |a_k| \cdot |z|^k$. Отсюда \[\underset{k \to \infty}{\overline{\lim}} \sqrt[k]{|a_k \cdot z^k|} = |z| \cdot 
+        \underset{k \to \infty}{\overline{\lim}} \sqrt[k]{|a_k|} = \frac{|z|}{R_{\text{сх}}}\]
+        На прошлой лекции был доказан обобщённый признак Коши сходимости числового ряда, из которого следует, что если $q < 1$, то $\displaystyle \sum_{k = 0}^{\infty} |a_k \cdot z^k|$
+        сходится. Но $0 \leq q < 1 \Longleftrightarrow |z| < R_{\text{сх}}$. Следовательно, $\displaystyle \sum_{k = 0}^{\infty} a_k \cdot z^k$ сходится абсолютно. 
+
+        \item Если $z \notin \overline{B}_{R_{\text{сх}}}(0)$, то это равносильно $|z| > R_{\text{сх}} \Longleftrightarrow q > 1$. Тогда в силу обобщённого признака Коши,
+        \[|a_k \cdot z^k| \nrightarrow 0, \ k \to \infty \ \Longrightarrow a_k \cdot z^k \nrightarrow 0, \ k \to \infty\] Значит, не выполнено необходимое условие 
+        сходимости числового ряда.
+
+        \item \begin{itemize}
+            \item Рассмотрим хороший ряд: $\displaystyle \sum_{k = 1}^{\infty} \frac{z^k}{k^2}$. Ясно, что $R_{\text{сх}} = 1$, так как \[\underset{k \to \infty}{\overline{\lim}} 
+            \sqrt[k]{\frac{1}{k^2}} = \underset{k \to \infty}{\overline{\lim}} e^{\left(\ln \frac{1}{k^2}\right) \frac{1}{k}} = 1\] Если $|z| = 1$, то $\displaystyle 
+            \frac{|z^k|}{k^2} \leq \frac{1}{k^2}$. Тогда из сходимости ряда $\displaystyle \sum_{k = 1}^{\infty} \frac{1}{k^2}$ следует сходимость (и даже абсолютная)
+            степенного ряда $\displaystyle \sum_{k = 1}^{\infty} \frac{z^k}{k^2}$ на границе круга сходимости.
+
+            \item Рассмотрим плохой ряд: $\displaystyle \sum_{k = 0}^{\infty} z^k$. $\quad R_{\text{сх}} = 1$, но если $|z| = 1$, то $z^k \nrightarrow 0, \ k \to \infty$. Следовательно,
+            ряд расходится в каждой точке границы круга сходимости.
+
+            \item Рассмотрим загадочный ряд: $\displaystyle \sum_{k = 1}^{\infty} \frac{z^k}{k}$. $\quad R_{\text{сх}} = 1$, но если $z = (1, 0)$, то ряд $\displaystyle \sum_{k = 1}^{\infty} \frac{1}{k}$
+            расходится. А если $z = (-1, 0)$, то ряд $\displaystyle \sum_{k = 1}^{\infty} \frac{(-1)^k}{k}$ сходится по признаку Лейбница.
+        \end{itemize}
+
+        \item Зафиксируем $r \in (0, R_{\text{сх}})$. Тогда $\forall z \in \overline{B_r}(0)$ справедливо \[|a_k \cdot z^k| \leq |a_k| \cdot r^k \quad \forall k \in 
+        \mathbb{N}_0 \label{eq:star2} \tag{*}\] Но в силу пункта $1$ ряд $\displaystyle \sum_{k = 0}^{\infty} a_k \cdot z^k$ сходится абсолютно. Следовательно, 
+        взяв $z = (r, 0)$, получим сходимость ряда $\displaystyle \sum_{k = 0}^{\infty} |a_k| \cdot r^k$. Тогда в силу признака Вейерштрасса и оценки (\ref{eq:star2})
+        получаем, что функциональный ряд $\displaystyle \sum_{k = 0}^{\infty} a_k \cdot z^k$ равномерно сходится в $\overline{B_r}(0)$.
+    \end{enumerate}
+\end{proof}
+
+\begin{theorem}[первая теорема Абеля]
+    Пусть степенной ряд $\displaystyle  \sum_{k = 0}^{\infty} a_k \cdot z^k$ сходится в точке $z_1 \in \mathbb{C}$. Тогда он сходится абсолютно в круге $B_{|z_1|}(0)$.
+\end{theorem}
+
+\begin{proof}
+    В силу пункта $2$ теоремы о круге сходимости, $R_{\text{сх}} \geq |z_1|$. Тогда в силу пункта $1$ теоремы о круге сходимости, ряд $\displaystyle \sum_{k = 0}^{\infty} a_k \cdot z^k$ 
+    сходится абсолютно $\forall z \in B_{R_{\text{сх}}}(0)$. Значит, он сходится абсолютно $\forall z \in B_{|z_1|}(0)$.
+\end{proof}
+
+\begin{theorem}[вторая теорема Абеля]
+    Пусть степенной ряд $\displaystyle  \sum_{k = 0}^{\infty} a_k \cdot z^k$ сходится в точке $z_1 \in \mathbb{C}$. Тогда он сходится равномерно на отрезке 
+    \[ [0, z_1] := \{t\cdot z_1: \ t \in [0, 1]\}\]
+\end{theorem}
+
+\begin{proof}
+    Обозначим $E = [0, z_1]$. На множестве $E$ $\forall k \in \mathbb{N} \ a_k \cdot z^k$ можно рассматривать как произведение $a_k \cdot z_1^k \cdot t^k$. Тогда рассмотрим 
+    следующие функции на отрезке $[0, 1]$: \[u_k(t) := t^k, \quad v_k(t) := \Re (a_k \cdot z_1^k), \quad w_k(t) := \Im (a_k \cdot z_1^k)\]
+    По условию получаем, что ряды $\displaystyle \sum_{k = 1}^{\infty} v_k$ и $\displaystyle \sum_{k = 1}^{\infty} w_k$ равномерно сходятся на $[0, 1]$. При этом \[1 \geq u_k(t)
+    \geq u_{k+1}(t) \geq 0 \quad \forall t \in [0, 1], \ \forall k \in \mathbb{N}_0\]
+    Тогда по признаку Абеля равномерной сходимости функциональных рядов получаем, что $\displaystyle \sum_{k = 1}^{\infty} v_k \cdot t^k$ и $\displaystyle 
+    \sum_{k = 1}^{\infty} w_k \cdot t^k$ сходятся равномерно на $[0, 1]$. Следовательно, $\displaystyle \sum_{k = 1}^{\infty} a_k \cdot z_1^k \cdot t^k$ сходится равномерно на $[0, 1]$.
+    Отсюда и исходный ряд $\displaystyle  \sum_{k = 0}^{\infty} a_k \cdot z^k$ сходится равномерно на $[0, 1]$.
+\end{proof}
+\end{document}

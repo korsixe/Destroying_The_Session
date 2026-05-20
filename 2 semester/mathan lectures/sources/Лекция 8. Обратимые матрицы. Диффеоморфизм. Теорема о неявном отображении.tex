@@ -1,0 +1,364 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\DIF}{DIF}
+\DeclareMathOperator{\rg}{rg}
+\DeclareMathOperator{\gr}{gr}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Сегодня без цитаты, любимые. Всем хорошего бота}
+\fancyhead[R]{\href{https://t.me/sol_m_07}{Соля}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 8. Обратимые матрицы. Диффеоморфизм. Теорема о неявном отображении}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Обобщение теоремы об открытом отображении}
+
+Пусть $\Omega \subset \mathbb{R}^n$ --- открыто. Попробуем понять, при каких $m$ и $n$ для отображений из $\Omega$ в $\mathbb{R}^m$ справедлив аналог теоремы об открытом отображении. Если $m > n$, то для таких 
+отображений аналога нет. Чтобы это увидеть, посмотрим на следующий пример:
+
+\begin{example}
+    Рассмотрим отображение $F \colon \mathbb{R}^2 \to \mathbb{R}^3$, называющееся вложением в $\mathbb{R}^3$. Пусть 
+    \[\forall (x, y) \in \mathbb{R}^2 \hookrightarrow F(x, y) = (x, y, 0)\]
+    Но тогда образом будет являться гиперплоскость $\mathbb{R}^2 \times \{0\}$, которая, очевидным образом, не является открытым множеством в $\mathbb{R}^3$.
+\end{example} \leavevmode
+\\
+Если же $m \leq n$, то для таких отображений аналог теоремы об открытом отображении существует. 
+
+\begin{theorem}
+    Пусть $m, n \in \mathbb{N}$ и $m \leq n$. Пусть $G \subset \mathbb{R}^n$ --- непустое открытое множество.
+    Пусть \[F \in C^1(G, \mathbb{R}^m) \ \text{ и } \ \forall x \in G \hookrightarrow \rg \mathcal{D}F(x) = m\]
+    Тогда $F(G)$ -- открыто в $\mathbb{R}^m$.
+\end{theorem}
+
+\begin{proof}
+    Возьмём произвольно точку $x^0 \in G$. С точностью до перенумеровки 
+    координат можно считать, что первые $m$ столбцов матрицы Якоби в 
+    точке $x^0$ линейно независимы (здесь $A(x^0)$ --- подматрица матрицы Якоби в точке $x^0$): 
+    \begin{equation*}
+        \det A(x^0) := \det
+        \begin{pmatrix}
+            \displaystyle \frac{\partial F_1}{\partial x_1} \left(x^0 \right) & \ldots & \displaystyle \frac{\partial F_1}{\partial x_m} \left(x^0 \right) \\
+            \displaystyle \vdots & \ddots & \vdots \\
+            \displaystyle \frac{\partial F_m}{\partial x_1} \left(x^0 \right) & \ldots & \displaystyle \frac{\partial F_m}{\partial x_m} \left(x^0 \right)
+        \end{pmatrix}
+        \neq 0
+    \end{equation*}
+    Так как $F$ непрерывно дифференцируема на $G$, а детерминант, как легко видеть из формулы полного разложения, является непрерывной функцией от своих аргументов, коими выступают непрерывные в точке $x^0$ частные производные, 
+    то, если угодно, по лемме о сохранении знака получаем:
+    \[\exists \delta > 0: \det A(x) \neq 0 \quad \forall x \in B_{\delta}(x^0)\]
+    Рассмотрим сечение $\widetilde{B}_{\delta}(x^0) = B_{\delta}(x^0) \cap 
+    \mathbb{R}^m$ и определим 
+    отображение $\widetilde{F}$ как поточечное ограничение отображения 
+    $F$ на $\widetilde{B}_{\delta}(x^0)$ (просто сузили область определения). Тогда матрица $A(x)$ по существу представляет собой матрицу Якоби отображения $\widetilde{F}$ в точке $x$.
+    Значит из показанного выше имеем:
+    \[\det \mathcal{D} \widetilde{F} \neq 0 \quad \forall x \in 
+    \widetilde{B}_{\delta}(x^0)\] 
+    Матрица обратима, откуда в силу теоремы об открытом отображении:
+    \[\widetilde{F} \colon \widetilde{B}_{\delta}(x^0) \to \Omega \subset \Imm F \subset \mathbb{R}^m, \quad \Omega \text{ -- открыто}\] 
+    При этом $x^0 \to \widetilde{F}(x^0)$ и $\widetilde{F}(x^0)$ -- внутренняя точка $\Omega$, а также $\widetilde{F}(x^0) = F(x^0)$.
+    Значит $F(x^0)$ входит в образ $\Imm F$ вместе с некоторым открытым множеством $\Omega$, его содержащем. 
+    Тогда $\Imm F$ --- открыто, так как $x^0$ была выбрана произвольно, что и требовалось.
+\end{proof}
+
+\begin{remark}
+    Для каждой точки $x^0$ своя перенумерация столбцов. Мы её задаём, а далее пользуемся непрерывностью частных производных, чтобы 
+    сказать, что и для малой окрестности этой точки такая перенумерация подходит.
+\end{remark}
+
+\section{Обратимые матрицы}
+
+\begin{definition}
+    $GL(m)$ --- множество всех обратимых матриц размера $m \times m$.
+\end{definition}
+
+\begin{remark}
+    Отождествим все матрицы размера $m \times m$ с точками пространства $\mathbb{R}^{m^2}$. 
+    Тогда $GL(m)$ -- открытое множество в пространстве $\mathbb{R}^{m^2}$.
+\end{remark}
+
+\begin{proof}
+    Действительно, матрица обратима $\Longleftrightarrow$ её определитель отличен от нуля. \\
+    Зададим отображение, которое матрице ставит в соответствие её детерминант: 
+    \[\mathbb{R}^{m^2} \ni A \xlongrightarrow{H} \det A \in \mathbb{R}\] 
+    Детерминант матрицы является непрерывно дифференцируемой функцией от её элементов, так как это полином. 
+    В частности, функция $H$ непрерывна. Кроме того, 
+    \[GL(m) = \{A: \det A \neq 0\} = H^{-1}(\mathbb{R} \setminus \{0\}),\]
+    где $\mathbb{R} \backslash \{0\}$ -- открытое множество. Но при непрерывном отображении прообраз открытого открыт, а значит $GL(m)$ -- открыто в $\mathbb{R}^{m^2}$, что и требовалось.
+\end{proof}
+
+\begin{lemma} \label{lemma:2.1}
+    Отображение \[GL(m) \ni A \xlongrightarrow{T} A^{-1} \in GL(m)\] 
+    является непрерывно дифференцируемым отображением.
+\end{lemma}
+
+\begin{proof}
+    Элементы матрицы $A^{-1}$ являются алгебраическими функциями (вида полином делить на полином, так как детерминанты являются многочленами от своих аргументов) 
+    от элементов матрицы $A$. При этом знаменатель не обращается в ноль всюду на множестве $GL(m)$, 
+    а оно, в свою очередь, открыто. Тогда все частные производные существуют в некотором шаре и непрерывны (в этом легко убедиться, непосредственно расписав частную производную алгебраической функции), а значит отображение $T$ непрерывно дифференцируемо, что и требовалось. 
+\end{proof}
+
+\section{Диффеоморфизм}
+
+\begin{definition}
+    Пусть $U \subset \mathbb{R}^m$ и $V \subset \mathbb{R}^m$ --- непустые 
+    открытые множества. Отображение $F \colon U \to V$ является \textbf{диффеоморфизмом} 
+    $U$ на $V$, если 
+    \begin{enumerate}
+        \item $F$ --- биекция $U$ на $V$
+        \item $F \in \DIF (U, V)$
+        \item $F^{-1} \in \DIF (V, U)$
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}
+    Пусть $U \subset \mathbb{R}^m$ и $V \subset \mathbb{R}^m$ -- непустые 
+    открытые множества. Отображение $F \colon U \to V$ является \textbf{$C^n$-гладким 
+    диффеоморфизмом} $U$ на $V$, если 
+    \begin{enumerate}
+        \item $F$ --- биекция $U$ на $V$
+        \item $F \in C^n (U, V)$
+        \item $F^{-1} \in C^n (V, U)$
+    \end{enumerate}
+\end{definition}
+
+\begin{theorem}[о глобальном диффеоморфизме]
+    Пусть $\Omega \subset \mathbb{R}^n$ --- непустое открытое множество. 
+    Пусть отображение $F \colon \Omega \to \mathbb{R}^n$ обладает следующими свойствами: 
+    \begin{enumerate}
+        \item $F$ --- инъекция на $\Omega$
+        \item $F \in C^1(\Omega, \mathbb{R}^n)$
+        \item $\mathcal{J} F(x) \neq 0 \quad \forall x \in \Omega$
+    \end{enumerate}
+    Тогда $F$ является $C^1 \text{-гладким}$ диффеоморфизмом.
+\end{theorem}
+
+\begin{proof}
+    Из пунктов 2 и 3 по теореме об открытом отображении получаем, что множество $F(\Omega)$ --- открыто.
+    Более того, для всякого открытого множества $U \subset \Omega$ выполнено, что множество $F(U) = V$ --- открыто.
+    Далее заметим, что из пункта 1 следует существование обратного отображения $F^{-1} \colon \Imm F \to \Omega$, 
+    где для удобства (ну или же для спокойствия) обозначим $G := \Imm F$ и $S := F^{-1}$.
+    По теореме об открытом отображении также ясно, что $G$ --- открыто. Теперь увидим, что
+    \[F(U) = V \Longleftrightarrow S^{-1}(U) = V\]
+    Это означает, что для всякого открытого множества $U \subset \Omega$ выполнено, что $S^{-1}(U)$ -- открыто в $G$, откуда по критерию непрерывности $S$ -- непрерывно.
+    Тогда по теореме о производной обратного отображения $S = F^{-1}$ является дифференцируемым 
+    отображением на области $G$ и, более того, 
+    \[\mathcal{D} S(y) = \mathcal{D} F^{-1}(y) = \left( \mathcal{D} F\left( F^{-1}(y) \right) \right)^{-1}\]
+    Для того чтобы доказать теорему, остаётся проверить, что $\mathcal{D} S$ является непрерывным 
+    отображением от $y$ (тем самым будет показана непрерывность всех частных производных). Посмотрим, как строится это отображение:
+    \[y \xlongrightarrow{A} F^{-1}(y) = x \xlongrightarrow{B} \mathcal{D} F(x) \xlongrightarrow{C} \left( \mathcal{D} F(x) \right)^{-1}\]
+    \begin{enumerate}
+        \item $A$ -- непрерывно, так как мы доказывали непрерывность $S$ выше
+        \item $B$ -- непрерывно, так как $F \in C^1(\Omega, \mathbb{R}^n)$, а значит $\mathcal{D} F$ -- непрерывна
+        \item $C$ -- непрерывно, так как это прямое следствие леммы \ref{lemma:2.1} 
+    \end{enumerate}
+    Тогда $A, B, C$ --- непрерывные отображения, а значит по теореме о композиции непрерывных отображений отображение $y \to \mathcal{D} S(y)$ --- непрерывно, что и требовалось. 
+\end{proof}
+
+\begin{example}
+    В жизни нечасто бывают такие идеальные сценарии. Давайте посмотрим на следующее отображение:
+    \begin{equation*}
+        F :
+        \begin{cases}
+            x(r, \varphi) = r \cos \varphi \\
+            y(r, \varphi) = r \sin \varphi
+        \end{cases}
+    \end{equation*}
+    \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\linewidth]{pictures/Не глобальный диффеоморфизм.png}
+    \end{figure} \leavevmode
+    \\
+    Увидим, что отображение $F$ непрерывно дифференцируемо. В самом деле:
+    \[x'_r = \cos \varphi \implies x'_r \text{ -- непрерывна}\]
+    \[y'_r = \sin \varphi \implies y'_r \text{ -- непрерывна}\]
+    \[x'_{\varphi} = -r \sin \varphi \implies x'_{\varphi} \text{ -- непрерывна}\]
+    \[y'_{\varphi} = r \cos \varphi \implies y'_{\varphi} \text{ -- непрерывна}\]
+    Тогда матрица Якоби $\mathcal{D} F(r, \varphi)$ непрерывна. Более того,
+    \[\mathcal{J} F(r, \varphi) = 
+    \begin{vmatrix}
+        \cos \varphi & -r \sin \varphi \\
+        \sin \varphi & r \cos \varphi
+    \end{vmatrix} 
+    = r > 0\]
+    Но $F$ не является глобально обратимым, так как $(r, \varphi)$ и $(r, \varphi + 2 \pi)$ 
+    переходят в одну и ту же точку.
+\end{example}
+
+\begin{lemma}[Неравенство Лагранжа 2.0]
+    Пусть $B_{\delta}(x^0) \subset \mathbb{R}^n$.
+    Пусть $F \in \DIF (B_{\delta}(x^0), \mathbb{R}^n)$.
+    Тогда 
+    \[\forall x, y \in B_{\delta}(x^0) \; \; \exists \theta \in (0, 1): \left\lVert F(x) - F(y) \right\rVert \leq \left\lVert \mathcal{D} F(x + \theta (y - x)) \right\rVert \cdot \left\lVert y - x \right\rVert\]
+\end{lemma}
+
+\begin{proof}
+    Так как шар $B_{\delta}(x^0)$ --- выпуклое множество, то 
+    \[\forall x, y \in B_{\delta}(x^0) \hookrightarrow \{x + t(y - x), \; t \in [0, 1]\} \subset B_{\delta}(x^0)\] 
+    \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.2\linewidth]{pictures/Выпуклое множество.png}
+    \end{figure} \leavevmode
+    \\
+    Рассмотрим композицию \[t \to x + t(y - x) \to F(x + t(y - x))\]
+    Отсюда выделяется вектор-функция
+    \[t \xlongrightarrow{H} F(x + t(y - x))\]
+    Заметим, что $H \colon [0, 1] \to \mathbb{R}^n$ является дифференцируемой функцией как композиция очевидно дифференцируемого первого и дифференцируемого по условию второго отображений. Более того, по теореме о дифференцируемости композиции отображений:
+    \[H'(t) = \mathcal{D} F(x + t(y - x)) \cdot (y - x)\]
+    В прошлом семестре доказана теорема Лагранжа о среднем для вектор-функций, а значит, применительно к вектор-функции $H$, получаем:
+    \[\exists \theta \in (0, 1): \left\lVert H(1) - H(0) \right\rVert \leq \left\lVert H'(\theta) \right\rVert \cdot (1 - 0) = 
+    \left\lVert \mathcal{D} F \left( x + \theta (y - x) \right) \cdot (y - x) \right\rVert \leq\]
+    \[\leq [\text{так как матрица --- линейный оператор}] \leq \left\lVert \mathcal{D} F \left( x + \theta (y - x) \right) \right\rVert \cdot \left\lVert y - x \right\rVert \]
+    Вспомнив, чему же равно $H(1)$ и $H(0)$, заключаем, что требуемое доказано.
+\end{proof}
+
+\begin{lemma}[Неравенство Лагранжа 3.0]
+    Пусть $B_{\delta}(x^0) \subset \mathbb{R}^n$.
+    Пусть $F \in C^1 (B_{\delta}(x^0), \mathbb{R}^n)$.
+    Тогда \[\forall x, y \in B_{\delta}(x^0) \hookrightarrow \left\lVert F(x) - F(y) - \mathcal{D} F(x^0)(y - x) \right\rVert
+    \leq \sup_{z \in [x, y]} \left\lVert \mathcal{D} F(z) - \mathcal{D} F(x^0) \right\rVert \cdot \left\lVert x - y \right\rVert\]
+\end{lemma}
+
+\begin{proof}
+    Рассмотрим отображение \[z \xlongrightarrow{L} F(z) - \mathcal{D} F(x^0) \cdot z\]
+    Это отображение непрерывно дифференцируемо в $B_{\delta}(x^0)$, так как оно представляет собой разность непрерывно дифференцируемого и линейного отображения, которое, очевидно, всегда является непрерывно дифференцируемым.
+    Применим к $L$ предыдущую лемму (здесь $x^{\theta} = x + \theta(y - x)$):
+    \[\left\lVert L(y) - L(x) \right\rVert \leq \left\lVert \mathcal{D} L(x^{\theta}) \right\rVert \cdot \left\lVert y - x \right\rVert 
+    \leq \sup_{z \in [x, y]} \left\lVert \mathcal{D} L(z) \right\rVert \cdot \left\lVert y - x \right\rVert = 
+    \sup_{z \in [x, y]} \left\lVert \mathcal{D} F(z) - \mathcal{D} F(x^0) \right\rVert \cdot \left\lVert y - x \right\rVert\]
+    При этом \[\left\lVert L(y) - L(x) \right\rVert = \left\lVert F(y) - F(x) - \left( \mathcal{D} F(x^0)(y) - \mathcal{D} F(x^0)(x) \right) \right\rVert = 
+    \left\lVert F(y) - F(x) - \mathcal{D} F(x^0)(y - x) \right\rVert\]
+    Тогда, объединяя наши потуги, получаем:
+    \[\left\lVert F(y) - F(x) - \mathcal{D} F(x^0)(y - x) \right\rVert \leq \sup_{z \in [x, y]} \left\lVert \mathcal{D} F(z) - \mathcal{D} F(x^0) \right\rVert 
+    \cdot \left\lVert y - x \right\rVert\]
+\end{proof}
+
+\begin{theorem}[о локальном диффеоморфизме]
+    Пусть $F \in C^1(\Omega, \mathbb{R}^n)$ и $\mathcal{J} F(x) \neq 0 \; \; \forall x \in \Omega$.
+    Тогда $\forall x^0 \in \Omega$ существует "малая" \; окрестность $U(x^0) \subset \Omega$ такая, что ограничение $F$ на эту окрестность будет $C^1 \text{-гладким}$ 
+    диффеоморфизмом на свой образ.
+\end{theorem}
+
+\begin{proof}
+    В силу теоремы о глобальном диффеоморфизме достаточно доказать существование малой окрестности, в которой отображение инъективно. \\
+    Фиксируем произвольную точку $x^0 \in \Omega$. Знаем, что в $\mathcal{J} F(x^0) \neq 0 \implies \mathcal{D} F(x^0)$ --- обратима $\implies$ соответствующее ей линейное 
+    отображение $A$ --- обратимо $\implies$ по основной геометрической теореме с прошлой лекции
+    \begin{equation*} \label{eq:geom:3.2} \tag{$\ast$}
+        \exists c > 0: \left\lVert A(x) \right\rVert \geq c \cdot \left\lVert x \right\rVert
+    \end{equation*}
+    Так как $F \in  C^1(\Omega, \mathbb{R}^n)$, то матрица $\mathcal{D} F$ непрерывна, а значит существует малый шар $B_{\delta}(x^0)$ такой, что 
+    \begin{equation*} \label{eq:contin:3.2} \tag{$\vee$}
+        \forall x \in B_{\delta}(x^0) \hookrightarrow \left\lVert \mathcal{D} F(x) - \mathcal{D} F(x^0) \right\rVert < \frac{c}{2}
+    \end{equation*}
+    Далее фиксируем произвольные точки $x, y \in B_{\delta}(x^0)$ и расписываем приращение:
+    \[\left\lVert F(y) - F(x) \right\rVert = \left\lVert F(y) - F(x) - \mathcal{D} F(x^0)(y - x) + \mathcal{D} F(x^0)(y - x) \right\rVert =\]
+    \[= [\text{обозначим } A(y - x) := \mathcal{D} F(x^0)(y - x)] =\]
+    \[= \left\lVert F(y) - F(x) - \mathcal{D} F(x^0)(y - x) + A(y - x) \right\rVert \geq [\text{по неравенству } \bigtriangleup] \geq\]
+    \[\geq \left\lVert A(y - x) \right\rVert - \left\lVert F(y) - F(x) - \mathcal{D} F(x^0)(y - x) \right\rVert \geq [\text{Лагранж 3.0 + (\ref{eq:geom:3.2})}] \geq\] 
+    \[\geq c \cdot \left\lVert y - x \right\rVert - \sup_{z \in [x, y]} \left\lVert \mathcal{D} F(z) - \mathcal{D} F(x^0) \right\rVert \left\lVert y - x \right\rVert \geq [\text{в силу (\ref{eq:contin:3.2})}] \geq \frac{c}{2} \cdot \left\lVert y - x \right\rVert\]
+    Тогда, если $x \neq y$, то $\left\lVert y - x \right\rVert > 0$, а значит и $\left\lVert F(y) - F(x) \right\rVert > 0$. Получили, что $F$ инъективно в шаре $B_{\delta}(x^0)$, откуда по теореме о глобальном диффеоморфизме:
+    \[F \in C^1 \left( B_{\delta}(x^0), F \left( B_{\delta}(x^0) \right) \right) \text{ и является } C^1 \text{-гладким диффеоморфизмом}\]
+\end{proof}
+
+\section{Теорема о неявном отображении}
+
+Пусть 
+\[\mathbb{R}^{m + n} \ni z = (z_1, \dots, z_m, z_{m + 1}, \dots, z_{m + n}) = (x, y), \quad x \in \mathbb{R}^m, \quad y \in \mathbb{R}^n\]
+Рассмотрим систему уравнений относительно неизвестных $y$:
+\begin{equation*}
+    \begin{cases}
+        F_1(x_1, \dots, x_m, y_1, \dots, y_n) = 0 \\
+        \ \vdots \\
+        F_n(x_1, \dots, x_m, y_1, \dots, y_n) = 0
+    \end{cases}
+\end{equation*}
+
+\begin{example}
+    Пусть 
+    \[F(x, y) = x^2 + y^2 - 1\] 
+    Множество нулей $F(x, y) = 0$ --- это окружность на плоскости.
+    Но мы знаем, что $\forall x \in (-1, 1)$ существует $2$ различных решения  этого уравнения. 
+    Нам это неприятно, поэтому предлагается смотреть лишь в малой окрестности точки на 
+    окружности. Получим, что множество нулей устроено, как график некоторой функции.
+\end{example}
+
+\begin{definition}
+    Пусть $E \subset \mathbb{R}^{n + m}$, $E \neq \varnothing$, $X \subset \mathbb{R}^m$. 
+    Пусть $F \colon E \to \mathbb{R}^n$. Будем говорить, что $f \colon X \to \mathbb{R}^n$ является неявным отображением, заданным уравнением 
+    $F(z) = 0$, если 
+    \begin{enumerate}
+        \item $\forall x \in X \hookrightarrow (x, f(x)) \in E$
+        \item $F(x, f(x)) = 0 \quad \forall x \in X$
+    \end{enumerate}
+    Эти условия эквивалентны тому, что $\gr f$ принадлежит множеству нулей отображения $F$
+\end{definition}
+
+\begin{definition}
+    Пусть $X \subset \mathbb{R}^m, \; f \colon X \to \mathbb{R}^n$. Тогда
+    \[\gr f := \{(x, f(x)): x \in X\}\]
+\end{definition}
+
+\begin{remark}
+    В последующих лекциях будет использовано следующее обозначение: \\
+    Пусть имеем 
+    \begin{equation*}
+        \mathcal{D} F = 
+        \begin{pmatrix}
+            \displaystyle \frac{\partial F_1}{\partial x_1} \left(x_1, \dots, x_m, y_1, \dots, y_n \right) & \ldots & \displaystyle \frac{\partial F_1}{\partial x_m} \left( \dots \right) & \displaystyle \frac{\partial F_1}{\partial y_1} \left( \dots \right) & \ldots & \displaystyle \frac{\partial F_1}{\partial y_n} \left( \dots \right) \\
+            \displaystyle \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+            \displaystyle \frac{\partial F_n}{\partial x_1} \left(x_1, \dots, x_m, y_1, \dots, y_n \right) & \ldots & \displaystyle \frac{\partial F_n}{\partial x_m} \left( \dots \right) & \displaystyle \frac{\partial F_n}{\partial y_1} \left( \dots \right) & \ldots & \displaystyle \frac{\partial F_n}{\partial y_n} \left( \dots \right) 
+        \end{pmatrix}
+    \end{equation*}
+    Тогда будем обозначать 
+    \begin{equation*}
+        F'_x = 
+        \begin{pmatrix}
+            \displaystyle \frac{\partial F_1}{\partial x_1} \left(x_1, \dots, x_m, y_1, \dots, y_n \right) & \ldots & \displaystyle \frac{\partial F_1}{\partial x_m} \left( \dots \right) \\
+            \displaystyle \vdots & \ddots & \vdots \\
+            \displaystyle \frac{\partial F_n}{\partial x_1} \left(x_1, \dots, x_m, y_1, \dots, y_n \right) & \ldots & \displaystyle \frac{\partial F_n}{\partial x_m} \left( \dots \right)
+        \end{pmatrix}
+    \end{equation*}
+    \begin{equation*}
+        F'_y = 
+        \begin{pmatrix}
+            \displaystyle \frac{\partial F_1}{\partial y_1} \left(x_1, \dots, x_m, y_1, \dots, y_n \right) & \ldots & \displaystyle \frac{\partial F_1}{\partial y_n} \left( \dots \right) \\
+            \displaystyle \vdots & \ddots & \vdots \\
+            \displaystyle \frac{\partial F_n}{\partial y_1} \left(x_1, \dots, x_m, y_1, \dots, y_n \right) & \ldots & \displaystyle \frac{\partial F_n}{\partial y_n} \left( \dots \right)
+        \end{pmatrix}
+    \end{equation*}
+\end{remark}
+
+\section{Разбавляем боль и страдания милыми картинками}
+
+Автор, когда осознал, что следующие две недели не будет прикасаться к матану: 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\linewidth]{pictures/Трям здравствуйте.jpg}
+    \end{figure}
+
+\end{document}

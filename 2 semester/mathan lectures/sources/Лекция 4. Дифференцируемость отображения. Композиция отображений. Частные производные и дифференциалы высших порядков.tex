@@ -1,0 +1,317 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{soul}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Что это за жизнь --- и без \st{пианины} матанализа!}
+\fancyhead[R]{\href{https://t.me/lost_luna}{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 4. Дифференцируемость отображения. Композиция отображений. 
+    Частные производные и дифференциалы высших порядков.
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Дифференцируемость отображения}
+
+\begin{definition}
+    Пусть $F \colon \Omega \to \mathbb{R}^m, \; \Omega \subset \mathbb{R}^n$. Пусть 
+    $x^0 \in \Omega$ --- внутренняя точка $\Omega$. Будем говорить, что $F$ дифференцируемо 
+    в точке $x^0$, если существует такое линейное отображение $L_{x^0}$ из $\mathbb{R}^n$
+    в $\mathbb{R}^m$, что:    
+    \[F(x) = F\left(x^0\right) + L_{x^0}\left(x - x^0\right) + \underbrace{\varepsilon_{x^0}(x) \cdot \left|\left|x - x^0\right|\right|}_{\overline{o} \left(\left\lVert x - x^0 \right\rVert \right), \; x \to x^0} \quad \forall x \in B_{\delta_0}\left(x^0\right) \subset \Omega\]
+    Здесь $\varepsilon_{x^0}(x) \to 0, \; x \to x^0$ по совокупности переменных.
+    Отображение $L_{x^0}$ будем называть дифференциалом отображения $F$ в точке 
+    $x^0$ и обозначать $\mathrm d_{x^0}F$.
+\end{definition}
+
+\begin{definition}
+    Каноническим базисом в $\mathbb{R}^n$ будем называть такие вектора $ \left\{ e_1, e_2, \dots, e_n \right\} $,
+    что \[e_i = ( \underset{\substack{\uparrow\\\text{i-ая координата}}}{0, \dots, 0, 1, 0, \dots, 0} )\]
+\end{definition}
+
+\begin{remark}
+    В каноническом базисе любые линейные отображения можно задать матрицей вида:
+    \[ A = \begin{pmatrix}
+            a_{11} & \dots & a_{1n} \\ 
+            \vdots & \ddots & \vdots \\ 
+            a_{m1} & \dots & a_{mn} 
+    \end{pmatrix} \]
+    Здесь $i-$ый столбец матрицы --- образ $i-$ого транспонированного базисного вектора.
+\end{remark}
+
+\begin{remark}
+    Отображение $F \colon \Omega \to \mathbb{R}^m$ можно рассматривать как вектор-функцию от многих переменных из $\Omega$ в $\mathbb{R}^m$.
+    \[ \text{Задать } F \quad \Longleftrightarrow \quad \text{задать m скалярных функций от многих переменных}\]
+\end{remark}
+
+\begin{definition}
+    Если $F$ дифференцируемо в точке $x^0$, то матрицу линейного отображения $L_{x^0}$ называют
+    матрицей Якоби (или производной) отображения $F$ в точке $x^0$ и обозначают $DF\left(x^0\right)$. 
+\end{definition}
+
+\begin{lemma}
+    Пусть $\Omega \subset \mathbb{R}^n, \; F \colon \Omega \to \mathbb{R}^m, \; x^0 \in \Omega$ --- внутренняя точка $\Omega$. 
+    Отображение $F$ дифференцируемо в точке $x^0$ $\iff \ \forall i \in \left\{1, \dots, m\right\}
+    \hookrightarrow F_i$ дифференцируема в точке $x^0$. При этом в случае дифференцируемости $F$ в точке $x^0$:
+    \[ DF(x^0) = \begin{pmatrix}
+        \displaystyle \frac{\partial F_1}{\partial x_1}\left(x^0\right) & \dots & \displaystyle \frac{\partial F_1}{\partial x_n}\left(x^0\right) \\
+        \vdots & \ddots & \vdots \\ 
+        \displaystyle \frac{\partial F_m}{\partial x_1}\left(x^0\right) & \dots & \displaystyle \frac{\partial F_m}{\partial x_n}\left(x^0\right)
+    \end{pmatrix}
+    \]
+\end{lemma}
+
+\begin{proof}
+    Отображение $F$ дифференцируемо в точке $x^0 \quad \Longleftrightarrow \quad \exists 
+    L_{x^0}: \mathbb{R}^n \to \mathbb{R}^m$ такое, что 
+    
+    \[ F(x) - F\left(x^0\right) = L_{x^0}\left(x - x^0\right) + \varepsilon_{x^0}(x)\left|\left|x - x^0\right|\right| \tag{$\ast$}\label{eq:star1}\]
+    Так как линейное отображение $L_{x^0}$ задается в каноническом базисе с помощью матрицы, то 
+    \[ \text{(\ref{eq:star1})} \Longleftrightarrow 
+    \begin{pmatrix}
+        F_1(x) - F_1\left(x^0\right) \\ \vdots \\ F_m(x) - F_m\left(x^0\right)
+    \end{pmatrix} = 
+    \begin{pmatrix}
+        a_{11} & \dots & a_{1n} \\ 
+        \vdots & \ddots & \vdots \\ 
+        a_{m1} & \dots & a_{mn} 
+    \end{pmatrix} \cdot 
+    \begin{pmatrix}
+        x_1 - x_1^0 \\ \vdots \\ x_n - x_n^0
+    \end{pmatrix} + 
+    \begin{pmatrix}
+        \varepsilon_{x^0, 1}(x) \\ \vdots \\ \varepsilon_{x^0, m}(x)
+    \end{pmatrix} \cdot \left|\left|x - x^0\right|\right|
+    \]
+    Возьмем произвольное $i \in \left\{1, \dots, m\right\}:$ 
+    \[F_i(x) - F_i\left(x^0\right) = a_{i1}\left(x_1 - x_1^0\right) + \dots + a_{in}\left(x_n - x_n^0\right) + 
+    \varepsilon_{x^0, i}(x) \cdot  \left|\left|x - x^0\right|\right| \tag{$\ast \ast$}\label{eq:star2}\]
+    \[\varepsilon_{x^0, i}(x) \to 0, \ x \to x^0 \text{ (по совокупности переменных)}\]
+    (\ref{eq:star2}) $\quad \Longleftrightarrow \quad F_i$ дифференцируема в точке $x^0 \quad \forall i \in \left\{1, \dots, m\right\}$.
+    Следовательно, в силу 3-его необходимого условия дифференцируемости, если $F_i$
+    дифференцируема в точке $x^0$, то \[a_{i1} = \frac{\partial F_i}{\partial x_1}\left(x^0\right), \dots, a_{in} = \frac{\partial F_i}{\partial x_n}\left(x^0\right)\]
+    Следовательно, матрица $A$ имеет вид 
+    \[ A = \begin{pmatrix}
+        \displaystyle \frac{\partial F_1}{\partial x_1}\left(x^0\right) & \dots & \displaystyle \frac{\partial F_1}{\partial x_n}\left(x^0\right) \\
+        \vdots & \ddots & \vdots \\ 
+        \displaystyle \frac{\partial F_m}{\partial x_1}\left(x^0\right) & \dots & \displaystyle \frac{\partial F_m}{\partial x_n}\left(x^0\right)
+    \end{pmatrix}\]
+\end{proof}
+
+\section{Композиция отображений}
+
+\begin{theorem}[Предел композиции для отображений]
+    Пусть $\Omega \subset \mathbb{R}^n, \ G \subset \mathbb{R}^m$, $x^0$  --- внутренняя точка $\Omega$, $y^0$--- внутренняя точка $G$. Пусть $F \colon \Omega \to G, \; H \colon G \to \mathbb{R}^d$.
+    Пусть \[\exists \lim\limits_{y \to y^0} H(y) = A \in \mathbb{R}^d\] 
+    \[\exists \lim\limits_{x \to x^0} F(x) = y^0\] 
+    Тогда:
+    \[\left[\begin{array}{l}
+        H \text{ непрерывна в точке } y^0 \\ F(x) \ne y^0 \quad \forall x \in \Omega
+    \end{array}\right. \implies \exists \lim\limits_{x \to x^0} H(F(x)) = A\]
+\end{theorem}
+
+\begin{proof}
+    Доказательство аналогично одномерному случаю.
+\end{proof}
+
+\begin{theorem}[Дифференцируемость композиции отображений]
+    Пусть $\Omega \subset \mathbb{R}^n, \ G \subset \mathbb{R}^m$, $x^0$  --- внутренняя точка $\Omega$, $y^0$--- внутренняя точка $G$. Пусть $F \colon \Omega \to G, \; H \colon G \to \mathbb{R}^d$.
+    Пусть $H$ дифференцируемо в точке $y^0$, $F$ дифференцируемо в точке $x^0, \ y^0 = F\left(x^0\right)$. Тогда $H \circ F$
+    дифференцируемо в точке $x^0$. Более того, для матрицы Якоби справедливо следующее:
+    \[D\left(H \circ F\right)\left(x^0\right) = DH\left(F\left(x^0\right)\right) \cdot DF\left(x^0\right)\] 
+\end{theorem}
+
+\begin{proof}
+    Дифференцируемость отображения $H$ в точке $ y^0 $ равносильна:
+    \begin{equation} \label{eq:star3}
+        H(y) - H\left(y^0\right) = DH\left(y^0\right)\left(y - y^0\right) + \varepsilon_{y^0}^1(y) \cdot 
+    \left|\left|y - y^0\right|\right| \quad \forall y \in B_{\delta_1}\left(y^0\right)
+    \end{equation}
+    \[\varepsilon_{y^0}^1(y) \to 0, \ y \to y^0\]
+    Дифференцируемость отображения $F$ в точке $ x^0 $ равносильна:
+    \begin{equation} \label{eq:dif:F}
+        F(x) - F\left(x^0\right) = DF\left(x^0\right)\left(x - x^0\right) + \varepsilon_{x^0}^2(x) \cdot 
+    \left|\left|x - x^0\right|\right| \quad \forall x \in B_{\delta_2}\left(x^0\right)
+    \end{equation}
+    \[\varepsilon_{x^0}^2(x) \to 0, \ x \to x^0\]
+    Запишем (\ref{eq:star3}) при $y = F(x)$. Мы можем сделать такую пакость, так как из дифференцируемости следует 
+    непрерывность, а значит, коль скоро $x \in B_\delta\left(x^0\right)$ при достаточно малом $\delta \in (0, \delta_2]$, значение $F(x) \in B_{\delta_1}\left(y^0\right)$.
+    \\
+    Также предварительно доопределим $\varepsilon_{x^0}^2$ нулем в точке $x^0$, а $\varepsilon_{y^0}^1$
+    нулем в точке $y^0$. Совершенно очевидно, что от такого действа ничего не изменится. Тогда $\varepsilon_{x^0}^2$ и $\varepsilon_{y^0}^1$ станут непрерывными в точках
+    $x^0$ и $y^0$ соответственно.
+    Всё, теперь с чистой душой загружаем $y = F(x)$ в (\ref{eq:star3}) и, пользуясь равенством (\ref{eq:dif:F}) для приращения, получаем:
+    \[ \left(H \circ F\right)\left(x\right) - \left(H \circ F\right)\left(x^0\right) = DH\left(y^0\right) \cdot \bigg[DF\left(x^0\right)\left(x - x^0\right) + \varepsilon_{x^0}^2(x) \cdot 
+    \left|\left|x - x^0\right|\right|\bigg]\] 
+    \[ + \varepsilon_{y^0}^1(y) \cdot \bigg|\bigg|DF\left(x^0\right)\left(x - x^0\right) + 
+    \varepsilon_{x^0}^2(x) \cdot \left|\left|x - x^0\right|\right|\bigg|\bigg| = \]
+    \[= DH\left(F\left(x^0\right)\right) \cdot DF\left(x^0\right)\left(x - x^0\right) + DH\left(F\left(x^0\right)\right) \cdot \varepsilon_{x^0}^2(x) \cdot \left|\left|x - x^0\right|\right| +\]
+    \[+ \ \varepsilon_{y^0}^1(F(x)) \cdot \bigg|\bigg|DF\left(x^0\right)\left(x - x^0\right) + 
+    \varepsilon_{x^0}^2(x) \cdot \left|\left|x - x^0\right|\right|\bigg|\bigg|\]
+    Легко видеть, выполнив соответствующее умножение на столбец, что 
+    \[DH\left(F\left(x^0\right)\right) \cdot \varepsilon_{x^0}^2(x) \cdot \left|\left|x - x^0
+    \right|\right| = \overline{o}\left(\left|\left|x - x^0\right|\right|\right), \; x \to x^0\]
+    При этом по теореме о пределе композиции для отображений в силу непрерывности $\varepsilon_{y^0}^1$ в точке $y^0 = F(x^0)$ получаем, что $\varepsilon_{y^0}^1(F(x)) \to 0, \; x \to x^0$ по совокупности переменных.
+    Осталось лишь увидеть, что:
+    \begin{equation} \label{eq:const}
+        \exists C\left(x^0\right) > 0: \ \bigg|\bigg|DF\left(x^0\right)\left(x - x^0\right) + 
+    \varepsilon_{x^0}^2(x) \cdot \left|\left|x - x^0\right|\right|\bigg|\bigg|
+    \leq C\left(x^0\right) \cdot \left|\left|x - x^0\right|\right|
+    \end{equation}
+    По неравенству треугольника для нормы имеем:
+    \[\bigg|\bigg|DF\left(x^0\right)\left(x - x^0\right) + \varepsilon_{x^0}^2(x) \cdot \left|\left|x - x^0
+    \right|\right|\bigg|\bigg| \leq \left|\left|DF\left(x^0\right)\left(x - x^0\right)\right|\right| + \left|\left| 
+    \varepsilon_{x^0}^2(x)\right|\right| \cdot \left|\left|x - x^0\right|\right|\]
+    Так как $\varepsilon_{x^0}^2$ является бесконечно малой при $x \to x^0$, то и $\left\lVert \varepsilon_{x^0}^2(x) \right\rVert \to 0, \; x \to x^0$. Тогда, если взять достаточно малый шар с центром в точке $x^0$, то из определения предела:
+    \[\forall x \in B_\delta(x^0) \hookrightarrow \left\lVert \varepsilon_{x^0}^2(x) \right\rVert \leq 1\]
+    А теперь поиграемся с первым слагаемым:
+    \[\left|\left|DF\left(x^0\right)\left(x-x^0\right)\right|\right| = \left|\left|
+        \begin{pmatrix}
+            a_{11} & \dots & a_{1n} \\ 
+            \vdots & \ddots & \vdots \\ 
+            a_{m1} & \dots & a_{mn} 
+        \end{pmatrix} \cdot 
+        \begin{pmatrix}
+            x_1 - x_1^0 \\ \vdots \\ x_n - x_n^0
+        \end{pmatrix}
+    \right|\right| = \left|\left|
+        \begin{pmatrix}
+            \displaystyle\sum_{i = 1}^n a_{1i}\left(x_i - x_i^0\right) \\ \vdots \\
+            \displaystyle\sum_{i = 1}^n a_{mi}\left(x_i - x_i^0\right) 
+        \end{pmatrix}\right|\right| =\]
+    \[=\sqrt{\left(\displaystyle \sum_{i = 1}^{n}a_{1i} \left(x_i - x^0_i\right)\right)^2 + 
+    \dots + \left(\displaystyle \sum_{i = 1}^{n}a_{mi} \left(x_i - x^0_i\right)\right)^2} \leq\]
+    \[\leq \sqrt{\left(\displaystyle \sum_{i = 1}^{n}\left|a_{1i}\right| \cdot \left\lvert x_i - x^0_i \right\rvert \right)^2 + 
+    \dots + \left(\displaystyle \sum_{i = 1}^{n}\left|a_{mi}\right| \cdot \left\lvert x_i - x^0_i \right\rvert \right)^2} \leq
+    \]
+    \[\leq \max_{i, j}\left|a_{ij}\right|\cdot\sqrt{m\left(\sum\limits_{i=1}^n\left|x_i-x_i^0\right|\right)^2}
+    \leq \max_{i, j}\left|a_{ij}\right|\cdot\sqrt{m}\cdot n \cdot \left\lVert x - x^0 \right\rVert = \max_{i, j}\left|\frac{\partial F_i}{\partial x_j} \left(x^0\right)\right| \cdot \sqrt{m} \cdot n \cdot \left\lVert x - x^0 \right\rVert\]
+    Из полученной цепочки неравенств утверждение (\ref{eq:const}) становится очевидным. Нужно лишь положить:
+    \[ C\left(x^0\right) = \max_{i, j}\left|\frac{\partial F_i}{\partial x_j} \left(x^0\right)\right| \cdot \sqrt{m} \cdot n + 1\]
+    Тогда из всех этих рассуждений следует, что последнее слагаемое из равенства для приращения композиции можно записать так:
+    \[\varepsilon_{y^0}^1(F(x)) \cdot \bigg|\bigg|DF\left(x^0\right)\left(x - x^0\right) + 
+    \varepsilon_{x^0}^2(x) \cdot \left|\left|x - x^0\right|\right|\bigg|\bigg| \leq \underbrace{\varepsilon_{y^0}^1(F(x)) \cdot \left(C\left(x^0\right) + 1\right) \cdot \left\lVert x - x^0 \right\rVert}_{\overline{o}\left( \left\lVert x - x^0 \right\rVert  \right), \; x \to x^0}\]
+    Итого, путем невероятных шаманских танцев получаем:
+    \[\left(H \circ F\right)\left(x\right) - \left(H \circ F\right)\left(x^0\right) = DH\left(F\left(x^0\right)\right) \cdot DF\left(x^0\right)\left(x - x^0\right)
+    + \overline{o}\left( \left\lVert x - x^0 \right\rVert \right), \; x \to x^0\]
+    Это по определению и означает, что отображение $H \circ F$ дифференцируемо в точке $x^0$. При этом также из равенства выше нетрудно увидеть, что:
+    \[D\left(H \circ F\right)\left(x^0\right) = DH\left(F\left(x^0\right)\right) \cdot DF\left(x^0\right)\]
+\end{proof}
+
+\begin{consequence}[Инвариантность формы первого дифференциала]
+    Пусть отображение $z = H(y)$ дифференцируемо в точке $y^0$, а отображение $y = F(x)$
+    дифференцируемо в точке $x^0$. Пусть также  $y^0 = F(x^0)$. Тогда дифференциал $z$ как 
+    функции от $y$ и дифференциал $z$ как композиции от $x$ записывается одинаково:
+    \[\mathrm d z = \mathrm d_{y^0}H (\mathrm d y)\]
+    Здесь в первом случае \[\mathrm dy = y - y^0,\] а во втором случае \[\mathrm dy = \mathrm d_{x^0}F (\mathrm dx)\]
+\end{consequence}
+
+\begin{proof}
+    Если $z$ есть функция от $y$, то по определению 
+    \[\mathrm d_{y^0}z = \mathrm d_{y^0}H \left(y - y^0\right) = \mathrm d_{y^0}H (\mathrm dy)\] 
+    Если $z$ является сложной функцией от $x$, то по предыдущей теореме:
+    \[\mathrm d_{x^0}z = \mathrm d_{x^0}\left(H \circ F\right)\left(x - x^0\right) = DH\left(F\left(x^0\right)\right) \cdot DF\left(x^0\right) \cdot \left(x - x^0\right)\]
+    Но произведение $DF\left(x^0\right) \cdot \left(x - x^0\right)$ суть $\mathrm{d}_{x^0}F(\mathrm{d}x)$, то есть, в наших обозначениях, дифференциал отображения $y = F(x)$ в точке $x^0$. Тогда, опустив подробности и записав этот дифференциал как $\mathrm{d} y$, окончательно имеем:
+    \[d_{x^0}z = DH\left(F \left( x^0 \right)\right) \cdot \mathrm{d} y = DH\left(y^0\right) \cdot \mathrm{d} y = \mathrm{d}_{y^0}H \left(\mathrm{d}y\right)\]
+\end{proof}
+
+\section{Частные производные и дифференциалы высших порядков}
+
+\begin{definition}
+    Пусть $B_\delta\left(x^0\right) \subset \mathbb{R}^n, \; f \colon B_\delta\left(x^0\right) \to \mathbb{R}$.
+    Частные производные
+    $\displaystyle \frac{\partial f}{\partial x_i}$ были определены ранее. Пусть 
+    \[\forall x \in B_\delta\left(x^0\right)  \hookrightarrow  \exists \frac{\partial f}{\partial x_i}(x)\]
+    Тогда, если существует $\displaystyle \frac{\partial}{\partial x_j}\left(\frac{\partial f}
+    {\partial x_i}\right)\left(x^0\right)$, то она обозначается $\displaystyle \frac{\partial^2 f}{\partial x_j \cdot \partial x_i} \left(x^0\right)$.
+    Высшие порядки определим по индукции. Пусть при некотором $k \in \mathbb{N}$ определена частная 
+    производная в шаре, то есть:
+    \[\forall x \in B_{\delta}\left(x^0\right) \hookrightarrow \exists \frac{\partial^{k} f}{\partial x_{i_k} \ldots \partial x_{i_1}} (x)\]
+    Тогда: 
+    \[\frac{\partial^{k+1}f}{\partial x_{i_{k+1}}\dots 
+    \partial x_{i_1}}\left(x^0\right) := \frac{\partial}{\partial x_{i_{k+1}}}\left(\frac{\partial^k f}{\partial x_{i_k} \dots 
+    \partial x_{i_1}}\right)\left(x^0\right)\]
+\end{definition}
+
+\begin{theorem}$(\textnormal{Непородистая, она же фольклор, \st{он же Гога, он же Гоша, он же Юрий...}})$.
+    Пусть 
+    \\
+    $f \colon B_\delta\left(x^0, y^0\right) \to \mathbb{R}$. Пусть 
+    \[\forall (x, y) \in B_\delta\left(x^0, y^0\right) \hookrightarrow 
+    \begin{cases}
+        \displaystyle \exists \frac{\partial^2 f}{\partial x \cdot \partial y} (x, y) \\ \\
+        \displaystyle \exists \frac{\partial^2 f}{\partial y \cdot \partial x} (x, y)
+    \end{cases}
+    \]
+    Пусть $\displaystyle \frac{\partial^2 f}{\partial x \cdot \partial y} \text{ и }
+    \frac{\partial^2 f}{\partial y \cdot \partial x}$ непрерывны в точке $\left(x^0, y^0\right)$. Тогда:
+    \[\displaystyle \frac{\partial^2 f}{\partial x \cdot \partial y} \left(x^0, y^0\right) =
+    \frac{\partial^2 f}{\partial y \cdot \partial x} \left(x^0, y^0\right)\]
+\end{theorem}
+
+\begin{proof}
+    Рассмотрим некоторую точку $(x, y)$ в квадрате $Q_{\frac{\delta}{\sqrt{2}}}(x^0, y^0)$ и 
+    выражение:
+    \begin{equation} \label{eq:star4}
+        \big[ \underbrace{f(x, y) - f(x, y^0)}_{\varphi(x)} \big] - \big[\underbrace{f(x^0, y) - f(x^0, y^0)}_{\varphi\left(x^0\right)}\big]
+    \end{equation}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\linewidth]{pictures/Картинка к непородистой теореме.jpg}
+    \end{figure} \leavevmode
+    \\
+    Важно понимать, что $y$ здесь фиксированно (так как мы смотрим на синие перемычки фиксированной длины, показанные на рисунке), а значит можем рассмотреть функцию одного аргумента $\varphi$ такую, что
+    $\varphi(x) = f(x, y) - f\left(x, y^0\right)$. Ясно что функция 
+    $\varphi$ дифференцируема на интервале, содержащем отрезок $\left[x^0, x\right]$ (или, соответственно, $\left[x, x^0\right]$), как функция от одного аргумента $x$ в силу существования частных производных функции $f$ по $x$ в любой точке шара. Тогда из 
+    необходимого условия дифференцируемости функция $\varphi$ непрерывна на отрезке $\left[x^0, x\right]$. Отсюда по теореме Лагранжа о среднем: 
+    \[\varphi(x) - \varphi\left(x^0\right) = \frac{\partial \varphi}{\partial x}(\xi_1) \cdot \left(x - x^0\right) = \left[ \frac{\partial f}{\partial x}
+    (\xi_1, y) - \frac{\partial f}{\partial x}\left(\xi_1, y^0\right)\right]\left(x - x^0\right), \ \xi_1 \in \left(x^0, x\right)\]
+    Так как есть вторая частная производная, то применим теорему Лагранжа о среднем еще раз:
+    \[\varphi(x) - \varphi\left(x^0\right) = \frac{\partial^2 f}{\partial y \cdot \partial x}(\xi_1, \zeta_1)\left(x - x^0\right)\left(y - y^0\right), \; \zeta_1 \in \left(y^0, y\right)\]
+    Теперь проделаем следующий ловкий трюк:
+    \[ \text{(\ref{eq:star4})} = \big[ \underbrace{f(x, y) - f\left(x^0, y\right)}_{\psi(y)}\big] - \big[\underbrace{f\left(x, y^0\right) - f\left(x^0, y^0\right)}_{\psi\left(y^0\right)}\big]\]
+    По аналогичным соображениям $x$ пока заморожено, а значит можем рассмотреть функцию одного аргумента $\psi$ такую, что $\psi(y) = f(x, y) - f\left(x^0, y\right)$.
+    Тогда действуя по той же схеме, но в другом порядке, получим: 
+    \[\text{(\ref{eq:star4})} = \psi(y) - \psi\left(y^0\right) = 
+    \frac{\partial^2 f}{\partial x \cdot \partial y}(\xi_2, \zeta_2)\left(x - x^0\right)\left(y - y^0\right), \; \xi_2 \in \left(x^0, x\right), \ \zeta_2 \in \left(y^0, y\right) \] 
+    Итого, объединяя результаты выше, имеем:
+    \begin{equation} \label{eq:star5}
+        \forall (x, y) \in Q_{\frac{\delta}{\sqrt{2}}}\left(x^0, y^0\right) \hookrightarrow 
+    \frac{\partial^2 f}{\partial y \cdot \partial x}(\xi_1, \zeta_1)\left(x - x^0\right)\left(y - y^0\right) =
+    \frac{\partial^2 f}{\partial x \cdot \partial y}(\xi_2, \zeta_2)\left(x - x^0\right)\left(y - y^0\right)
+    \end{equation}
+    Возьмем некоторое направление $\overline{l} \in S_1(0)$ и, вспомнив, как записывается произвольное направление в полярных координатах, перепишем $\left(x - x^0\right)\left(y - y^0\right)$ следующим образом: 
+    \[\left(x - x^0\right)\left(y - y^0\right) = \left(x^0 + t \cos \varphi - x^0 \right) \left(y^0 + t \sin \varphi - y^0 \right) = t^2 \cos \varphi \sin \varphi, \; \varphi \in (0, 2 \pi) \setminus \left\{\pi, \frac{\pi}{2}, \frac{3 \pi}{2}\right\}\]
+    Подставим это безобразие в (\ref{eq:star5}), разделим обе части полученного равенства на $t^2 \cos \varphi \sin \varphi$ и перейдем к пределу при $t \to 0$ (так как существует предел по совокупности переменных, то он, конечно же, существует и по любому направлению).
+    Тогда в силу непрерывности вторых частных производных $f$ в точке $\left(x^0, y^0\right)$:
+    \[\frac{\partial^2 f}{\partial y \cdot \partial x}(\xi_1(t), \zeta_1(t)) \to \frac{\partial^2 f}{\partial y \cdot \partial x}\left(x^0, y^0\right), \; t \to 0\] 
+    \[\frac{\partial^2 f}{\partial x \cdot \partial y}(\xi_2(t), \zeta_2(t)) \to \frac{\partial^2 f}{\partial x \cdot \partial y}\left(x^0, y^0\right), \; t \to 0\]
+    Вспомнив дивное равенство (\ref{eq:star5}), заключаем, что требуемое доказано.
+\end{proof}
+\end{document}

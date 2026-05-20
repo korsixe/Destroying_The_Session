@@ -1,0 +1,214 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{ulem}
+\usepackage{nicefrac}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\DIF}{DIF}
+\DeclareMathOperator{\rg}{rg}
+\DeclareMathOperator{\dist}{dist}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Хорошее время не с неба падает, а мы его делаем, оно заключается в сердце нашем}
+\fancyhead[R]{\href{https://t.me/ceagest}{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 27. Дифференцирование и интегрирование степенных рядов. Ряд Тейлора
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Комплексные степенные ряды. Формальное дифференцирование и интегрирование степенных рядов}
+
+\begin{lemma}
+    Пусть $m, n \in \mathbb{N}$. Пусть функциональный ряд $\displaystyle \sum_{k = 0}^{\infty} a_k z^{km + n}$ такой, что $a_k \neq 0 \; \; \forall k \in \mathbb{N}$. Тогда, если 
+    \[\exists \lim_{k \to \infty} \frac{\left\lvert a_{k + 1}\right\rvert }{\left\lvert a_k \right\rvert } \in [0, +\infty],\]
+    то
+    \[\left(R_{\text{cx}}\right)^{-1} = \lim_{k \to \infty} \sqrt[m]{\frac{\left\lvert a_{k + 1}\right\rvert }{\left\lvert a_k \right\rvert }}\]
+\end{lemma}
+
+\begin{proof}
+    Так как по условию существует предел отношения модулей соседних членов $\{a_k\}$, то, очевидно,
+    \[\exists \lim_{k \to \infty} \sqrt[m]{\frac{\left\lvert a_{k + 1}\right\rvert }{\left\lvert a_k \right\rvert }} \in [0, +\infty]\]
+    Введём тогда пока что 
+    \[\widehat{R}_{\text{сх}} := \left(\lim_{k \to \infty} \sqrt[m]{\frac{\left\lvert a_{k + 1}\right\rvert }{\left\lvert a_k \right\rvert}} \right)^{-1} \in [0, +\infty]\]
+    Здесь, конечно, подразумевается, что приняты следующие соглашения:
+    \begin{equation} \label{eq:1.1}
+        \frac{1}{0} := +\infty, \quad \frac{1}{+\infty} := 0
+    \end{equation}
+    Рассмотрим при фиксированном $z \neq 0$ ряд
+    \[\sum_{k = 0}^{\infty} \left\lvert a_k \right\rvert \cdot \left\lvert z \right\rvert^{km + n}\]
+    Он уже, понятное дело, числовой. Тогда можем применить замечательный признак Даламбера в предельной форме. Он гласит следующее: если 
+    \[q = \lim_{k \to \infty} \frac{\left\lvert a_{k + 1} \right\rvert \cdot \left\lvert z \right\rvert^{(k + 1)m + n}}{\left\lvert a_k \right\rvert \cdot \left\lvert z \right\rvert^{km + n}} < 1,\]
+    то данный ряд сходится. Если же $q > 1$, то этот ряд расходится. При этом наше $q$ можно расписать так:
+    \[q = \lim_{k \to \infty} \frac{\left\lvert a_{k + 1} \right\rvert}{\left\lvert a_k \right\rvert} \cdot \left\lvert z \right\rvert^m\]
+    По условию такой предел существует, так как ненулевая константа не влияет на сходимость, а значит осталось лишь сравнить наше $q$ с единицей. \\
+    Условие $q < 1$ с учётом соглашений (\ref{eq:1.1}) равносильно
+    \[\left\lvert z \right\rvert < \frac{1}{\sqrt[m]{\displaystyle \lim_{k \to \infty} \frac{\left\lvert a_{k + 1} \right\rvert}{\left\lvert a_k \right\rvert}}} = \widehat{R}_{\text{сх}}\]
+    Соответственно, условие $q > 1$ равносильно 
+    \[\left\lvert z \right\rvert > \frac{1}{\sqrt[m]{\displaystyle \lim_{k \to \infty} \frac{\left\lvert a_{k + 1} \right\rvert}{\left\lvert a_k \right\rvert}}} = \widehat{R}_{\text{сх}}\]
+    Что важно, из последнего неравенства следует больше, чем просто расходимость, а именно 
+    \[\left\lvert a_k \right\rvert \cdot \left\lvert z \right\rvert^{km + n} \nrightarrow 0, \; k \to \infty \implies a_k z^{km + n} \nrightarrow 0, \; k \to \infty\]
+    Тогда не выполнено необходимое условие сходимости числового ряда, а значит ряд $\displaystyle \sum_{k = 0}^{\infty} a_k z^{km + n}$ расходится при $\left\lvert z \right\rvert > \widehat{R}_{\text{сх}}$. \\
+    Предпоследнее же неравенство $\left\lvert z \right\rvert < \widehat{R}_{\text{сх}}$ влечёт абсолютную сходимость ряда 
+    \[\displaystyle \sum_{k = 0}^{\infty} a_k z^{km + n}\]
+    Но вспомним, что по теореме о круге сходимости степенного ряда степенной ряд $\displaystyle \sum_{k = 0}^{\infty} a_k z^{km + n}$ сходится абсолютно внутри круга сходимости, то есть при $\left\lvert z \right\rvert < R_{\text{сх}}$, и расходится за кругом сходимости, то есть при $\left\lvert z \right\rvert > R_{\text{сх}}$. Мы же в процессе доказательства получили, что данный ряд сходится абсолютно при $0 < \left\lvert z \right\rvert < \widehat{R}_{\text{сх}}$, и расходится при $\left\lvert z \right\rvert > \widehat{R}_\text{сх}$. Кроме того, любой степенной ряд при $z = 0$ тривиально сходится, а значит ряд $\displaystyle \sum_{k = 0}^{\infty} a_k z^{km + n}$ сходится абсолютно при $\left\lvert z \right\rvert < \widehat{R}_{\text{сх}}$. Следовательно, в силу того, что круг сходимости степенного ряда определён однозначно, имеем $\widehat{R}_{\text{сх}} = R_{\text{сх}}$. Вспоминая определение $\widehat{R}_{\text{сх}}$, заключаем, что лемма доказана.
+\end{proof}
+
+\begin{theorem}[О формальном интегрировании и дифференцировании степенного ряда] \label{th:1.1}
+    Пусть $\displaystyle \sum_{k = 0}^{\infty} a_k z^k$ --- комплексный степенной ряд. Радиусы сходимости рядов, полученных формальным дифференцированием и интегрированием, совпадают с радиусом сходимости исходного ряда, то есть:
+    \begin{enumerate}
+        \item ряд $\displaystyle \sum_{k = 1}^{\infty} a_k k z^{k - 1}$ имеет тот же радиус сходимости, что и исходный ряд
+        \item ряд $\displaystyle \sum_{k = 0}^{\infty} \frac{a_k}{k + 1} z^{k + 1}$ имеет тот же радиус сходимости, что и исходный ряд
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    \begin{enumerate}
+        \item Рассмотрим сначала степенной ряд $\displaystyle \sum_{k = 1}^{\infty} a_k k z^k$. Обозначим его радиус сходимости за $R^1_{\text{сх}}$, а радиус сходимости исходного ряда за $R_{\text{сх}}$. По формуле Коши-Адамара:
+        \begin{equation} \label{eq:1.2}
+            \left(R^1_{\text{сх}}\right)^{-1} = \underset{k \to \infty}{\overline{\lim}} \sqrt[k]{k \left\lvert a_k \right\rvert} = \underset{k \to \infty}{\overline{\lim}} \sqrt[k]{\left\lvert a_k \right\rvert} \cdot \lim_{k \to \infty} \sqrt[k]{k} = \underset{k \to \infty}{\overline{\lim}} \sqrt[k]{\left\lvert a_k \right\rvert} = \left(R_{\text{сх}}\right)^{-1}
+        \end{equation}
+        Здесь мы использовали, что $\sqrt[k]{k} \to 1, \; k \to \infty$. Покажем это. Действительно, по правилу Лопиталя 
+        \[\frac{\ln x}{x} \to +0, \; x \to + \infty \implies \frac{\ln k}{k} \to 0, \; k \to \infty\]
+        Тогда
+        \[\sqrt[k]{k} = e^{\frac{\ln k}{k}} \to 1, \; k \to \infty\]
+        Далее, если $S_n$ и $\widetilde{S}_n$ --- частичные суммы рядов $\displaystyle \sum_{k = 1}^{\infty} a_k k z^{k - 1}$ и $\displaystyle \sum_{k = 1}^{\infty} a_k k z^{k}$ соответственно, то при $z \neq 0$ (равные нулю $z$ мы не рассматриваем, так как любой степенной ряд сходится при $z = 0$):
+        \[S_n (z) = \sum_{k = 1}^n a_k k z^{k - 1} = \frac{1}{z} \sum_{k = 1}^n a_k k z^k = \frac{1}{z} \widetilde{S}_n (z)\]
+        Из этого равенства при фиксированном ненулевом $z$ очевидно вытекает 
+        \[\exists \lim_{n \to \infty} S_n (z) \in \mathbb{C} \iff \exists \lim_{n \to \infty} \widetilde{S}_n (z) \in \mathbb{C}\]
+        Следовательно, в силу теоремы о круге сходимости и показанного равенства (\ref{eq:1.2}) получаем, что радиус сходимости исходного ряда $\displaystyle \sum_{k = 0}^{\infty} a_k z^k$ равен радису сходимости ряда $\displaystyle \sum_{k = 1}^{\infty} a_k k z^k$, у которого, в свою очередь, радиус сходимости совпадает с радиусом сходимости ряда $\displaystyle \sum_{k = 1}^{\infty} a_k k z^{k - 1}$, что и требовалось.
+        \item Этот пункт несложно редуцируется к уже доказанному первому пункту. Действительно, исходный ряд $\displaystyle \sum_{k = 0}^{\infty} a_k z^k$ получен формальным почленным дифференцированием ряда $\displaystyle \sum_{k = 0}^{\infty} \frac{a_k}{k + 1} z^{k + 1}$, поэтому для этих двух друзей можно применить уже доказанный выше факт. Сделав это, заключаем, что теорема полностью доказана.
+    \end{enumerate}
+\end{proof}
+
+\section{Вещественные степенные ряды}
+В этом разделе работаем с вещественными степенными рядами, то есть с рядами вида 
+\[\displaystyle \sum_{k = 0}^{\infty} a_k (x - x_0)^k,\] 
+где $\{a_k\} \subset \mathbb{R}$ и $x_0 \in \mathbb{R}$. Радиус сходимости таких рядов определяется также, как и ранее, а интервал сходимости $\left(x_0 - R_{\text{сх}}, x_0 + R_{\text{сх}}\right)$ представляет собой сечение круга сходимости осью $Ox$.
+
+\begin{theorem}[Дифференцирование и интегрирование вещественного степенного ряда]
+    Пусть задана $\{a_k\} \subset \mathbb{R}$. Пусть $R_{\text{сх}} > 0$ --- радиус сходимости вещественного степенного ряда $\displaystyle \sum_{k = 0}^{\infty} a_k (x - x_0)^k$. Пусть функция $f$ есть сумма данного степенного ряда. Тогда $f \in C^{\infty} (\left(x_0 - R_{\text{сх}}, x_0 + R_{\text{сх}}\right))$. Кроме того, справедливы равенства:
+    \begin{enumerate}
+        \item $\displaystyle \forall x \in \left(x_0 - R_{\text{сх}}, x_0 + R_{\text{сх}}\right) \hookrightarrow \int_{x_0}^x f(t) dt = \sum_{k = 0}^{\infty} a_k \frac{(x - x_0)^{k + 1}}{k + 1}$
+        \item $\displaystyle \forall x \in \left(x_0 - R_{\text{сх}}, x_0 + R_{\text{сх}}\right) \; \; \forall n \in \mathbb{N} \hookrightarrow f^{(n)} (x) = \sum_{k = 0}^{\infty} a_k \left((x - x_0)^k\right)^{(n)}$
+        \item $\displaystyle \forall n \in \mathbb{N} \hookrightarrow a_n = \frac{f^{(n)} (x_0)}{n!}$
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    \begin{enumerate}
+        \item Зафиксируем $\underline{x} \in \left(x_0 - R_{\text{сх}}, x_0 + R_{\text{сх}}\right)$ и определим $r = \left\lvert x_0 - \underline{x} \right\rvert < R_{\text{сх}}$. По теореме о круге сходимости степенного ряда имеем равномерную сходимость ряда $\displaystyle \sum_{k = 0}^{\infty} a_k (x - x_0)^{k}$ на отрезке $[x_0 - r, x_0 + r]$. При этом очевидно, что все функции $a_k (x - x_0)^k$ непрерывны на этом отрезке, а значит все они интегрируемы по Риману на этом отрезке. Тогда по теореме об интегрировании равномерно сходящегося функционального ряда получаем, что функция $\displaystyle f(t) = \sum_{k = 0}^{\infty} a_k (t - x_0)^k$ интегрируема по Риману на отрезке $[x_0 - r, x_0 + r]$, и, кроме того, 
+        \[\forall x \in [x_0 - r, x_0 + r] \hookrightarrow \int_{x_0}^{x} f(t) dt = \sum_{k = 0}^{\infty} a_k \int_{x_0}^{x} (t - x_0)^k dt = \sum_{k = 0}^{\infty} a_k \frac{(x - x_0)^{k + 1}}{k + 1}\]
+        Следовательно, положив $x = \underline{x}$ (можем так сделать просто исходя из определения $r$), получим
+        \[\int_{x_0}^{\underline{x}} f(t) dt = \sum_{k = 0}^{\infty} a_k \frac{(\underline{x} - x_0)^{k + 1}}{k + 1}\]
+        Но $\underline{x} \in \left(x_0 - R_{\text{сх}}, x_0 + R_{\text{сх}}\right)$ было выбрано произвольно, что и требовалось.
+        \item Рассмотрим степенной ряд, полученный формальным почленным дифференцированием, то есть ряд $\displaystyle \sum_{k = 1}^{\infty} a_k k (x - x_0)^{k - 1}$. По теореме \ref{th:1.1} у данного ряда радиус сходимости тот же, что и у исходного ряда. Следовательно, если $[x_0 - r, x_0 + r] \subset (x_0 - R_{\text{сх}}, x_0 + R_{\text{сх}})$, то на этом отрезке формально продифференцированный ряд сходится равномерно. При этом нетрудно видеть, что каждый член $a_k (x - x_0)^k$ исходного ряда является бесконечно дифференцируемым на отрезке $[x_0 - r, x_0 + r]$. Учитывая все эти чудесные условия, зафиксируем $\underline{x} \in \left(x_0 - R_{\text{сх}}, x_0 + R_{\text{сх}}\right)$ и выберем $r > 0$ так, что $\underline{x} \in (x_0 - r, x_0 + r) \subset [x_0 - r, x_0 + r] \subset (x_0 - R_{\text{сх}}, x_0 + R_{\text{сх}})$. Тогда по теореме о дифференцировании функциональных рядов получаем, что сумма исходного ряда $\displaystyle f(x) = \sum_{k = 0}^{\infty} a_k (x - x_0)^k$ является дифференцируемой функцией в точке $\underline{x}$. Более того,
+        \[f'(\underline{x}) = \sum_{k = 0}^{\infty} a_k \left((x - x_0)^k\right)' \Biggr|_{x = \underline{x}} = \sum_{k = 1}^{\infty} a_k k (\underline{x} - x_0)^{k - 1}\]
+        Но $\underline{x} \in \left(x_0 - R_{\text{сх}}, x_0 + R_{\text{сх}}\right)$ было выбрано произвольно, а значит требуемое доказано для однократного взятия производной. Тогда, положив проверенное базой индукции и рассуждая по индукции далее (берём $f^{(n)}$ вместо $f$, и $f^{(n + 1)}$ вместо $f'$), получаем, что 
+        \[\forall n \in \mathbb{N} \; \; \forall \underline{x} \in \left(x_0 - R_{\text{сх}}, x_0 + R_{\text{сх}}\right) \hookrightarrow \exists f^{(n)} (\underline{x}) = \sum_{k = n}^{\infty} a_k k (k - 1) \ldots (k - n + 1) (\underline{x} - x_0)^{k - n}\]
+        Таким образом, второй пункт и утверждение $f \in C^{\infty} (\left(x_0 - R_{\text{сх}}, x_0 + R_{\text{сх}}\right))$ полностью доказаны.
+        \item Так как пункт выше уже установлен, загрузим в равенство для $n$-ой производной точку $x_0$:
+        \[f^{(n)} (x_0) = \sum_{k = n}^{\infty} a_k k (k - 1) \ldots (k - n + 1) (x - x_0)^{k - n} \Biggr|_{x = x_0} = a_n n! \implies a_n = \frac{f^{(n)} (x_0)}{n!}\]
+    \end{enumerate}
+\end{proof}
+
+\subsection{Ряд Тейлора}
+
+\begin{definition}
+    Пусть $f \colon U_{\delta} (x_0) \to \mathbb{R}$ бесконечно дифференцируема в точке $x_0$. Тогда рядом Тейлора функции $f$ назовём степенной ряд 
+    \[\sum_{k = 0}^{\infty} \frac{f^{(k)}(x_0)}{k!} (x - x_0)^k\]
+\end{definition}
+
+\begin{definition}
+    Будем говорить, что функция $f \colon U_{\delta} (x_0) \to \mathbb{R}$ является \textbf{вещественно аналитической} $\iff$ \textbf{вещественно регулярной} $\iff$ \textbf{вещественно голоморфной} \underline{в точке} $x_0$, если 
+    \[\exists \widetilde{\delta} \in (0, \delta): f(x) = \sum_{k = 0}^{\infty} \frac{f^{(k)}(x_0)}{k!} (x - x_0)^k \; \; \forall x \in U_{\widetilde{\delta}}(x_0)\]
+\end{definition}
+
+\begin{remark}
+    Существуют функции, которые не являются регулярными в точке, но являются бесконечно дифференцируемыми в этой точке.
+\end{remark}
+
+\begin{example}
+    Рассмотрим функцию
+    \begin{equation*}
+        f(x) = 
+        \begin{cases}
+            e^{\displaystyle \nicefrac{-1}{x^2}}, & x \neq 0 \\
+            0, & x = 0
+        \end{cases}
+    \end{equation*}
+    Покажем, что $f \in C^{\infty} (\mathbb{R})$. По правилам дифференцирования очевидно, что $f \in C^{\infty} (\mathbb{R} \setminus \{0\})$. Проверим существование всех производных в нуле. Для этого сначала вычислим первую производную $f$ в нуле:
+    \[f'(0) = \lim_{x \to 0} \frac{e^{\displaystyle \nicefrac{-1}{x^2}}}{x} = \left[\frac{1}{x} = t\right] = \lim_{t \to \infty} t e^{-t^2} = \lim_{t \to \infty} \frac{t}{e^{t^2}} = \left[\text{очевидный Лопиталь}\right] = 0\]
+    Таким образом,
+    \begin{equation*}
+        f'(x) = 
+        \begin{cases}
+            \displaystyle e^{\displaystyle \nicefrac{-1}{x^2}} \cdot \frac{2}{x^3}, & x \neq 0 \\
+            0, & x = 0
+        \end{cases}
+    \end{equation*}
+    Также вычислим вторую производную $f$ для всех ненулевых точек:
+    \[f''(x) = e^{\displaystyle \nicefrac{-1}{x^2}} \cdot \left( \frac{4}{x^6} - \frac{6}{x^4} \right), \quad x \neq 0\]
+    Теперь, пристально вглядываясь в выражения для производных, уже совсем нетрудно проследить закономерность и установить, что
+    \[\forall x \neq 0 \hookrightarrow f^{(n)} (x) = P_{3n} \left(\frac{1}{x}\right) e^{\displaystyle \nicefrac{-1}{x^2}},\]
+    где $P_{3n} \left(\frac{1}{x}\right)$ --- многочлен степени $3n$ по переменным $\frac{1}{x}$. Тогда в силу следствия из теоремы Лагранжа о среднем:
+    \[f^{(n)} (0) = \lim_{x \to 0} P_{3n} \left(\frac{1}{x}\right) e^{\displaystyle \nicefrac{-1}{x^2}} = [\text{Лопиталь 3n раз}] = 0\]
+    Итак, бесконечная дифференцируемость на $\mathbb{R}$ показана. \\
+    Убедимся теперь, что $f$ не является регулярной в нуле. В самом деле, ряд Тейлора функции $f$ с центром в точке $0$ тождественно нулевой, так как равны нулю все производные $f$ в точке $0$. Но при этом совершенно очевидно, что функция $f$ ненулевая в окрестности нуля. Значит $f$ не может быть представлена своим рядом Тейлора ни в какой окрестности нуля, иначе говоря, её ряд Тейлора просто не сходится к ней ни в какой окрестности точки $0$.
+\end{example}
+
+\begin{remark}
+    В этом примере хорошо прослеживается разница ряда Тейлора и формулы Тейлора. Рассматриваемую функцию, как мы с вами уже показали, не получится разложить в ряд Тейлора ни в какой окрестности нуля. Но при этом данную функцию можно спокойно разложить по формуле Тейлора:
+    \[f(x) = o \left(x^n\right), \; x \to 0 \; \; \forall n \in \mathbb{N}\]
+    Таким образом, функция $f$ является $o$-малой от любой натуральной степени $x$ при $x \to 0$, но при этом она не является тождественно нулевой функцией.
+\end{remark}
+
+\begin{theorem}[Достаточное условие регулярности]
+    Пусть $f \in C^{\infty} (U_{\delta}(x_0))$. Пусть 
+    \[\exists M > 0: \left\lvert f^{(n)} (x) \right\rvert \leq M^n \; \; \forall n \in \mathbb{N} \; \; \forall x \in U_{\delta} (x_0)\]
+    Тогда функция $f$ вещественно регулярна в точке $x_0$. Более того, справедливо равенство:
+    \begin{equation} \label{eq:2.2}
+        f(x) = \sum_{k = 0}^{\infty} \frac{f^{(k)} (x_0)}{k!} (x - x_0)^k \; \; \forall x \in U_{\delta} (x_0)
+    \end{equation}
+\end{theorem}
+
+\begin{proof}
+    Для того, чтобы показать равенство (\ref{eq:2.2}), по определению сходимости функционального ряда достаточно доказать, что 
+    \[\forall x \in (x_0 - \delta, x_0 + \delta) \hookrightarrow \sum_{k = 0}^n \frac{f^{(k)} (x_0)}{k!} (x - x_0)^k \to f(x), \; n \to \infty\]
+    Так как $f$ по условию бесконечно дифференцируема в $U_{\delta}(x_0)$, то по формуле Тейлора с остаточным членом в форме Лагранжа:
+    \[\forall x \in U_{\delta} (x_0) \; \; \exists \xi \in (\min\{x, x_0\}, \max\{x, x_0\}): f(x) - \sum_{k = 0}^n \frac{f^{(k)} (x_0)}{k!} (x - x_0)^k = \frac{f^{(n + 1)} (\xi)}{(n + 1)!} (x - x_0)^{n + 1}\]
+    Следовательно,
+    \[\forall x \in U_{\delta} (x_0) \hookrightarrow \left\lvert f(x) - \sum_{k = 0}^n \frac{f^{(k)} (x_0)}{k!} (x - x_0)^k \right\rvert = \left\lvert \frac{f^{(n + 1)} (\xi)}{(n + 1)!} (x - x_0)^{n + 1} \right\rvert \leq [\text{оценка из условия}] \leq\]
+    \[\leq \frac{M^{n + 1}}{(n + 1)!} \left\lvert x - x_0 \right\rvert^{n + 1} \leq \frac{(M\delta)^{n + 1}}{(n + 1)!} \]
+    Правая часть полученного неравенства, как легко видеть, не зависит от $x$. Тогда можем взять супремум по всем $x \in U_{\delta} (x_0)$ от обеих частей этого неравенства:
+    \[\sup_{x \in U_{\delta} (x_0)} \left\lvert f(x) - \sum_{k = 0}^n \frac{f^{(k)} (x_0)}{k!} (x - x_0)^k \right\rvert \leq \frac{(M\delta)^{n + 1}}{(n + 1)!} \; \; \forall n \in \mathbb{N}\]
+    Но 
+    \[\frac{(M\delta)^{n + 1}}{(n + 1)!} \to 0, \; n \to \infty\]
+    Действительно,
+    \[\exists n_0 > 2M\delta: \forall n \geq n_0 \hookrightarrow \frac{(M\delta)^{n + 1}}{(n + 1)!} \leq \left(\frac{1}{2}\right)^{n - n_0} \cdot \frac{(M\delta)^{n_0}}{n_0 !} \to 0, \; n \to \infty\]
+    Тогда ряд $\displaystyle \sum_{k = 0}^{\infty} \frac{f^{(k)} (x_0)}{k!} (x - x_0)^k$ даже равномерно сходится к $f$ на множестве $U_{\delta}(x_0)$, а значит равенство (\ref{eq:2.2}) установлено и требуемое доказано.
+\end{proof}
+
+\end{document}

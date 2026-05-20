@@ -1,0 +1,247 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{ulem}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\DIF}{DIF}
+\DeclareMathOperator{\rg}{rg}
+\DeclareMathOperator{\dist}{dist}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Смотря какой fabtic, смотря какой detail }
+\fancyhead[R]{\href{https://www.youtube.com/watch?v=ITXVIK8KZuI&t=0m40s  }{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 14. Критерий Лебега интегрируемости по Риману
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Критерий Лебега}
+
+\begin{definition}
+    Если $\{a_j\} \subset [0,+\infty) $, то $\displaystyle \sum_{j=1} ^{\infty} a_j = \sup_{N\in \mathbb{N}} \sum_{j=1} ^{N} a_j=\lim\limits_{N\to \infty} \sum_{j=1} ^ N a_j $  
+\end{definition}
+
+\begin{definition}
+    Множество $E\subset \mathbb{R}^n$ называется множеством лебеговой меры ноль ($\Leftrightarrow$ имеет меру Лебега ноль), если $\forall \varepsilon>0 \quad \exists$ счётный набор шаров $\{B_j(\varepsilon)\}_{j=1} ^\infty $ такой, что:\\
+    \[ 1) E\subset \bigcup_{j=1} ^\infty B_j(\varepsilon) \]
+    \[ 2) \sum_{j=1} ^\infty (r(B_j(\varepsilon)))^n < \varepsilon \]
+
+\end{definition}
+
+
+\begin{example}
+    1) $\varnothing$ имеет лебегову меру ноль\\
+    2) $\forall$ конечное множество имеет лебегову меру ноль
+\end{example}
+
+
+\begin{lemma}
+    Пусть $\{E_i\}_{i=1} ^\infty$ --- последовательность множеств в $\mathbb{R}^n$ т.ч. $E_i$ имеет лебегову меру ноль $\forall i\in \mathbb{N}$. Тогда множество
+    $\displaystyle E=\bigcup_{i=1} ^\infty E_i$ является множеством лебеговой меры 0. 
+\end{lemma}
+
+\begin{proof}
+    Зафиксируем произвольный $\varepsilon>0$. Так как $E_i$ имеет лебегову меру ноль, то $\exists$ набор шаров $\{B_{i,j}\}$ такой, что
+    \[ \sum_{j=1}^{\infty}(r(B_{i,j}))^n < \frac{\varepsilon}{2^i} \]
+    Рассмотрим счётный набор шаров $\{B_{i,j}\}_{i,j=1}^\infty $. Перенумеруем этот набор единым индексом, то есть зафиксируем биекцию $I: \mathbb{N} \to \mathbb{N}\times \mathbb{N}$.
+    Создадим бесконечную таблицу, в каждой ячейке которой будет находиться пара индексов $i,j$. Будем нумеровать по <<змейке>>. 
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\textwidth]{pictures/картиночка для понимания 1.png}
+        
+    \end{figure}
+    Значит каждый индекс $(i,j)$ будет во взаимнооднозначном соответствии с каким-то $k(i,j)$:
+    \[ (i,j) \leftrightarrow k(i,j) \]
+    В итоге, набор шаров $\{B_{i,j} \} = \{ \tilde{B}_{k(i,j)} \} = \{ \tilde{B}_k \}_{k=1}^\infty $ ,так как $\displaystyle \forall i\in \mathbb{N} \hookrightarrow E_i\subset \bigcup_{j=1}^\infty B_{i,j} $ 
+    \[ \Rightarrow E= \bigcup_{i=1}^\infty E_i \subset \bigcup_{i=1}^\infty \bigcup_{j=1}^\infty B_{i,j} = \bigcup_{k=1}^\infty \tilde{B}_k \]
+    остаётся доказать, что $\displaystyle \sum_{k=1}^\infty (r(\tilde{B}_k))^n  $ мала
+    \[ \sum_{k=1}^\infty(r(\tilde{B}_k))^n = \sup_{N\in \mathbb{N}} \sum_{k=1}^N (r(\tilde{B}_k))^n    \]
+    Так как при нашем способе нумерации <<змейка длины $N$>> содержится в квадрате $N\times N$ 
+    \[ \sum_{k=1}^{N} (r(\tilde{B}_k))^n \leq \sum_{i=1}^{N} \sum_{j=1}^{N} (r(B_{i,j}))^n \leq \sup_{N\in \mathbb{N}} \sum_{i=1}^{N} \sum_{j=1}^{N} (r(B_{i,j}))^n \leq \sum_{i=1}^\infty (\sum_{j=1}^\infty (r(B_{i,j}))^n)\leq \sum_{i=1}^\infty \frac{\varepsilon}{2^i}=\varepsilon \]
+    Так как $N\in \mathbb{N}$ произвольно
+    \[ \Rightarrow \sup_{N\in \mathbb{N}} \sum_{k=1}^N (r(\tilde{B}_k))^n \le \varepsilon \]
+\end{proof}
+
+\begin{example}
+    (Следствие). $\forall$ счётное множество в $\mathbb{R}^n$ (в частности $\mathbb{Q}^n)$ имеет лебегову меру ноль
+\end{example}
+
+
+\subsection*{Напоминание}
+\begin{definition}
+    Пусть $D\subset \mathbb{R}^n, D\neq \varnothing, f: D\to \mathbb{R} $.
+    Если $E\subset D, E\neq \varnothing$, то \textbf{колебание} $f$ на $E$ есть
+    \[\omega_E[f]:= \sup_{x',x''\in E} |f(x')-f(x'')|\]
+\end{definition}
+
+\paragraph{Свойства колебаний на множествах.}
+\begin{lemma}[Монотонность по включению]
+    Если $E_1 \subset E_2 \subset D$, то $\omega_{E_1} [f] \leq \omega_{E_2}[f]$
+\end{lemma}
+\begin{lemma}
+    Если $\exists M>0$ такой, что $|f(x)|\leq M \ \forall x\in E$, то $\omega_E [f]\leq 2M$
+\end{lemma}
+\begin{lemma}
+    Если $E_1, E_2 \subset D$ такие, что $\exists \underline{x} \in E_1\cap E_2$, то 
+    \[ \omega_{E_1\cup E_2} [f] \leq \omega_{E_1} [f] + \omega_{E_2} [f] \]
+\end{lemma}
+
+
+\begin{proof}
+    Фиксируем произвольные $x',x'' \in E_1\cup E_2$ такие, что $x'\in E_1$ и $x''\in E_2$ (так как, если обе точки лежат в одном множестве, то оценка очевидна в силу монотонности).
+    Тогда по неравенству треугольника получим:
+    \[ |f(x')-f(x'')| \leq |f(x')-f(\underline{x})| + |f(\underline{x})-f(x'')| \]
+    При этом 
+    \[ |f(x')-f(\underline{x})| \leq \omega_{E_1} [f]\]   
+    \[ |f(\underline{x})-f(x'')|\leq \omega_{E_2} [f] \]
+    \[ \Rightarrow \forall x'\in E_1 \text{ и } \forall x''\in E_2 \hookrightarrow |f(x')-f(x'')| \leq \omega_{E_1}[f] + \omega_{E_2} [f] \]  
+    Если же точки $x',x''\in E_1$ или $x',x''\in E_2$, то справедливо аналогичное неравенство.\\
+    В итоге, при любом выборе $x',x''\in E_1\cup E_2$
+    \[ |f(x')-f(x'')| \leq \omega_{E_1} [f] + \omega_{E_2}[f] \]
+    \[ \Rightarrow \omega_{E_1\cup E_2}[f]= \sup_{x',x''\in E_1\cup E_2} |f(x')-f(x'')| \leq \omega_{E_1}[f] +\omega_{E_2}[f] \] 
+\end{proof}
+
+
+\begin{definition}
+    Если $f: D\to \mathbb{R}, D\subset \mathbb{R}^n, D\neq \varnothing$. Если $x_0$ --- изолированная точка множества $D$, то $\omega_{x_0}[f] := 0$.\\ 
+    Если $x_0$ --- предельная точка множества $D$, то 
+    \[ \omega_{x_0} [f] = \lim\limits_{\delta \to 0} \omega_{B_\delta (x_0) \cap D} [f] = \inf_{\delta>0} \omega_{B_\delta(x_0)\cap D}[f] \]
+\end{definition}
+
+\begin{theorem}
+    Если $D\subset \mathbb{R}^n , D\neq \varnothing, f: D\to \mathbb{R}$. $f$ непрерывна в точке $x_0\in D$ по множеству $D \Leftrightarrow \omega_{x_0} [f] =0 $
+
+\end{theorem}
+
+\begin{proof}
+    такое же, как в одномерном случае
+\end{proof}
+
+
+\begin{definition}
+    Пусть $f: [a,b] \to \mathbb{R} $. Тогда: \\
+    $ D [f] $(от английского Discontinuous) --- множество всех точек разрывов функции $f$ на $[a,b]$\\
+    $ C[f]$ --- множество всех точек непрерывности $f$ на $[a,b]$\\
+    \[ [a,b] = C[f] \cup D[f] \]
+    \[ \forall n\in \mathbb{N} \text{  определим множество } D_n[f] := \{ x\in [a,b] : \omega_x [f] \geq \frac{1}{n} \} \]
+\end{definition}
+
+\begin{lemma}
+    \[ 1) D[f] = \bigcup_{n=1}^{\infty} D_n[f] \]
+    \[ 2) D_n[f] \subset D_{n+1} [f] \]
+\end{lemma} \leavevmode
+\\
+Рассмотрим \[ \Delta_f (T) = \sum _{i=1}^{N_T} \omega_i [f] (x_i-x_{i-1}) < \varepsilon \]
+
+\begin{theorem}[Критерий Лебега интегрируемости по Риману]
+     Функция $f: [a,b]\to \mathbb{R}$ интегрируема по Риману на $[a,b] \iff $
+    \[ 1) f \text{--- ограничена на  } [a,b] \]
+    \[ 2) \text{множество } D[f] \text{  имеет лебегову меру ноль }\]
+\end{theorem}
+
+
+\begin{proof}
+    Начнём с достаточности. Зафиксируем произвольный $\varepsilon>0$. Так как $D[f]$ имеет лебегову меру ноль, то  $\exists \{(a_i,b_i)\}_{i=1}^\infty$  т.ч. 
+    \[ \text{а) } D[f] \subset \bigcup_{i=1}^\infty (a_i,b_i) \]
+    \[ \text{б) } \sum_{i=1} ^\infty |b_i-a_i|<\varepsilon \]
+    Если  $x\in C[f], \text{то  } \omega_x[f] = 0$
+    \[ \Rightarrow \exists I(x) = (x-\delta(x), x+\delta(x)) \text{  такой, что  } \omega_{3I(x)}[f] <\varepsilon \]
+    Рассмотрим все интервалы $\{ (a_i,b_i) \}_{i=1}^\infty$ и $\{ I(x): x\in C[f] \}$
+    \[ [a,b] \subset \bigcup_{i=1}^\infty (a_i,b_i) \cup \bigcup_{x\in C[f]} I(x) \]
+    Таким образом, получили некоторое открытое покрытие отрезка $[a, b]$. Но вспомним, что $[a,b]$ --- компакт. Следовательно,
+    по лемме Гейне-Бореля из этого открытого покрытия можно выделить конечное подпокрытие, то есть:
+    \[\exists \{ (c_j, d_j) \}_{j=1}^N, \quad N\in \mathbb{N} \text{ , которое покрывает  } [a,b] \]
+    Разобьём множество $\{ (c_j, d_j) \}_{j=1}^N$ на две части: хорошую и плохую.
+    \[ \{1, ... , N\} = A_g \cup A_b \text{  (от слов good и bad)} \]
+    Пусть $A_g$ --- все такие индексы, что $(c_j,d_j)$ содержится в семействе $\{ I(x): x\in C[f] \}$ , $A_b$ --- остальные.
+    Пусть теперь $T= \{x_i \} _{i=0}^{N_T}$ --- разбиение отрезка $[a,b]$
+    \[ l(T)< \min_{1\le j \le N} |c_j-d_j| = \delta(\varepsilon) \]
+    Отрезок $[x_{i-1},x_i]$ назовём хорошим, если он пересекает хороший интервал. В противном случае назовём отрезок плохим.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\textwidth]{pictures/картиночка для понимания 2.png}
+    \end{figure} \leavevmode
+    \\
+    Если хороший отрезок $[x_{i-1},x_i] \cap (c_j,d_j)$ ($(c_j,d_j$) --- хороший интервал), то $[x_{i-1},x_i] \subset 3(c_j,d_j)$
+    \[ \Rightarrow \text{в силу монотонности колебания }\omega_{[x_{i-1},x_i]} [f] \leq \omega_{3(c_j,d_j)} [f] <\varepsilon \]
+    Если $[x_{i-1},x_i]$ --- плохой отрезок разбиения, то он содержится в объединении плохих интервалов 
+    \[ \Rightarrow \text{в частности, } \sum_{\substack{i=1 \\ [x_{i-1},x_i] \text{--- плохой }}}^{N} |x_{i-1}-x_i| \le \sum_{j\in A_b} |c_j-d_j| < \varepsilon  \]
+    В итоге 
+    \[ \forall \varepsilon>0 \quad \exists \delta(\varepsilon)>0: \forall T\in \mathcal{T}([a,b]) \quad  l(T)< \delta(\varepsilon) \]
+    \[ \hookrightarrow  \Delta_f (T) = \sum _{i=1} ^{N_T} \omega_i [f] (x_i-x_{i-1}) = \sum _ {\substack{{i=1} \\ [x_{i-1},x_i]\text{--- хороший} }} ^{N_T} \omega_i[f] (x_i-x_{i-1})+ 
+\sum _ {\substack{{i=1} \\ [x_{i-1},x_i]\text{--- плохой} }} ^{N_T} \omega_i[f] (x_i-x_{i-1} ) \leq  \]
+    \[ \leq  \varepsilon(b-a) + 2\varepsilon M =\varepsilon [2M+(b-a)] \text{  , где }2M =2\sup_{x\in [a,b]}|f(x)| \text{, так как $f$ --- ограничена} \]
+    $\Rightarrow$ в силу первого критерия интегрируемости $f$ интегрируема по Риману на $[a,b]$. \\
+    Теперь докажем необходимость: 
+    $\Rightarrow$ если $f\in \mathcal{R}([a,b]) $, то $f$ ограничена на $[a,b]$ --- доказывалось ранее. 
+    Остаётся проверить, что $\forall n\in \mathbb{N} \hookrightarrow D_n[f] $ имеет лебегову меру ноль.
+    Так как тогда в силу леммы $\displaystyle D[f] = \bigcup_{n=1}^\infty D_n[f]$ имеет лебегову меру ноль
+    \[ \Delta_f(T)= \sum_{i=1}^ {N_T} \omega_i[f](x_i-x_{i-1}) < \varepsilon \]
+    Фиксируем $n\in \mathbb{N}$.\\
+    Покажем, что $D_n[f]$ имеет лебегову меру ноль. В силу критерия интегрируемости:
+    \[ \forall \varepsilon>0 \quad \exists \delta(\varepsilon, n)>0: \forall T\in \mathcal{T}([a,b]) \quad l(T)<\delta(\varepsilon, n) \hookrightarrow \Delta_f(T)< \frac{\varepsilon}{6n} \]
+    Далее установим следующую лемму:
+    \begin{lemma}
+        $\forall x\in D_n[f] \quad \exists \text{ отрезок  } [x_{i-1},x_i] \ni x \text{  такой, что   } \omega_{[x_{i-1},x_i]} [f] \geq \frac{1}{2n}$
+    \end{lemma}
+    \begin{proof}
+        Пусть $x\in D_n[f]$ и $x \in [x_{i - 1}, x_i]$. 
+    Рассмотрим несколько случаев: 
+    \[ 1) x=a \text{ или } x=b\]
+    \[ \omega_x[f]\geq \frac{1}{n} \Rightarrow 
+    \left[
+        \begin{aligned}
+        \omega_{[x_0,x_1]} f \geq \frac{1}{n} \text{ ,если  } x=a\\
+        \omega_{[x_{N-1},x_N]} f\geq \frac{1}{n}\text{ ,если  } x=b 
+        \end{aligned}
+    \right. \]
+    \[ x\in (x_{i-1},x_i) \text{ при некотором } i\in \{1,...,  N_T \}  \]
+    \[ \Rightarrow \exists \delta(x)>0 \text{ т.ч. } I(x)=(x-\delta(x),x+\delta(x)) \subset (x_{i-1},x_i) \]
+    Тогда
+    \[ \frac{1}{n} \leq \omega_x[f] \leq \omega_{I(x)} [f] \leq \omega_{[x_{i-1},x_i]} [f] \]
+    \[ 3) x=x_i  \text{ при } i=1, ..., N_T-1 \Rightarrow \exists \text{ 2 отрезка } [x_{i-1},x_i] \text{ и } [x_i,x_{i+1}] \]
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\textwidth]{pictures/картиночка для понимания 3.png}
+        
+    \end{figure}
+    \[ \frac{1}{n} \le \omega_x[f] \le \omega_{[x_{i-1},x_{i+1}]}f \le \omega_{[x_{i-1},x_i]}f + \omega_{[x_i,x_{i+1}]}f \]
+    $\Rightarrow$ хотя бы одно из слагаемых $\ge \frac{1}{2n} $.
+    \end{proof} \leavevmode
+    \\
+    Тогда $\forall x\in D_n[f]$ выберем отрезок $[x_{i-1},x_i]\ni x$, на котором колебание $\omega_{[x_{i-1},x_i]}f \ge \frac{1}{2n}$. \\
+    Рассмотрим 
+    \[ (a_i,b_i)=\frac{3}{2}(x_{i-1},x_i)=I_i \]
+    Пусть $A$ --- индексы $I$, соответствующие этим отрезкам
+    \[ D_n[f] \subset \bigcup_{i\in A} I_i \]
+    \[ \sum_{i\in A} l(I_i) = \frac{3}{2} \sum_{i\in A} |x_i-x_{i-1}|= \frac{3n}{2n} \sum_{i\in A} |x_i-x_{i-1}|\le 3n \sum_{i\in A} \omega_{[x_{i-1},x_i]}[f]|x_i-x_{i-1}| \le \]
+    \[ \le 3n\sum_{i=1}^{N_T} \omega_i[f] |x_i-x_{i-1}| < \frac{3n\cdot \varepsilon}{6n} = \frac{\varepsilon}{2} < \varepsilon \]
+    Так как $\varepsilon>0 $ и $n\in \mathbb{N}$ выбраны произвольно, то ч.т.д.
+\end{proof}
+
+
+
+\end{document}

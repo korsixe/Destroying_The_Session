@@ -1,0 +1,344 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Чил аут ребятки, копим свагу}
+\fancyhead[R]{\href{https://t.me/ceagest}{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 2. Пределы по направлению и пределы по совокупности переменных. Повторные пределы.
+    Дифференцируемость функций многих переменных
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Пределы по направлению и пределы по совокупности переменных}
+
+\begin{definition}[Предел по множеству по Коши]
+    Пусть $E \subset \mathbb{R}^n$, $x^0$ --- предельная точка множества $E$, $f \colon E \to \widehat{\mathbb{R}}$.
+    Будем говорить, что $C \in \widehat{\mathbb{R}}$ является пределом отображения $f$ по совокупности переменных, и записывать 
+    это
+    \begin{equation*}
+        \lim_{x \to x^0} f(x) = C 
+        \quad \text{или} \quad 
+        \lim\limits_{\substack{x_1 \to x_1^0 \\ \vdots \\ x_n \to x_n^0 }} f(x_1, \ldots, x_n) = C
+    \end{equation*}
+    если 
+    \[\forall \varepsilon > 0 \; \exists \delta(\varepsilon) > 0: \forall x \in \mathring{B}_{\delta(\varepsilon)}\left(x^0\right) \cap E \hookrightarrow f(x) \in U_{\varepsilon}(C)\]
+\end{definition}
+
+\begin{definition}[Предел по множеству по Гейне]
+    Пусть $E \subset \mathbb{R}^n$, $x^0$ --- предельная точка множества $E$, $f \colon E \to \widehat{\mathbb{R}}$.
+    Будем говорить, что $C \in \widehat{\mathbb{R}}$ является пределом отображения $f$ по совокупности переменных, и записывать 
+    это
+    \begin{equation*}
+        \lim_{x \to x^0} f(x) = C 
+        \quad \text{или} \quad 
+        \lim\limits_{\substack{x_1 \to x_1^0 \\ \vdots \\ x_n \to x_n^0 }} f(x_1, \ldots, x_n) = C
+    \end{equation*}
+    если 
+    \[\forall \{x^m\} \subset E \text{--- последовательность Гейне в точке } x^0 \hookrightarrow \lim_{m \to \infty} f(x^m) = C\]
+\end{definition}
+
+\begin{theorem}
+    Определения пределов по Коши и по Гейне по множеству эквивалентны.
+\end{theorem}
+
+\begin{proof}
+    Аналогично доказательству в $\mathbb{R}^1$.
+\end{proof}
+
+\begin{remark}
+    Пусть $X = E \cup \{x^0\}$, $d$ --- метрика, индуцированная из $\mathbb{R}^n$. Тогда 
+    определение предела по множеству $E$ в точке $x^0$ полностью повторяет определение предела 
+    в метрическом пространстве $(X, d)$.
+\end{remark}
+
+\begin{definition}
+    Направлением будем называть всякий вектор $\overline{l} \in \mathbb{R}^n$ такой, что 
+    $\left\lVert \overline{l} \right\rVert = 1$.
+\end{definition}
+
+\begin{definition}[Предел по вектору]
+    Пусть $\overline{l} \neq \overline{0}$, $\overline{l} \in \mathbb{R}^n$. Пусть $f \colon \mathring{B}_{\delta}(x^0) \to \mathbb{R}$.
+    Тогда предел $f$ по вектору $\overline{l}$ в точке $x^0$ есть 
+    \[\lim_{t \to +0} f\left(x^0 + t \overline{l}\right) \in \widehat{\mathbb{R}}\]
+\end{definition}
+
+\begin{lemma} \label{lemma:1.1}
+    Пусть $f \colon \mathring{B}_{\delta} \left(x^0\right) \to \mathbb{R}$. Тогда:
+    \[\exists \lim_{x \to x^0} f(x) = C \in \widehat{\mathbb{R}} \implies \forall \overline{l} \neq \overline{0}
+    \hookrightarrow \exists \lim_{t \to +0} f \left(x^0 + t \overline{l} \right) = C \in \widehat{\mathbb{R}} \]
+    Обратное неверно.
+\end{lemma}
+
+\begin{proof}
+    Для начала заметим, что, умножив и разделив слагаемое $t \overline{l}$ в выражении $x^0 + t \overline{l}$ на $\left\lVert \overline{l} \right\rVert \neq 0$,
+    после замены параметра $t$ на $t' = t \cdot \left\lVert \overline{l} \right\rVert$ получим равносильное условие, 
+    но уже не для произвольного вектора, а для направления. Выходит, что достаточно доказать следующее утверждение:
+    \[\exists \lim_{x \to x^0} f(x) = C \in \widehat{\mathbb{R}} \implies \forall \overline{l} \in \mathbb{R}^n: \left\lVert \overline{l} \right\rVert = 1 
+    \hookrightarrow \exists \lim_{t \to +0} f \left(x^0 + t \overline{l} \right) = C \in \widehat{\mathbb{R}} \]
+    Левая часть импликации выше равносильна:
+    \[\forall \varepsilon > 0 \; \exists \delta(\varepsilon) > 0: \forall x \in \mathring{B}_{\delta(\varepsilon)}\left(x^0\right) \hookrightarrow f(x) \in U_{\varepsilon}(C)\]
+    Правая часть той же импликации, в свою очередь, равносильна следующему:
+    \[\forall \overline{l} \in \mathbb{R}^n: \left\lVert \overline{l} \right\rVert = 1 \; \; \forall \varepsilon > 0 \; \; \exists \delta \left(\varepsilon, \overline{l}\right) > 0: \forall t \in \left(0, \delta \left(\varepsilon, \overline{l}\right)\right) \hookrightarrow f \left(x^0 + t \overline{l}\right) \in U_{\varepsilon}(C)\]
+    Теперь заметим, что для того, чтобы в шар $\mathring{B}_{\delta}\left(x^0\right)$ попала точка $x^0 + t \overline{l}$, в силу $\left\lVert \overline{l} \right\rVert = 1$ необходимо и достаточно условия $t \in (0, \delta)$. Запомнив 
+    этот чудесный факт, $\forall \overline{l} \in \mathbb{R}^n: \left\lVert \overline{l} \right\rVert = 1$ радостно положим $\delta\left(\varepsilon, \overline{l} \right) := \delta(\varepsilon)$ и получим:
+    \[\forall \overline{l} \in \mathbb{R}^n: \left\lVert \overline{l} \right\rVert = 1 \; \; \forall t \in \left(0, \delta\left(\varepsilon, \overline{l} \right) \right) \hookrightarrow \left(x^0 + t \overline{l}\right) \in \mathring{B}_{\delta\left(\varepsilon, \overline{l} \right)}\left(x^0\right) = \mathring{B}_{\delta(\varepsilon)}\left(x^0\right) \]
+    Но коль скоро $\left(x^0 + t \overline{l}\right) \in \mathring{B}_{\delta(\varepsilon)}\left(x^0\right)$, значение $f \left(x^0 + t \overline{l} \right) \in U_{\varepsilon}(C)$. Тогда окончательно:
+    \[\forall \overline{l} \in \mathbb{R}^n: \left\lVert \overline{l} \right\rVert = 1 \; \; \forall \varepsilon > 0 \; \; \exists \delta(\varepsilon) > 0 : \forall t \in (0, \delta(\varepsilon)) \hookrightarrow f \left(x^0 + t \overline{l} \right) \in U_{\varepsilon}(C)\]
+    Легко видеть, что полученное условие равносильно правой части доказываемой импликации, что и требовалось.
+    \\
+    Теперь увидим, что обратное неверно. Действительно, рассмотрим следующую функцию:
+    \begin{equation*}
+        f(x, y) = 
+        \begin{cases}
+            1, & y = x^2 \text{ и } x \neq 0 \\
+            0, & \text{иначе}
+        \end{cases}
+    \end{equation*}
+
+    \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\linewidth]{pictures/Пример функции, у которой есть предел по любому направлению, но нет предела по совокупности.jpg}
+    \end{figure} \leavevmode
+    \\
+    Заметим, что любое направление $\overline{l} \in \mathbb{R}^2$ можно задать так:
+    \[\overline{l} = \left(\cos \varphi, \sin \varphi \right), \quad \varphi \in (0, 2 \pi]\]
+    \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\linewidth]{pictures/Предел по направлению в зависимости от значения угла.jpg}
+    \end{figure} \leavevmode
+    \\
+    Рассмотрим предел функции $f$ по направлению в точке $(0, 0)$, пользуясь представлением выше.
+    Если $\varphi \in [\pi, 2 \pi] \cup \left\{\frac{\pi}{2}\right\}$, то $\forall t > 0 \hookrightarrow f \left(t \cos \varphi, t \sin \varphi \right) = 0$, а значит 
+    \[\exists \lim_{t \to +0} f \left(t \cos \varphi, t \sin \varphi \right) = 0\]
+    Пусть теперь $\varphi \in \left(0, \frac{\pi}{2}\right) \cup \left(\frac{\pi}{2}, \pi\right)$. Тогда 
+    \[\exists ! \; t(\varphi) > 0: f \left(t(\varphi) \cos \varphi, t(\varphi) \sin \varphi \right) = 1\]
+    В самом деле, значение функции, с учётом вышеописанного представления направления, может равняться $1$ тогда и только тогда, когда:
+    \[t^2 \cos^2 \varphi = t \sin \varphi\]
+    Разделив на $t \cos^2 \varphi \neq 0$, получим единственное решение
+    \[t(\varphi) = \frac{\sin \varphi}{\cos^2 \varphi}\]
+    Тогда ясно, что:
+    \[\forall t \in (0, +\infty) \setminus \{t(\varphi)\} \hookrightarrow  f\left(t \cos \varphi, t \sin \varphi \right) = 0\]
+    Отсюда, рассматривая достаточно малую окрестность нуля, в которой $0 < t < t(\varphi)$, по определению предела 
+    получим:
+    \[\exists \lim_{t \to +0} f\left(t \cos \varphi, t \sin \varphi \right) = 0\]
+    Итого, предел функции $f$ по любому направлению равен $0$. Но при этом
+    \[\not \exists \lim_{(x, y) \to (0, 0)} f(x, y)\]
+    В самом деле, рассмотрим две последовательности Гейне в точке $(0, 0)$:
+    \[\left\{ \left(0, \frac{1}{n} \right) \right\} \text{ и } \left\{ \left(\frac{1}{n}, \frac{1}{n^2} \right)\right\}\]
+    Нетрудно видеть, что:
+    \[\forall n \in \mathbb{N} \hookrightarrow f \left( 0, \frac{1}{n} \right) = 0\]
+    \[\forall n \in \mathbb{N} \hookrightarrow f \left( \frac{1}{n}, \frac{1}{n^2} \right) = 1\]
+    Отсюда:
+    \[f \left( 0, \frac{1}{n} \right) \to 0, \; n \to \infty\]
+    \[f \left( \frac{1}{n}, \frac{1}{n^2} \right) \to 1, \; n \to \infty\]
+    Так как определения предела по Коши и по Гейне эквивалентны, то из двух условий выше
+    немедленно получаем, что предела функции $f$ по совокупности переменных в точке $(0, 0)$ не существует, а значит 
+    требуемое доказано.
+\end{proof}
+
+\section{Метод полярных координат}
+
+\begin{lemma}
+    Пусть $\mathring{B}_{\delta}\left(x^0\right) \subset \mathbb{R}^2$, $f \colon \mathring{B}_{\delta}\left(x^0\right) \to \mathbb{R}$. Пусть $A \in \mathbb{R}$.
+    Следующие условия эквивалентны:
+    \begin{enumerate}
+        \item $\displaystyle \exists \lim_{x \to x^0} f(x) = A$
+        \item $\exists g \colon (0, \delta) \to [0, +\infty)$, называемая мажорантой, такая, что:
+        \[\left\lvert f\left(x_1^0 + \rho \cos \varphi, x_2^0 + \rho \sin \varphi \right) - A\right\rvert \leq g(\rho) \quad \forall \rho \in (0, \delta) \text{ и } \forall \varphi \in [0, 2 \pi)\]
+        \[g(\rho) \to +0, \; \rho \to +0\]
+    \end{enumerate}
+\end{lemma}
+
+\begin{proof}
+    $(\Longrightarrow):$ Пусть
+    \[\exists \lim_{x \to x^0} f(x) = A\]
+    Это по определению предела по совокупности переменных равносильно:
+    \begin{equation*} \label{eq:1} \tag{$\ast$}
+        \forall \varepsilon > 0 \; \exists \delta(\varepsilon) \in (0, \delta]: \forall x \in \mathring{B}_{\delta(\varepsilon)}\left(x^0\right) \hookrightarrow \left\lvert f(x) - A \right\rvert < \varepsilon
+    \end{equation*}
+    Ясно, что $\forall x \in \mathring{B}_{\delta(\varepsilon)}\left(x^0\right)$ можно записать $x$ в полярных координатах в виде:
+    \[x = \left(x_1^0 + \rho \cos \varphi, x_2^0 + \rho \sin \varphi \right)\]
+    При этом очевидно, что:
+    \[x \in \mathring{B}_{\delta(\varepsilon)}\left(x^0\right) \iff \rho \in \left(0, \delta(\varepsilon)\right) \text{ и } \varphi \in [0, 2 \pi)\]
+    Тогда условие (\ref{eq:1}) в полярных координатах можно эквивалентно записать так:
+    \[\forall \varepsilon > 0 \; \exists \delta(\varepsilon) \in (0, \delta]: \forall \rho \in \left(0, \delta(\varepsilon)\right) \text{ и } \forall \varphi \in [0, 2 \pi) \hookrightarrow 
+    \left\lvert f\left(x_1^0 + \rho \cos \varphi, x_2^0 + \rho \sin \varphi \right) - A\right\rvert < \varepsilon\]
+    Далее берём $\sup$ по всем значениям угла $\varphi$ при каждом фиксированном $\rho \in \left(0, \delta(\varepsilon)\right)$ от соответствующих выражений и получаем:
+    \[\forall \rho \in \left(0, \delta(\varepsilon)\right) \hookrightarrow \sup_{\varphi \in [0, 2 \pi)} \left\lvert f\left(x_1^0 + \rho \cos \varphi, x_2^0 + \rho \sin \varphi \right) - A\right\rvert \leq \varepsilon \]
+    Для каждого $\rho \in \left(0, \delta(\varepsilon)\right)$ положим
+    \[g(\rho) := \sup_{\varphi \in [0, 2 \pi)} \left\lvert f\left(x_1^0 + \rho \cos \varphi, x_2^0 + \rho \sin \varphi \right) - A\right\rvert\]
+    Тогда для того, чтобы показать, что функция $g$ является искомой мажорантой, осталось лишь проверить, что $g(\rho) \to +0, \; \rho \to +0$, так как 
+    первое условие мажоранты выполнено по определению супремума. Требуемое же к проверке становится очевидным, если переписать итог наших изысканий в явной форме:
+    \[\forall \varepsilon > 0 \; \exists \delta(\varepsilon) > 0: \forall \rho \in \left(0, \delta(\varepsilon)\right) \hookrightarrow g(\rho) \leq \varepsilon \iff \exists \lim_{\rho \to +0} g(\rho) = 0\]
+    $(\Longleftarrow):$ Пусть существует мажоранта $g$. Так как $g(\rho) \to +0, \; \rho \to +0$, то по определению предела:
+    \[\forall \varepsilon > 0 \; \exists \delta(\varepsilon) \in \left(0, \delta\right]: \forall \rho \in \left(0, \delta(\varepsilon)\right) \hookrightarrow 0 \leq g(\rho) < \varepsilon\]
+    При этом по определению мажоранты:
+    \[\forall \varepsilon > 0 \; \exists \delta(\varepsilon) \in (0, \delta]: \forall \rho \in \left(0, \delta(\varepsilon)\right) \text{ и } \forall \varphi \in [0, 2 \pi) \hookrightarrow 
+    \left\lvert f\left(x_1^0 + \rho \cos \varphi, x_2^0 + \rho \sin \varphi \right) - A\right\rvert \leq g(\rho) < \varepsilon\]
+    \[\iff\]
+    \[\exists \lim\limits_{\substack{x_1 \to x_1^0 \\ x_2 \to x_2^0}} f(x_1, x_2) = A\]
+\end{proof}
+
+\section{Покоординатные пределы}
+
+\begin{definition}
+    Пусть $x^0 \in \mathbb{R}^n$, $\mathring{B}_{\delta}\left(x^0\right) \subset \mathbb{R}^n$, $f \colon \mathring{B}_{\delta}\left(x^0\right) \to \mathbb{R}$.
+    Пределом функции $f$ по $i$-ой координате в точке $x^0$ будем называть следующий предел:
+    \[\lim_{x_i \to x_i^0} f(x_1^0, \ldots, x_i, \ldots, x_n^0)\] 
+\end{definition}
+
+\section{Повторный предел}
+
+\begin{definition}
+    Пусть $x \in \mathbb{R}^n$, $r > 0$. Кубом в $\mathbb{R}^n$ с центром в точке $x$ и длиной ребра $2r$ будем называть следующее множество:
+    \[Q_r(x) := \prod_{i = 1}^n [x_i - r, x_i + r]\]
+\end{definition}
+
+\begin{remark}
+    Куб $Q_r(x)$ есть шар $B_r(x)$ в норме $\left\lVert x \right\rVert_{\infty} = \max \{\left\lvert x_1 \right\rvert, \ldots, \left\lvert x_n \right\rvert  \} $
+\end{remark}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.35\linewidth]{pictures/Вложение шара в куб в R^n.jpg}
+\includegraphics[width=0.4\linewidth]{pictures/Вложение куба в шар в R^n.jpg}
+\end{figure}
+
+\begin{definition}
+    Пусть $f \colon \mathring{Q}_{\delta}\left(x^0, y^0\right) \to \mathbb{R}$. Пусть 
+    \[\forall y \in \left(y^0 - \delta, y^0 + \delta\right) \hookrightarrow \exists \lim_{x \to x^0} f(x, y) = \psi(y)\]
+    Тогда, если $\displaystyle \exists \lim_{y \to y^0} \psi (y) \in \mathbb{R}$, то этот предел называется повторным пределом и записывается так:
+    \[\lim_{y \to y^0} \lim_{x \to x^0} f(x, y)\]
+    Аналогично определяется 
+    \[\lim_{x \to x^0} \lim_{y \to y^0} f(x, y)\]
+\end{definition}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\linewidth]{pictures/Повторный предел.jpg}
+\end{figure}
+
+\begin{remark}
+    Повторные пределы могут не совпадать по значению. В самом деле, рассмотрим функцию 
+    \[f(x, y) = \frac{x^2 - y^2}{x^2 + y^2}, \quad x^2 + y^2 > 0\]
+    Ясно, что для каждого фиксированного $y \in (-\delta, \delta)$ выполнено:
+    \[\lim_{x \to 0} f(x, y) = -1\]
+    Тогда тривиально получаем следующее равенство:
+    \[\lim_{y \to 0} \lim_{x \to 0} f(x, y) = -1\]
+    Аналогично
+    \[\lim_{x \to 0} \lim_{y \to 0} f(x, y) = 1\]
+\end{remark}
+
+\begin{remark}
+    Из существования и совпадения повторных пределов, вообще говоря, не следует существования 
+    предела по совокупности переменных. Действительно, рассмотрим следующую функцию:
+    \begin{equation*}
+        f(x, y) = 
+        \begin{cases}
+            1, & y = x^2 \text{ и } x \neq 0 \\
+            0, & \text{иначе}
+        \end{cases}
+    \end{equation*}
+    Рассуждая аналогично предыдущему замечанию, легко получаем следующие равенства:
+    \[\lim_{x \to 0} \lim_{y \to 0} f(x, y) = 0 = \lim_{y \to 0} \lim_{x \to 0} f(x, y)\]
+    Но в процессе доказательства леммы \ref{lemma:1.1} было показано, что 
+    \[\not \exists \lim_{(x, y) \to (0, 0)} f(x, y)\]
+\end{remark}
+
+\begin{remark}
+    Из существования предела по совокупности переменных, вообще говоря, не следует существования 
+    даже одного из повторных пределов. Шокирующий факт, быстрее приведём пример функции и забудем про этот ужас:
+    \begin{equation*}
+        f(x, y) = 
+        \begin{cases}
+            (x + y) \cdot \sin \frac{1}{x} \cdot \sin \frac{1}{y}, & xy \neq 0 \\
+            0, & \text{иначе}
+        \end{cases}
+    \end{equation*}
+    Заметим, что:
+    \[\left\lvert f(x, y) \right\rvert \leq \left\lvert x \right\rvert + \left\lvert y \right\rvert \to 0, \; (x, y) \to (0, 0)\]
+    Отсюда по теореме о двух милиционерах немедленно получаем:
+    \[\exists \lim_{(x, y) \to (0, 0)} f(x, y) = 0\]
+    Но при этом, воспользовавшись определением предела по Гейне, легко показать, что $\forall x \neq 0$ выполнено:
+    \[\not \exists \lim_{y \to 0} (x + y) \cdot \sin \frac{1}{x} \cdot \sin \frac{1}{y}\]
+    Тогда
+    \[\not \exists \lim_{x \to 0} \lim_{y \to 0} f(x, y)\]
+    Аналогично
+    \[\not \exists \lim_{y \to 0} \lim_{x \to 0} f(x, y)\]
+\end{remark}
+
+\section{Дифференцируемость функций многих переменных}
+
+\begin{definition}
+    Пусть $B_{\delta}\left(x^0\right) \subset \mathbb{R}^n$, $f \colon B_{\delta}\left(x^0\right) \to \mathbb{R}$. 
+    Будем говорить, что функция $f$ дифференцируема в точке $x^0$, если существует такая линейная функция (форма)
+    $L_{x^0} \colon \mathbb{R}^n \to \mathbb{R}$, что:
+    \[L_{x^0}(x + y) = L_{x^0}(x) + L_{x^0}(y)\] 
+    \[L_{x^0}(\alpha x) = \alpha L_{x^0} (x)\]
+    \[f(x) = f\left(x^0\right) + L_{x^0}\left(x - x^0\right) + o\left(\left\lVert x - x^0 \right\rVert\right), \; x \to x^0\]
+    Последнее равенство справедливо в некотором шаре $B_{\delta}\left(x^0\right)$. При этом, если 
+     $f$ дифференцируема в точке $x^0$, то $L_{x^0}$ называется дифференциалом функции $f$ в точке $x^0$ и обозначается 
+    $\mathrm{d}_{x^0}f$.
+\end{definition}
+
+\begin{remark}
+    Так как любая линейная функция в $\mathbb{R}^n$ задаётся набором из $n$ чисел, то условие из определения выше 
+    можно эквивалентно переписать в следующем виде:
+    \[\exists A = \left(A_1, \ldots, A_n\right) \in \mathbb{R}^n: f(x) = f\left(x^0\right) + \sum_{i = 1}^n A_i \left(x_i - x_i^0\right) + \varepsilon_{x^0}(x) \left\lVert x - x^0 \right\rVert \]
+    Здесь $\varepsilon_{x^0}(x) \to 0, \; x \to x^0$. При этом вектор $A = \left(A_1, \ldots, A_n\right)$ называется вектор \textbf{градиент} и обозначается $\nabla f\left(x^0\right)$.
+\end{remark}
+
+\begin{lemma}[Необходимое условие дифференцируемости]
+    Если функция $f$ дифференцируема в точке $x^0$, то она непрерывна в точке $x^0$.
+\end{lemma}
+
+\begin{proof}
+    Так как функция $f$ дифференцируема в точке $x^0$, то из определения дифференцируемости:
+    \[\exists A = \left(A_1, \ldots, A_n \right): f(x) = f\left(x^0\right) + \sum_{i = 1}^n A_i \left(x_i - x_i^0\right) + \varepsilon_{x^0}(x) \left\lVert x - x^0 \right\rVert\]
+    Легко видеть, что справедливы следующие условия про пределы по совокупности переменных:
+    \[\sum_{i = 1}^n A_i \left(x_i - x_i^0\right) \to 0, \; x \to x^0\]
+    \[\varepsilon_{x^0}(x) \to 0, \; x \to x^0\]
+    \[\left\lVert x - x^0 \right\rVert \to 0, \; x \to x^0\]
+    Тогда, переходя к пределу по совокупности переменных при $x \to x^0$ в исходном равенстве, немедленно получаем:
+    \[\exists \lim_{x \to x^0} f(x) = f\left(x^0\right)\]
+\end{proof}
+
+\begin{definition}
+    Пусть $B_{\delta}\left(x^0\right) \subset \mathbb{R}^n$, $f \colon B_{\delta}\left(x^0\right) \to \mathbb{R}$. Тогда 
+    частной производной функции $f$ в точке $x^0$ по переменной $x_i$ будем называть следующий предел, если он существует:
+    \[\frac{\partial f}{\partial x_i} \left(x^0\right) := \lim_{t \to 0} \frac{f\left(x_1^0, \ldots, x_i^0 + t, \ldots, x_n^0\right) - f\left(x_1^0, \ldots, x_n^0\right)}{t}\]
+\end{definition}
+
+\begin{remark}
+    Чёткие пацаны используют альтернативное обозначение частной производной функции 
+    $f$ в точке $x^0$ по переменной $x_i$, а именно
+    $\partial_i f\left(x^0\right)$. Маэстро не рекомендует использовать его в этом семестре.
+\end{remark}
+
+\end{document}

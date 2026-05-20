@@ -1,0 +1,209 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{ulem}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\DIF}{DIF}
+\DeclareMathOperator{\rg}{rg}
+\DeclareMathOperator{\dist}{dist}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{ Я просто Питер Паркер, не человек-паук}
+\fancyhead[R]{\href{https://t.me/mallina_olga }{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 22. Теорема о перестановке абсолютно сходящегося ряда. Функциональные последовательности и ряды. 
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{ Теорема о перестановке абсолютно сходящегося ряда}
+
+
+\begin{theorem}
+    Пусть $\displaystyle \sum_{j=1}^{\infty} a_j$ --- сходится абсолютно, а ряд $\displaystyle \sum_{k=1}^{\infty} \widetilde{a_k}$ получен перестановкой членов ряда $\displaystyle \sum_{j=1}^{\infty} a_j$. 
+    Тогда он тоже абсолютно сходится и его сумма = сумме исходного ряда. 
+\end{theorem}
+
+\begin{proof}
+    Доказательство теоремы основано на следующей  лемме:\\
+    \begin{lemma}
+    Пусть $k: \mathbb{N}\to \mathbb{N}$ --- биекция. Пусть 
+    \[ M_n := max \{k(1), ..., k(n) \} \] 
+    \[ m_n := min \{k(j): j> n \} \]
+    Тогда $M_n\to +\infty , n\to \infty$  и $m_n\to +\infty, n\to \infty$
+    \end{lemma} 
+
+    \begin{proof}
+    поскольку $k: \mathbb{N}\to \mathbb{N}$ --- биекция, то $\exists$ обратная биекция: $j: \mathbb{N}\to \mathbb{N}$\\
+    То есть:
+    \[ k(j) \text{ --- прямое отображение,  } \quad j(k) \text{ --- обратное отображение } \]
+    \[ \forall m\in \mathbb{N} \quad max\{ j(1), ..., j(m) \} =: J_m \] 
+    Ключевое наблюдение:
+    \[ \text{ если } j^* > J_m \text{, то } j^* \neq j(1), ... , j(m) \]
+    Но $k: \mathbb{N}\to \mathbb{N}$ --- биекция $\Rightarrow k(j^*) \notin \{1, ..., m \} \Rightarrow k(j^*)>m $
+    \[ \Rightarrow \forall m\in \mathbb{N} \ \exists J_m \in \mathbb{N} : \forall j> J_m \hookrightarrow k(j) > m \Leftrightarrow \exists \lim\limits_{j\to \infty} k(j) = +\infty \]
+    Так как 
+    \[ k(n) \le M_n \ \forall n\in \mathbb{N} \Rightarrow M_n\to +\infty, n\to \infty \] 
+    Если 
+    \[ n>J_m \Rightarrow min\{k(j):j>n \} > m \Rightarrow \forall m\in \mathbb{N} \ \exists J_m\in \mathbb{N}: \forall n>J_m \hookrightarrow m_n> m \]
+    \[ \Rightarrow \exists \lim\limits_{n\to \infty} m_n = +\infty \]
+    \end{proof} 
+    Перестановка элементов ряда 
+    \[ \sum_{k=1}^{\infty} a_k \]
+    это означает, что есть биекция $j: \mathbb{N}\to \mathbb{N}$ --- взаимно обратная $k:\mathbb{N}\to \mathbb{N}$ 
+    \[ \widetilde{a_j} : = a_{k(j)}\] 
+    Теперь докажем теорему:\\
+    Пусть $k=k(j): \mathbb{N}\to \mathbb{N}$, задающее перестановку
+    \[ \widetilde{a_j} : = a_{k(j)} \ \forall j\in \mathbb{N} \]
+    \[ \sum_{j=1}^{n} | \widetilde{a_j }| = \sum_{j=1}^{n} | a_{k(j)} | \leq \sum_{j=1}^{M_n} |a_j| \ \forall n\in \mathbb{N} \tag{*}\label{eq:star} \] 
+    \[ \text{где } M_n = \underset{1\le j \le n}{max } k(j) \]
+    Так как исходный ряд сходится абсолютно
+    \[ \Rightarrow \sup_{n\in \mathbb{N}} \sum_{j=1}^{M_n} |a_j| < +\infty \]
+    $\Rightarrow$ в силу оценки $\eqref{eq:star}$
+    \[ \hookrightarrow \sup_{n\in \mathbb{N}} \sum_{j=1}^{n} | \widetilde{a_j}| < +\infty \]
+    $\Rightarrow$ в силу критерия сходимости для рядов с неотрицательными членами
+    \[ \sum_{j=1}^{\infty} |\widetilde{a_j}| \text{ --- сходится, то есть } \sum_{j=1}^{\infty} \widetilde{a_j} \text{ --- абсолютно сходится } \]
+    \[ S_n:= \sum_{k=1}^{n} a_k \ \forall n\in \mathbb{N} \] 
+    \[ \widetilde{S_n} : = \sum_{j=1}^{n} \widetilde{a_j} \ \forall n\in \mathbb{N} \] 
+    \[ \left|S_{M_n} - \widetilde{S_n}\right| = \left| \sum_{k=1}^{M_n} a_k - \sum_{j=1}^{n} \widetilde{a_j} \right| = \left| \sum_{k=1}^{M_n} a_k - \sum_{j=1}^{n} a_{k(j)} \right| \le \underset{k\notin \{k(1), ..., k(n)\}} {\sum_{k=1}^{M_n}}  |a_k| \le \sum_{k=m_n}^{M_n} |a_k| \to 0, n\to \infty \tag{**}\label{eq:stars} \] 
+    При этом 
+    \[  \sum_{k=m_n}^{M_n} |a_k| \le \sum_{k=m_n}^{+\infty} |a_k| \] 
+    Если 
+    \[ k\notin \{ k(1), ..., k(n) \} \Rightarrow k\ge m_n \] 
+    Остаток сходящегося ряда стремится к нулю
+    \[ r_n: = \sum_{k=n}^{+\infty} |a_k| \to 0, n\to +\infty \]
+    Так как 
+    \[ \exists \lim\limits_{n\to \infty} \sum_{k=1}^{n} |a_k| \in [0,+\infty)  \Rightarrow \sum_{k=m_n}^{+\infty} |a_k|\to 0, n\to \infty \]
+    Из $\eqref{eq:stars}$
+    \[ \Rightarrow \exists \lim\limits_{n\to \infty} \left| S_{M_n} - \widetilde{S_n} \right| = 0 \]  
+    Но изначальный ряд по условию сходится абсолютно $\Rightarrow$ просто сходится 
+    \[ \Rightarrow \exists \lim\limits_{n\to \infty} S_n = S \Rightarrow \exists \lim\limits_{n\to \infty} S_{m_n} = S\] 
+    Так как $\{ S_{M_n}\} _{n=1} ^\infty$ --- подпоследовательность последовательности $\{S_n\} _{n=1} ^\infty$ 
+    \[ \Rightarrow \exists \lim\limits_{n\to \infty} \widetilde{S_n} = \lim\limits_{n\to \infty} S_{m_n} = \lim\limits_{n\to \infty} S_n = S \]
+\end{proof}
+
+
+\begin{remark}
+    Мы уже знаем как перемножить две такие суммы:
+    \[ S_n = a_1 + ... + a_n \]
+    \[ \Sigma_n = b_1 + ... + b_n \]
+    \[ S_n \cdot \Sigma_n = \sum_{i=1}^{n} \sum_{j=1}^{n} a_i b_j \]
+    Как перемножить 2 ряда: 
+    \[ \mathbb{N}^2 = \mathbb{N} \times \mathbb{N} \]
+    \[ (m,n) : \mathbb{N} \to \mathbb{N}^2 \] 
+    Будем рассматривать биекции: 
+    \[ (m(j), n(j)) \in \mathbb{N}^2 , j\in \mathbb{N} \]
+\end{remark}
+
+
+\begin{theorem}
+    (О перемножении рядов) Пусть 
+    \[ \sum_{j=1}^{\infty} a_j \text{ и } \sum_{j=1}^{\infty} b_j \text{ --- два абсолютно сходящихся ряда } \]
+    Пусть $(m,n): \mathbb{N}\to \mathbb{N}^2$ --- биекция. Тогда ряд 
+    \[ \sum_{j=1}^{\infty} a_{m(j)} b_{n(j)} \text{ --- сходится абсолютно и его сумма равна произведению сумм рядов } \sum_{j=1}^{\infty} a_j \text{ и } \sum_{j=1}^{\infty} b_j \]
+\end{theorem}
+
+\begin{proof}
+    $\forall J\in \mathbb{N}$\\ 
+    a) \[ M_J := max\{ m(1), ..., m(J)\} \]
+    \[ N_J := max\{ n(1),..., n(J) \} \] 
+    \[ \sum_{j=1}^{J} |a_{m(j)} b_{n(j)}| \le \left( \sum_{m=1}^{M_J} |a_m| \right) \left( \sum_{n=1}^{N_J} |b_m| \right) \] 
+    Но так как ряды 
+    \[ \sum_{k=1}^{\infty} |a_k| \text{ --- сходится и } \sum_{k=1}^{\infty} |b_k| \text{ --- сходится } \]
+    В силу критерия сходимости рядов с неотрицательными членами 
+    \[ \sup_{J\in \mathbb{N}} \sum_{j=1}^{J} |a_{m(j)} b_{n(j)}| \le \sup_{M\in \mathbb{N}} \left( \sum_{m=1}^{M} |a_m| \right) \sup_{N\in \mathbb{N}} \left(\sum_{n=1}^{N} |b_n| \right) \] 
+    \[ \Rightarrow \sum_{j=1}^{\infty} a_{m(j)} b_{n(j)} \text{ --- сходится абсолютно } \] 
+    b) \[ S= \sum_{j=1}^{\infty} a_{m(j)} b_{n(j)} \in \mathbb{R} \]    
+    \[ A= \sum_{k=1}^{\infty} a_k \quad B=\sum_{k=1}^{\infty} b_k \]
+    Покажем, что $S= A\cdot B$ 
+    Так как для абсолютно сходящегося ряда сумма не зависит от способа перестановки определим новую биекцию 
+    \[ (m^*, n^* ): \mathbb{N} \to \mathbb{N}^2 \]
+     \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{pictures/строим биекцию по букве г.png}
+        
+    \end{figure}
+    \[ S= \sum_{j=1}^{\infty} a_{m^*(j)} b_{n^*(j)} \]   
+    \[ S_{N^2} = \sum_{j=1}^{N^2} a_{m^*(j)} b_{n^*(j)} = \left( \sum_{j=1}^{N} a_j \right) \left( \sum_{j=1}^{N} b_j \right) = A_N B_N \tag{v} \label{eq:star3}  \]   
+    \[ \exists \lim\limits_{N\to \infty} S_{N^2} = S \tag{***} \label{eq:star4}\] 
+    \[ A_N\to A, N\to \infty \]
+    \[ B_N \to B, N\to \infty \] 
+    \[ \Rightarrow \exists \lim\limits_{N\to \infty} A_N B_N = AB \]       
+    С другой стороны из \eqref{eq:star3} и \eqref{eq:star4} $\Rightarrow$ S= AB.
+\end{proof}
+
+\section{Функциональные последовательности и ряды}
+\begin{definition}
+    Пусть $X$ --- абстрактное множество, $X \neq \varnothing$. Пусть $\forall n\in \mathbb{N}$ определено отображение $f_n: X\to \mathbb{R}$. 
+    Тогда говорим, что определена функциональная последовательность $\{ f_n\} _{n=1}^\infty$. 
+\end{definition}
+
+\begin{definition}
+    Будем говорить, что последовательность $\{ f_n\} $ сходится поточечно на множестве $X$, если 
+    \[ \forall x\in X \ \exists \lim\limits_{n\to \infty} f_n(x) \in \mathbb{R} ( =: f(x)) \] 
+
+    \[ \Leftrightarrow \forall x\in X \ \forall \varepsilon>0 \ \exists N(x,\varepsilon) \in \mathbb{N}: \forall n\ge N(x,\varepsilon) \hookrightarrow |f(x) - f_n(x)| < \varepsilon \]   
+    ( последовательность $\{f_n\}$ при этом называется поточечно сходящейся к $f$ и обозначается 
+    \[ f_n \underset{X}{\rightarrow} f, n\to \infty ) \]
+\end{definition}
+
+\begin{definition}
+    Пусть $\{f_n\}_{n=1}^\infty$ --- функциональная последовательность (все функции определены на $X$). Пусть $f: X\to \mathbb{R}$. Будем говорить, что $f_n \underset{X}{\rightrightarrows } f, n\to \infty$ ($\{f_n\}$ равномерно сходится к $f$ на $X$ ) если 
+    \[ \forall \varepsilon>0 \ \exists N(\varepsilon) \in \mathbb{N}: \forall n\ge N(\varepsilon) \text{ и } \forall x\in \mathbb{X} \hookrightarrow |f(x)-f_n(x)| < \varepsilon \]
+    Если $f_n \underset{X}{\rightrightarrows } f, n\to  \infty$, то $f_n \underset{X}{\rightarrow } f, n\to \infty$ 
+    $\forall \varepsilon>0 \ \forall x\in X$ берём $N(x,\varepsilon) = N(\varepsilon)$\\
+    Обратное вообще говоря неверно. Запишем отрицание
+    \[ \exists \varepsilon>0 : \forall N\in \mathbb{N} \ \exists n\ge N \text{ и } \exists x\in X \text{ т.ч. } |f_n(x) - f(x) | \ge \varepsilon \]   
+\end{definition}
+
+
+\begin{example}
+    \[ f_n(x) = x^n \quad X= [0,1] \]
+     \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{pictures/примерчик для понимания.png}
+        
+    \end{figure}
+    \[ \exists \varepsilon = \frac{1}{2} \text{ т.ч. } \forall N\in \mathbb{N} \ \exists n=N \]   
+    \[ \exists x_N = \left( \frac{1}{2} \right)^\frac{1}{N} \]   
+    \[ f(x) = 
+    \begin{cases}
+        0, x\in [0,1)\\
+        1, x=1
+    \end{cases}\]
+    \[ |f_N (x_N) - f(x_N)| = \frac{1}{2}\ge \varepsilon \]   
+    $x^n \underset{[0,1]}{\not \rightrightarrows } f, n\to \infty$\\
+    но 
+    \[ \forall x\in [0,1] \hookrightarrow \exists \lim\limits_{n\to \infty} x^n = 
+    \begin{cases}
+        0,x\in [0,1) \\
+        1,  x=1
+    \end{cases}
+    \] 
+\end{example}
+
+
+
+\end{document}
