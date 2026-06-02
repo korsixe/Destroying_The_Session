@@ -1,0 +1,282 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{ulem}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\DIF}{DIF}
+\DeclareMathOperator{\rg}{rg}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Осторожно, \sout{обезьянки} линал!}
+\fancyhead[R]{\href{https://t.me/sol_m_07}{Соля}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 12. Полярное и сингулярное разложения. 
+    Присоединённое преобразование. ОНБ, в котором квадратичная форма 
+    имеет диагональный вид
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Полярное и сингулярное разложения}
+
+\begin{theorem}[о полярном разложении]
+    $\forall$ линейное преобразование $A$ евклидова пространства $\mathcal{E}$ 
+    может быть представлено в виде композиции 
+    \[A = QS \text{, где } Q \text{ -- ортогональное, а } S \text{ -- 
+    самосопряжённое с неотрицательными } \lambda\]  
+\end{theorem}
+
+\begin{proof}
+    Рассмотрим вспомогательное преобразование $A^*A$, которое является 
+    самосопряжённым $\forall A$. У этого преобразования рассмотрим ОНБ 
+    $e_1,...,e_n$ из его собственных векторов. Без ограничения общности 
+    упорядочим эти собственные векторы так, чтобы
+    \[\lambda_1 \geq \lambda_2 \geq \ldots \geq \lambda_n\]  
+    \[(A(e_i), A(e_j)) = (A^*A(e_i), e_j) = \lambda_i (e_i,e_j) =  
+    \begin{cases}
+        0, & i \neq j \\
+        \lambda_i, & i = j
+    \end{cases}\]  
+    Посмотрим подробнее, что происходит при $i = j$:
+    \[(A(e_i), A(e_i)) = \lambda_i \geq 0 \implies 
+    \left\lvert A(e_i) \right\rvert = \sqrt{\lambda_i}\]
+    При этом $\sqrt{\lambda_i}$ называются сингулярными числами. \\
+    Найдём такое $k$, что $\lambda_k > 0$, а $\lambda_{k + 1} = 0$ (в том 
+    числе $k$ может быть равным $0$ или $n$). \\ \\
+    Возьмём $f_i = \displaystyle \frac{Ae_i}{\sqrt{\lambda_i}}, \ i = 1, 
+    \ldots, k$ \\ \\
+    Если $k = n$, то получили ОНБ. Если $k < n$, то дополним до ОНБ. Таким 
+    образом, $e$ и $f$ -- два ОНБ, причём $Ae_i = \sqrt{\lambda_i}f_i$. 
+    Действительно, для $i = 1, \ldots, k$ это выполнено по определению, а 
+    для остальных имеем тривиальное равенство $0 = 0$. \\ \\
+    Положим тогда $Q(e_i) = f_i$ -- единственное ортогональное преобразование, 
+    переводящее $e$ в $f$. \\ \\
+    Рассмотрим преобразование $S = Q^{-1}A$ ($Q^{-1}$ существует, так как 
+    $Q$ -- изоморфизм). Заметим, что 
+    \[S(e_i) = Q^{-1}Ae_i = Q^{-1}\sqrt{\lambda_i}f_i = \sqrt{\lambda_i}e_i\]
+    $\implies \{e_1, \ldots, e_n\}$ -- ОНБ из собственных векторов 
+    преобразования $S \implies S$ -- самосопряжённое. Более того, его 
+    собственные значения $\sqrt{\lambda_i} \geq 0$, что и требовалось.  
+\end{proof}
+
+\begin{theorem}[матричная формулировка теоремы 1.1]
+  $\forall$ квадратной матрицы $A \ \exists$ ортогональная матрица 
+  $Q$ и симметричная $S$ с $\lambda \geq 0$ такие, что $A = QS$.
+\end{theorem}
+
+\begin{definition}
+  Преобразование $S$ -- самосопряжённое с неотрицательными $\lambda 
+  \implies \exists$ ОНБ из собственных векторов, в котором $S$ имеет 
+  диагональный вид $\implies$ перейдём к нему:
+  \[D = P^{-1}SP \text{, где } P \text{ -- ортогональная}\]
+  \[S = PDP^{-1} \implies A = QS = SPDP^{-1} = Q_1DQ_2\] 
+  $Q_1, Q_2$ -- ортогональные, а $D$ -- диагональная с $\lambda \geq 0$.
+  Такое разложение называется \textbf{сингулярным} или $SVD$ разложением.
+\end{definition}
+
+\section{Преобразование, присоединённое к билинейной функции}
+
+\begin{definition}
+  Пусть $b(x, y)$ -- билинейная форма на евклидовом пространстве $\mathcal{E}$. 
+  Линейное преобразование $A$ назовём \textbf{присоединённым} к $b(x, y)$, 
+  если $\forall x, y \in \mathcal{E} \hookrightarrow b(x, y) = (x, A(y))$.
+\end{definition}
+
+\begin{theorem}
+  $\forall b(x, y)$ присоединённое преобразование $\exists !$ 
+\end{theorem}
+
+\begin{proof}
+  Пусть присоединённое преобразование $A$ существует. Тогда 
+  \[x^TBy = x^T \Gamma Ay \quad \forall x, y \in \mathcal{E} \implies B = 
+  \Gamma A\]
+  \[\implies A = \Gamma^{-1}B \text{ -- единственность есть, но это 
+  преобразование подойдёт}\]
+  \[\implies \text{существование также показано}\]
+\end{proof}
+
+\begin{remark}
+  В ОНБ $A = B$
+\end{remark}
+
+\begin{lemma}
+  Для симметричных билинейных форм и только для них присоединённое 
+  преобразование является самосопряжённым.
+\end{lemma}
+
+\begin{remark}
+  Когда говорим, что преобразование присоединено к симметричной билинейной 
+  форме, подразумеваем, что оно присоединено и к соответствующей квадратичной.
+\end{remark}
+
+\section{ОНБ, в котором квадратичная форма имеет диагональный вид}
+
+\begin{theorem}
+  $\forall$ квадратичной формы в евклидовом пространстве $\exists$ ОНБ, в 
+  котором она имеет диагональный вид.
+\end{theorem}
+
+\begin{proof}
+  Этот ОНБ -- это ОНБ из собственных векторов присоединённого 
+  самосопряжённого преобразования.
+\end{proof}
+
+\begin{theorem}
+  Пусть в евклидовом пространстве $\mathcal{E}$ заданы 2 квадратичные формы 
+  $k$ и $h$, причём $h$ положительно определена. Тогда $\exists$ базис, в 
+  котором обе формы имеют диагональный вид.
+\end{theorem}
+
+\begin{proof}
+  Нам не так важно, что $\mathcal{E}$ -- евклидово пространство. Оно могло 
+  быть и линейным. Пусть наши формы имеют матрицы $G$ и $H$. $h$ примем за 
+  основную квадратичную форму и введём (переопределим) скалярное произведение 
+  матрицей $H$. Сначала приведём к каноническому виду $h$ ($H' = E$). Тогда 
+  $G$ перейдёт в $G'$. Так мы перешли к ОНБ по отношению к нашему скалярному 
+  произведению. Преобразование с матрицей $G'$ является присоединённым к 
+  $k$. Можем найти его ОНБ из собственных векторов. В этом базисе получим 
+  $G''$ диагональную и $H'' = H' = E$.
+\end{proof}
+
+\begin{remark}
+  Вместо того, чтобы искать собственные значения $G'$ через $\det (G' - 
+  \lambda E) = 0$, достаточно рассмотреть $\det (G - \lambda H) = 0$. 
+  Действительно, заметим, что $G' = S^TGS, \ H' = S^THS$.
+  \[\det (G' - \lambda E) = \det (G' - \lambda H') = \det (S^TGS - \lambda 
+  S^THS) = 0 \Longleftrightarrow\]
+  \[\Longleftrightarrow [{\det}^2 S \neq 0] \Longleftrightarrow \det (G - 
+  \lambda H) = 0\]
+\end{remark}
+
+\begin{theorem}
+  Если в условии предыдущей теоремы потребовать $k(x)$ отрицательно 
+  определенную, то это тоже будет верно.
+\end{theorem}
+
+\begin{proof}
+  Достаточно рассмотреть $-k$, провернуть то же самое, а в конце вернуть 
+  минус.
+\end{proof}
+
+\begin{theorem}
+  Пусть в евклидовом пространстве $\mathcal{E}$ заданы 2 квадратичные формы 
+  $h$ и $g$. Тогда если $\exists \alpha, \beta: \ f = \alpha h + \beta g$ -- 
+  положительно определена, то $h$ и $g$ можно одновременно привести к 
+  диагональному виду.
+\end{theorem}
+
+\begin{proof}
+  Без ограничения общности будем считать, что $\beta \neq 0$. Выразим $g$:
+  \[g = \frac{f - \alpha h}{\beta}\]
+  Тогда сведение $h$ и $g$ к диагональному виду равносильно сведению $f$ и 
+  $h$ к диагональному виду, что мы уже делали.
+\end{proof}
+
+\begin{remark}
+  Все проговоренные условия выше являются только достаточными (не являются 
+  необходимыми). 
+\end{remark}
+
+\begin{example}
+  Пример, когда две квадратичные формы нельзя привести к диагональному виду:
+  \[k_1 = x_1x_2\]
+  \[k_2 = x_1^2 - x_2^2\]
+  На экзамене будет приниматься без доказательства.
+\end{example}
+
+\section{Нахождение полярного разложения на примере одной из задач}
+
+\begin{example}[номер 29.53(2)]
+  Найти полярное разложение $A = \displaystyle 
+  \begin{pmatrix}
+    5 & 0 \\
+    4 & 3
+  \end{pmatrix}$. Рассматривать будем в ОНБ. Найдём самосопряжённое 
+  преобразование:
+  \[A^{\ast}A = A^TA = 
+  \begin{pmatrix}
+    5 & 4 \\
+    0 & 3
+  \end{pmatrix} \cdot 
+  \begin{pmatrix}
+    5 & 0 \\
+    4 & 3
+  \end{pmatrix} = 
+  \begin{pmatrix}
+    41 & 12 \\
+    12 & 9
+  \end{pmatrix}\]
+  Его отсортированные собственные значения: $\lambda_1 = 45 \geq \lambda_2 
+  = 5$. Сразу же найдём собственные векторы и нормируем их:
+  \[h_1 = \frac{1}{\sqrt{10}} 
+  \begin{pmatrix}
+    3 \\
+    1
+  \end{pmatrix} \quad 
+  h_2 = \frac{1}{\sqrt{10}} 
+  \begin{pmatrix}
+    1 \\
+    -3
+  \end{pmatrix} \ \text{ -- \ \ базис } e\] 
+  Найдём теперь базис $f$:
+  \[f_1 = \frac{1}{\sqrt{45}}A(h_1) = \frac{1}{\sqrt{2}} 
+  \begin{pmatrix}
+    1 \\
+    1
+  \end{pmatrix} \quad
+  f_2 = \frac{1}{\sqrt{5}}A(h_2) = \frac{1}{\sqrt{2}} 
+  \begin{pmatrix}
+    1 \\
+    -1
+  \end{pmatrix}\] \\
+  \[Q(h_i) = f_i \implies Q \cdot \frac{1}{\sqrt{10}} 
+  \begin{pmatrix}
+    3 & 1 \\
+    1 & -3
+  \end{pmatrix} = \frac{1}{\sqrt{2}} 
+  \begin{pmatrix}
+    1 & 1 \\
+    1 & -1
+  \end{pmatrix} \implies Q = \frac{1}{\sqrt{5}} 
+  \begin{pmatrix}
+    2 & -1 \\
+    1 & 2
+  \end{pmatrix}\] \\
+  \[S = Q^{-1}A = Q^TA = \frac{1}{\sqrt{5}} 
+  \begin{pmatrix}
+    14 & 3 \\
+    3 & 6
+  \end{pmatrix}\]
+\end{example}
+
+\section{Автор отказывается дальше понимать линал}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\linewidth]{pictures/Обезьянки.png}
+\end{figure}
+
+\end{document}
