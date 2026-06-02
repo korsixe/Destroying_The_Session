@@ -1,0 +1,356 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{ulem}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\DIF}{DIF}
+\DeclareMathOperator{\rg}{rg}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Поверь мне, Карлсон, не в пирогах счастье}
+\fancyhead[R]{\href{https://t.me/sol_m_07}{Соля}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 5. Линейные отображения. Ядро и образ. Матрица отображения. Изоморфизм
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Линейные отображения}
+
+\begin{definition}
+  Отображением $\varphi \colon \mathcal{L} \to \widetilde{\mathcal{L}}$ будем
+  называть правило или закон, по которому каждому $x \in \mathcal{L}$ ставится 
+  в соответствие единственный $y \in \widetilde{\mathcal{L}}$.
+\end{definition}
+
+\begin{definition}
+  Отображение назовём преобразованием, если $\widetilde{\mathcal{L}} = \mathcal{L}$.
+\end{definition}
+
+\begin{definition}
+  Отображение $\varphi \colon \mathcal{L} \to \widetilde{\mathcal{L}}$ линейно, если:
+  \[\forall x, y \in \mathcal{L} \hookrightarrow \varphi (x + y) = \varphi (x) + \varphi (y)\]
+  \[\forall x \in \mathcal{L} \ \forall \alpha \in \mathbb{R} \hookrightarrow \varphi (\alpha x) = \alpha \varphi (x)\]
+\end{definition}
+
+\begin{lemma}
+  Пусть $\mathcal{L}_1 \subset \mathcal{L}$. Тогда 
+  \begin{enumerate}
+    \item $\varphi(\mathcal{L}_1) \subset \widetilde{\mathcal{L}}$
+    \item $\dim \varphi (\mathcal{L}_1) \leq \dim \mathcal{L}_1$
+  \end{enumerate}
+\end{lemma}
+
+\begin{proof}
+  Первое очевидно, так как образ подмножества лежит в образе множества. \\
+  Докажем второе: \\
+  Пусть $\{e_1, \dots e_k\}$ -- базис в $\mathcal{L}_1$. Тогда
+  \[x \in \mathcal{L}_1 \implies x = x_1e_1 + \dots + x_ke_k\]
+  Подставим в $\varphi$ и воспользуемся линейностью:
+  \[\varphi (x) = \varphi (x_1e_1 + \dots + x_ke_k) = x_1 \varphi (e_1) + \dots + x_k \varphi (e_k)\]
+  Следовательно, 
+  \[\varphi (\mathcal{L}_1) = \ <\varphi (e_1), \dots, \varphi (e_k)>\]
+  Размерность этой линейной оболочки не более $k = \dim \mathcal{L}_1$
+\end{proof}
+
+\section{Ядро и образ линейного отображения}
+
+\begin{definition}
+  Пусть $\varphi \colon \mathcal{L} \to \widetilde{\mathcal{L}}$ -- линейное отображение. 
+  Образом $\varphi$ будем называть 
+  \[\Imm \varphi := \{y \in \widetilde{\mathcal{L}} \ | \ \exists x: \varphi (x) = y\}\]
+\end{definition}
+
+\begin{definition}
+  Введём ранг отображения для дальнейшей работы: 
+  \[\rg \varphi := \dim \Imm \varphi\]
+\end{definition}
+
+\begin{definition}
+  Пусть $\varphi \colon \mathcal{L} \to \widetilde{\mathcal{L}}$ -- линейное отображение. 
+  Ядром $\varphi$ будем называть 
+  \[\Ker \varphi := \{x \in \mathcal{L} \ | \ \varphi (x) = 0\}\]
+\end{definition}
+
+\begin{lemma}
+  $\Ker \varphi$ -- линейное подпространство $\mathcal{L}$
+\end{lemma}
+
+\begin{proof}
+  Во-первых, ядро непусто, т.к. $\varphi (0) = 0$ \\
+  Во-вторых, покажем линейность: \\
+  Пусть $x', x'' \in \Ker \varphi; \ \alpha, \beta \in \mathbb{R}$. Тогда 
+  \[
+  \begin{cases}
+    \varphi (x') = 0 \\
+    \varphi (x'') = 0
+  \end{cases} 
+  \implies \quad \varphi (\alpha x' + \beta x'') = \alpha \varphi (x') + \beta \varphi (x'') = 
+  \alpha \cdot 0 + \beta \cdot 0 = 0
+  \]
+  $\implies \alpha x' + \beta x'' \in \Ker \varphi$
+\end{proof}
+
+\section{Сюръекция. Инъекция. Биекция}
+
+\begin{definition}
+  Отображение $\varphi$ сюръективно, если: 
+  \[\forall y \in \widetilde{\mathcal{L}} \ \exists x \in \mathcal{L}: \varphi (x) = y\]
+\end{definition}
+
+\begin{definition}
+  Отображение $\varphi$ инъективно, если: 
+  \[\forall x_1, x_2 \in \mathcal{L}: x_1 \neq x_2 \hookrightarrow \varphi (x_1) \neq \varphi (x_2)\]
+\end{definition}
+
+\begin{definition}
+  Отображение $\varphi$ биективно, если оно сюръективно и инъективно одновременно.
+\end{definition}
+
+\begin{lemma}
+  Пусть $\dim \mathcal{L} = n, \ \dim \widetilde{\mathcal{L}} = m$. \\
+  Отображение $\varphi$ сюръективно $\ \Longleftrightarrow \ \dim \Imm \varphi = m$
+\end{lemma}
+
+\begin{proof}
+  $(\Longrightarrow)$ В самом деле, при сюръекции получаем $\Imm \varphi = \widetilde{\mathcal{L}}$ \\
+  $\implies \dim \Imm \varphi = \dim \widetilde{\mathcal{L}} = m$ \\ \\
+  $(\Longleftarrow)$ Размерности $\Imm \varphi$ и $\widetilde{\mathcal{L}}$ совпадают + 
+  $\Imm \varphi$ является линейным подпространством $\widetilde{\mathcal{L}}$ \\
+  $\implies \Imm \varphi = \widetilde{\mathcal{L}}$
+\end{proof}
+
+\begin{lemma}
+  Отображение $\varphi$ инъективно $\ \Longleftrightarrow \ \dim \Ker \varphi = 0$ 
+\end{lemma}
+
+\begin{proof}
+  $(\Longrightarrow)$ Из инъективности сразу же следует, что $\Ker \varphi$ состоит только из нуля. \\ \\
+  $(\Longleftarrow)$ От противного: пусть $\varphi$ не инъективно. Тогда 
+  \[\exists x_1, x_2 \in \mathcal{L}: (x_1 \neq x_2) \wedge (\varphi(x_1) = \varphi(x_2))\]
+  Следовательно, \[\varphi(x_1 - x_2) = \varphi(x_1) - \varphi(x_2) = 0 \implies \Ker \varphi \ni (x_1 - x_2) \neq 0\] 
+  Но тогда $\dim \Ker \varphi > 0$ -- противоречие.
+\end{proof}
+
+\begin{lemma}
+  Если $\varphi$ инъективно, то ЛНЗ набор перейдёт в ЛНЗ.
+\end{lemma}
+
+\begin{proof}
+  От противного: пусть $f_1, \dots, f_k$ -- ЛНЗ набор. \\  
+  Предположим, что $\varphi (f_1), \dots, \varphi (f_k)$ -- ЛЗ набор $\Longleftrightarrow$
+  \[\exists \alpha_1, \dots \alpha_k: \ \alpha_1^2 + \dots + \alpha_k^2 > 0 \text{ и}\] 
+  \[\alpha_1 \varphi(f_1) + \dots + \alpha_k \varphi(f_k) = 0\]
+  Но $\varphi$ линейно $\implies \varphi (\alpha_1 f_1 + \dots + \alpha_k f_k) = 0$ \\
+  Но $\varphi$ инъективно $\implies \alpha_1 f_1 + \dots + \alpha_k f_k = 0$ \\
+  $\implies f_1, \dots, f_k$ -- ЛЗ набор -- противоречие.
+\end{proof}
+
+\section{Матрица отображения}
+
+\begin{definition}
+  Пусть $\mathcal{L}, \widetilde{\mathcal{L}}$ -- линейные пространства. \\
+  $\dim \mathcal{L} = n, \quad \{e_1, \dots, e_n\}$ -- его базис. \\
+  $\dim \widetilde{\mathcal{L}} = m, \quad \{f_1, \dots, f_m\}$ -- его базис. \\
+  $\varphi \colon \mathcal{L} \to \widetilde{\mathcal{L}}$ -- линейное отображение. \\ \\
+  Тогда можно представить $\mathcal{L} \ni x = x_1e_1 + \dots + x_ne_n$ \\
+  Из линейности получим $\varphi (x) = x_1 \varphi (e_1) + \dots + x_n \varphi (e_n)$ \\ \\
+  Так как $\varphi$ переводит в $\widetilde{\mathcal{L}}$, то каждый $\varphi (e_i)$ можно разложить по базису $f$:
+  \[\varphi(e_i) = 
+  \begin{pmatrix}
+  \vdots \\
+  \vdots  
+  \end{pmatrix} 
+  \text{-- координатный столбец в базисе } f \text{ (высоты $m$)}\]
+  Воспользуемся этим и перепишем в следующем виде (каждая скобка -- свой координатный столбец для $\varphi (e_i)$ в базисе $f$):
+  \[\varphi (x) = x_1 
+  \begin{pmatrix}
+  \vdots \\
+  \vdots  
+  \end{pmatrix}
+  + \dots + x_n 
+  \begin{pmatrix}
+  \vdots \\
+  \vdots  
+  \end{pmatrix}\]
+  Составим из этих столбцов матрицу и получим, что 
+  \[\varphi (x) = \underset{\ \varphi(e_1) \ \ \dots \ \ \varphi(e_n)}{
+    \left( 
+      \begin{pmatrix}
+      \vdots \\
+      \vdots  
+      \end{pmatrix}
+      \dots
+      \begin{pmatrix}
+      \vdots \\
+      \vdots  
+      \end{pmatrix}  
+    \right)}
+  \cdot 
+  \begin{pmatrix}
+  x_1 \\
+  \vdots \\
+  x_n  
+  \end{pmatrix}
+  \]
+  Саму матрицу будем обозначать $A$ и называть матрицей отображения.
+\end{definition}
+
+\begin{remark}
+  \[\rg \varphi = \dim \Imm \varphi = \rg A\]
+  Ранг линейной оболочки $<\varphi (e_1), \dots, \varphi (e_n)>$ равен 
+  столбцовому рангу $A$, то есть рангу $A$
+\end{remark}
+
+\begin{theorem}
+  \[\dim \mathcal{L} = \dim \Imm \varphi + \dim \Ker \varphi\]
+\end{theorem}
+
+\begin{proof}
+  Пусть $\dim \mathcal{L} = n$. Из замечания выше $\dim \Imm \varphi = \rg A$
+  \[x \in \Ker \varphi \Longleftrightarrow Ax = 0, \ x \text{ -- решение}\]
+  Но множество решений ОСЛУ есть линейное пространство размерности $n - \rg A$, что и требовалось.
+\end{proof}
+
+\begin{remark}
+  У нас есть матрица перехода 
+  \[\underset{m \times n}{A} = 
+  \begin{pmatrix}
+    & & & & \\
+    & & & & \\
+    & & & &
+  \end{pmatrix}
+  \]
+  Поймём, что значат леммы 3.1 и 3.2 в пределах наших обозначений: \\ \\
+  1) Отображение $\varphi$ сюръективно $\Longleftrightarrow m = \dim \Imm \varphi = \rg A \Longleftrightarrow$ строки $A$ ЛНЗ \\
+  2) Отображение $\varphi$ инъективно $\Longleftrightarrow \dim \Ker \varphi = 0 = n - \rg A \Longleftrightarrow n = \rg A$ и столбцы $A$ ЛНЗ \\
+  3) Отображение $\varphi$ биективно $\Longleftrightarrow \rg A = m = n \Longleftrightarrow A$ -- квадратная невырожденная 
+\end{remark}
+
+\section{Изоморфизм}
+
+\begin{definition}
+  Линейные пространства $\mathcal{L}$ и $\widetilde{\mathcal{L}}$ изоморфны ($\exists$ изоморфизм), 
+  если между ними $\exists$ взаимно однозначное линейное отображение.
+\end{definition}
+
+\begin{theorem}
+  \[\mathcal{L}, \widetilde{\mathcal{L}} \text{ изоморфны } \Longleftrightarrow \dim \mathcal{L} = \dim \widetilde{\mathcal{L}}\]
+\end{theorem}
+
+\begin{proof}
+  $(\Longrightarrow)$ Если $\varphi$ -- взаимно однозначное линейное, то из предыдущего замечания 
+  \[\dim \widetilde{\mathcal{L}} = m = \rg A = n = \dim \mathcal{L}\]
+  $(\Longleftarrow)$ Если $\dim \mathcal{L} = \dim \widetilde{\mathcal{L}}$, то положим $\varphi$ такое, что $\varphi (x)$ 
+  в новом базисе будет иметь те же координаты, что и $x$ в изначальном. Заметим, что тогда $\varphi$ -- взаимно однозначное линейное.
+\end{proof}
+
+\begin{remark}
+  Для нас все ЛП одной размерности в каком-то смысле одинаковы.
+\end{remark}
+
+\section{Возвращаемся к матрицам отображений}
+
+\begin{lemma}
+  Пусть $\mathcal{L}, \widetilde{\mathcal{L}}$ -- линейные пространства, $e$ -- базис $\mathcal{L}$, $f$ -- базис $\widetilde{\mathcal{L}}$ \\
+  $\varphi \colon \mathcal{L} \to \widetilde{\mathcal{L}}$ -- линейное отображение, $\quad A$ -- его матрица \\
+  Переходим к новым базисам: $\quad e \to e'$ матрицей перехода $S$, $\quad f \to f'$ матрицей перехода $F$ \\
+  Тогда матрица перехода в паре базисов $e'$ и $f'$ будет выглядеть следующим образом: 
+  \[A' = F^{-1}AS\]
+\end{lemma}
+
+\begin{proof}
+  Изначально имеем \[y = Ax, \quad x = Sx', \quad y = Fy'\]
+  Так как матрицы $S$ и $F$ невырождены, то \[y' = F^{-1}y\]
+  Загружаем: \[y' = F^{-1}y = F^{-1}Ax = F^{-1}ASx'\]
+  В силу единственности получаем, что \[A' = F^{-1}AS\]
+\end{proof}
+
+\begin{lemma}[лёгкое следствие]
+  Пусть $\mathcal{L}$ -- линейное пространство, $e$ -- базис \\
+  $\varphi \colon \mathcal{L} \to \mathcal{L}$ -- линейное преобразование, $\quad A$ -- его матрица \\
+  Переходим к новому базису: $e \to e'$ матрицей перехода $S$ \\
+  Тогда матрица перехода будет выглядеть следующим образом: 
+  \[A' = S^{-1}AS\]
+\end{lemma}
+
+\begin{theorem}
+  Пусть $\mathcal{L}, \widetilde{\mathcal{L}}$ -- линейные пространства, $e$ -- базис $\mathcal{L}$, $f$ -- базис $\widetilde{\mathcal{L}}$ \\
+  $\varphi \colon \mathcal{L} \to \widetilde{\mathcal{L}}$ -- линейное отображение, $\quad A$ -- его матрица, $\quad rg \varphi = r$ \\
+  Тогда можно выбрать пару базисов в $\mathcal{L}$ и $\widetilde{\mathcal{L}}$ так, что:
+  \[A' = 
+  \begin{pmatrix}
+    E_r & O \\
+    O & O
+  \end{pmatrix}\]
+\end{theorem}
+
+\begin{proof}
+  Рассмотрим $\Ker \varphi$. Ясно, что $\dim \Ker \varphi = n - \rg A = n - r \implies$ 
+  выберем базис в $\Ker \varphi \ \{e_{r + 1}, \dots, e_n\}$. Тогда последние $n - r$ столбцов 
+  окажутся нулевыми, как образы векторов из ядра. Дополним наш базис ЛНЗ набором векторов, не лежащих в ядре, $\{e_1, \dots, e_r\}$ до базиса в $\mathcal{L}
+  \implies \varphi (e_1), \dots, \varphi (e_r)$ -- ЛНЗ (иначе мы просто неправильно определили ядро). Определим \[f_1 = \varphi(e_1), \ \dots, \ f_r = \varphi(e_r)\]
+  Закинем их в базис $\widetilde{\mathcal{L}}$ вместе с ЛНЗ набором векторов не из образа. \\
+  Заметим, что получили то, что хотели. Любой из базисных векторов после $r \text{-го}$ обращается в ноль как вектор из ядра. 
+  Первые $r$ столбцов по нашему определению представляют собой нулевой столбец, в котором на $i \text{-ом}$ месте стоит единица.
+\end{proof}
+
+\begin{definition}
+  Для фиксированных линейных пространств $\mathcal{L}$ и $\widetilde{\mathcal{L}}$ рассмотрим множество линейных отображений. \\
+  Если $A, B$ -- линейные отображения, то: 
+  \[C = A+B: \quad C(x) = A(x) + B(x)\]
+  \[D = \alpha A: \quad D(x) = \alpha A(x)\]
+\end{definition}
+
+\begin{definition}
+  Пусть теперь 
+  \[\mathcal{L} \ \xlongrightarrow{A} \ \mathcal{L}' \ \xlongrightarrow{B} \ \mathcal{L}''\]
+  Тогда если $y = Ax$ и $z = By$, то $z = (BA)x$
+\end{definition}
+
+\begin{lemma}
+  \[\rg (AB) \leq \rg A, \rg B\]
+\end{lemma}
+
+\begin{proof}
+  Имеем 
+  \[\mathcal{L} \ \xlongrightarrow{B} \ \mathcal{L}' \ \xlongrightarrow{A} \ \mathcal{L}''\]
+  Ранг отображения есть ранг образа. \\
+  $\rg (AB) \leq \rg A$, так как образ подмножества лежит в образе множества 
+  \[\Imm B \subset \mathcal{L}' \implies A(\Imm B) \subset A(\mathcal{L}')\]
+  Вспомним, что $\rg \varphi := \dim \Imm \varphi$ \\
+  $\rg (AB) \leq \rg B$, так как при линейном отображении размерность не может увеличиться 
+  \[\dim \Imm B \geq \dim \Imm (AB)\]
+\end{proof}
+
+\section{Спокойствие! Только спокойствие}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=1\linewidth]{pictures/Малыш.jpg}
+\end{figure}
+
+\end{document}

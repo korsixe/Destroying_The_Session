@@ -1,0 +1,338 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{soul}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\rg}{rg}
+\DeclareMathOperator{\Mat}{Mat}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{А зачем нам \ \st{что-то доказывать} кузнец? Не, нам кузнец не нужен.}
+\fancyhead[R]{\href{https://t.me/lost_luna}{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 3. Ранг фундаментальной матрицы. Линейные пространства.
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Ранг фундаментальной матрицы}
+
+\begin{theorem}
+    Пусть $A$ --- матрица размера $m \times n$ ($m$ уравнений и $n$ переменных). Тогда: 
+    \[\forall F: \ AF = 0 \ \hookrightarrow \ \rg F \leq n - \rg A\]
+\end{theorem}
+
+\begin{proof}
+    Элементарными преобразованиями приведем матрицу $A$ к упрощённому виду:
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.54\linewidth]{pictures/Приведение матрицы к упрощенному виду.png}
+    \end{figure} \leavevmode
+    \\
+    Так как производились только ЭО со строками и столбцами, то матрицу $A'$ можно представить в виде \[A' = P \cdot A \cdot Q, \quad 
+    \text{где } P \text{ и } Q \text{ --- соответствующие элементарные матрицы}\]
+    Пусть матрица $F' = Q^{-1} \cdot F$. Так как $Q^{-1}$ --- невырожденная матрица, то по лемме, сформулированной и доказанной в предыдущей лекции, получаем:
+    \[\rg F' = \rg F\]
+    Рассмотрим следующее произведение:
+    \[A' \cdot F' = P \cdot A \cdot Q 
+    \cdot Q^{-1} \cdot F = P \cdot A \cdot F = O\]
+    При этом, расписав произведение $A' \cdot F'$ другим способом, получим:
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.54\linewidth]{pictures/Ранг фундаментальной матрицы.png}
+    \end{figure} \leavevmode
+    \\
+    Тривиально видеть, что в матрице $F'$ первые $\rg A$ строк нулевые (иначе не получилась бы 
+    нулевая матрица). Тогда, так как в матрице $F$ всего $n$ строк, то, учитывая равенство рангов $F$ и $F'$, получим:
+    \[\rg F = \rg F' \leq n - \rg A\]
+\end{proof}
+
+\begin{remark}
+    Пусть $n - \rg A \geq 1$. Тогда можно выбрать $F$ так, что 
+    её ранг равен в точности $n - \rg A$.
+\end{remark}
+
+\begin{proof}
+    Для доказательства сего чуда предъявим $n - \rg A$ ЛНЗ в совокупности столбцов высоты $n$, из которых и соберётся искомая матрица $F$.
+    Элементарными операциями только со строками (и перестановкой столбцов,
+    если требуется) приведем матрицу $A$ к следующему виду:
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{pictures/Упрощенный вид номер не знаю какой.png}
+    \end{figure} \leavevmode
+    \\
+    В преобразованной матрице $\rg A$ базисных переменных и $n - \rg A$
+    параметрических. Пусть следующие столбцы и образуют искомую фундаментальную матрицу $F$:
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.54\linewidth]{pictures/Столбцы фундаментальной матрицы.png}
+    \end{figure} \leavevmode
+    \\
+    Эти столбцы ЛНЗ, так как ни одна $1$ не может быть получена линейной
+    комбинацией нулей. Следовательно, \[ \rg F = n - \rg A\]
+\end{proof}
+
+\begin{statement}
+    Любое решение системы представимо в виде линейной комбинации столбцов
+    фундаментальной матрицы.
+\end{statement}
+
+\begin{proof}
+    Допишем к $F$ произвольный столбец решений: $\big( F \ \vdots \ x \big)$.
+    Ранг матрицы $F$ не мог поменяться по определению фундаментальной матрицы. 
+    Тогда, по теореме Кронекера-Капелли получаем,
+    что $x$ является линейной комбинацией столбцов фундаментальной матрицы.
+\end{proof}
+
+\begin{definition}
+    ФСР (фундаментальная система решений) --- множество решений, которые
+    являются столбцами фундаментальной матрицы.
+\end{definition} \leavevmode
+\\
+Следствием утверждения выше является то, что $x = F \cdot c$ --- общее решение системы уравнений $A \cdot x = 0$, где $c$ --- некоторый столбец коэффициентов. \\
+Рассмотрим же теперь неоднородную систему $A x = b$. Пусть мы нашли некоторое её решение
+решение $h_1$. Поскольку любые два решения неоднородной системы отличаются
+друг от друга на решение однородной системы $A x = 0$ (это было сформулировано и доказано в предыдущей лекции), то, пристально посмотрев
+на умозаключение выше, получим, что общее решение неоднородной системы $A x = b$ есть:
+\[ x = h_1 + F \cdot c\]
+
+\begin{remark}
+    Как же найти сие дивное $h_1$?
+\end{remark} \leavevmode
+\\
+Элементарными преобразованиями строк (и перестановкой столбцов, если требуется),
+приведем расширенную матрицу системы к следующему виду (здесь мы конечно же уже подразумеваем, что система совместна):
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.54\linewidth]{pictures/Дивное решение.png}
+\end{figure} \leavevmode
+\\
+По этому виду вдумчивый читатель сразу смекнет, что решением будет столбец
+
+\[
+\begin{array}{c}
+h_1 = \left( \begin{array}{c}
+ \\ \overline{b}' \\ \\ 0 \\ \vdots \\ 0
+\end{array} \right)
+\begin{array}{l}
+\left. \begin{array}{c} 
+ \\  \\ \\
+\end{array} \right\} \rg A \\[5pt]
+\left. \begin{array}{c} 
+ \\ \\ \\
+\end{array} \right\} n - \rg A
+\end{array}
+\end{array}
+\]
+
+\section{Линейные пространства}
+
+\begin{definition}
+    Множество $\mathcal{L}$ называется \textbf{линейным пространством}, а его элементы
+    называются \textbf{векторами}, если на этом множестве заданы операции сложения элементов 
+    \["+" \colon \mathcal{L} \times \mathcal{L} \to \mathcal{L}\]
+    и умножения элементов на вещественное число
+    \["\cdot" \colon \mathbb{R} \times \mathcal{L} \to \mathcal{L}\] 
+    относительно которых это множество замкнуто, то есть 
+    \[\forall x, y \in \mathcal{L} \hookrightarrow x + y \in \mathcal{L}, \quad
+    \forall x \in \mathcal{L} \; \; \forall \alpha \in \mathbb{R} \hookrightarrow \alpha \cdot x \in \mathcal{L}\]
+    и которые удовлетворяют следующим аксиомам:
+    \begin{enumerate}
+        \item \[ \forall x, y \in \mathcal{L} \hookrightarrow x + y = y + x\]
+        \item \[ \forall x, y, z \in \mathcal{L} \hookrightarrow (x + y) + z = x + (y + z) \]
+        \item \[ \exists 0 \in \mathcal{L} : \forall x \in \mathcal{L} \hookrightarrow 0 + x = x\] 
+        \item \[ \forall x \in \mathcal{L} \; \; \exists (-x) \in \mathcal{L} : x + (-x) = 0\]
+        \item \[ \forall \alpha, \beta \in \mathbb{R} \; \; \forall x \in \mathcal{L}
+        \hookrightarrow (\alpha \beta) x = \alpha (\beta x) \]
+        \item \[ \forall x \in \mathcal{L} \hookrightarrow 1 \cdot x = x\]
+        \item \[ \forall \alpha, \beta \in \mathbb{R} \; \; \forall x \in \mathcal{L} 
+        \hookrightarrow (\alpha + \beta) x = \alpha x + \beta x \]
+        \item \[ \forall \alpha \in \mathbb{R} \; \; \forall x, y \in \mathcal{L} 
+        \hookrightarrow \alpha (x + y) = \alpha x + \alpha y \]
+    \end{enumerate}
+\end{definition}
+
+\begin{remark}
+    Множество $\mathcal{L}$ непусто, так как $\exists 0 \in \mathcal{L}$.
+\end{remark}
+
+\begin{definition}
+    Пространство, состоящее только из $0$, с корректно определенными операциями,
+    называется нулевым.
+\end{definition}
+
+\begin{remark} Определить разность векторов в линейном пространстве можно следующим образом:
+    \[ x - y = x + (-1) \cdot y \]
+\end{remark}
+
+\newtheorem*{consequence}{Следствие}
+
+\begin{consequence}
+    \[(-1) \cdot y = -y\]
+\end{consequence}
+
+\begin{consequence}
+    Нулевой элемент единственен.
+\end{consequence}
+
+\begin{proof}
+    Пусть есть 2 нулевых элемента $0_1$ и $0_2$. Тогда
+    \[ 0_1 + 0_2 = 0_2 + 0_1 = 0_2 = 0_1\]
+\end{proof}
+
+\begin{consequence}
+    Противоположный элемент единственен.
+\end{consequence}
+
+\begin{proof}
+    Пусть есть 2 противоположных элемента к $a \in \mathcal{L}: \ -a_1$ и $-a_2$.
+    Тогда \[a - a_1 = 0 = a - a_2 \implies a_2 = a_1\]
+\end{proof}
+
+\begin{example}
+    Линейное пространство из действительных положительных чисел
+    (как говорили великие, возьмем абстракцию над операциями 
+    умножения и сложения в линейном пространстве):
+    \[ a + b = a \cdot b\] 
+    \[ \alpha \cdot a = a^\alpha\]
+\end{example}
+
+\begin{statement}
+    ФСР для системы $Ax = 0$ образует линейное пространство.
+\end{statement}
+
+\begin{remark}
+    Понятия линейной комбинации, линейной зависимости и линейной 
+    независимости можно распространить на линейные пространства. При 
+    этом свойства и теоремы, которые не использовали геометрические свойства 
+    пространства, также справедливы.
+\end{remark}
+
+\begin{definition}
+    \textbf{Базисом} в линейном пространстве $\mathcal{L}$ назовём упорядоченную \textbf{конечную} систему 
+    векторов, удовлетворяющую следующим условиям:
+    \begin{enumerate}
+        \item Эта система ЛНЗ
+        \item Любой вектор из $\mathcal{L}$ раскладывается по этой системе
+    \end{enumerate}
+\end{definition}
+
+\begin{remark}
+    Коэффициенты разложения любого вектора из $\mathcal{L}$ по базису единственны и они называются координатами
+    вектора в этом базисе.
+\end{remark}
+
+\begin{statement}
+    Пусть в пространстве $\mathcal{L}$ есть базис. Тогда при сложении векторов их координаты
+    складываются. Аналогично, при умножении вектора на вещественное число 
+    координаты вектора умножаются на это число.
+\end{statement}
+
+\begin{consequence}
+    Линейная комбинация векторов $\Longleftrightarrow$ линейная комбинация 
+    их координатных столбцов \[ \text{ЛЗ (ЛНЗ) векторов} \quad 
+    \Longleftrightarrow \quad \text{ЛЗ (ЛНЗ) их координатных столбцов}\]
+\end{consequence}
+
+\begin{theorem}
+    Если в линейном пространстве $\mathcal{L}$ есть базис из $n$ векторов, то 
+    любой набор из  $m > n$ векторов линейно зависим.
+\end{theorem}
+
+\begin{proof}
+    Пусть $\{ e_1, e_2, \dots, e_n\}$ --- базис в $\mathcal{L}$. Пусть 
+    $\{ f_1, f_2, \dots, f_m\}$, где $m > n$, --- набор векторов.
+    Рассмотрим координатные столбцы векторов $\{ f_1, f_2, \dots, f_m\}$
+    в базисе $\{ e_1, e_2, \dots, e_n\}$:
+    \[ \left(
+        \begin{array}{c}
+            \\ f_1 \\ \\
+        \end{array}
+    \right), \ \left(
+        \begin{array}{c}
+            \\ f_2 \\ \\
+        \end{array}
+    \right), \dots , \left(
+        \begin{array}{c}
+            \\ f_m \\ \\            
+        \end{array}
+    \right) \left. \begin{array}{l}
+        \\ \\ \\
+    \end{array}\right\} \  n
+    \]
+    Составив из них матрицу, получаем, что в ней столбцов больше, чем строк, а значит по теореме, сформулированной в первой лекции, имеем, что все эти столбцы ЛЗ, а тогда по нашему блестящему следствию
+    вектора также ЛЗ.
+\end{proof}
+
+\begin{consequence}
+    У любых двух базисов в $\mathcal{L}$ количество векторов одинаково.
+\end{consequence}
+
+\begin{proof}
+    Предположим, что это не так, то есть в каком-то базисе векторов больше.
+    Тогда, по предыдущей теореме получим, что эти вектора линейно зависимы,
+    а значит они не могут быть базисом. Получаем противоречие, что и требовалось.
+\end{proof}
+
+\begin{definition}
+    \textbf{Размерностью} линейного пространства $\mathcal{L}$ будем назвать количество векторов в базисе $\mathcal{L}$. Размерность 
+    пространства $\mathcal{L}$ обозначается $\dim \mathcal{L}$.
+\end{definition}
+
+\begin{remark}
+    По договорённости размерность нулевого пространства равна $0$.
+\end{remark}
+
+\begin{example}
+    Рассмотрим линейное пространство, состоящее из матриц размера $m \times n$. Легко видеть, что:
+    \[\dim \Mat_{m \times n}(\mathbb{R}) = m \cdot n\]
+    В самом деле, базисом в этом пространстве можно выбрать $m \times n$ матриц вида 
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\linewidth]{pictures/Базисные матрицы.png}
+    \end{figure}
+\end{example}
+
+\begin{example}
+    Рассмотрим линейное пространство, состоящее из многочленов степени
+    не больше $n$. Тогда очевидно, что его размерность равна $n + 1$, а базисом можно взять следующий набор:
+    \[\{1, t, t^2, \dots, t^n\}\]
+\end{example}
+
+\begin{definition}
+    Пусть линейное пространство $\mathcal{L}$ таково, что $\forall m \in \mathbb{N}$ в нём существует набор 
+    из $m$ линейно независимых векторов. Тогда пространство $\mathcal{L}$ назовём \textbf{бесконечномерным}.
+\end{definition}
+
+\begin{remark}
+    Пространство $C([a, b])$ бесконечномерно.
+\end{remark}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{pictures/ну я.jpg}
+    \caption{Автор после лекции представляет, как будет все это техать}
+    \end{figure}
+\end{document}

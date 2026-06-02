@@ -1,0 +1,380 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{ulem}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\DIF}{DIF}
+\DeclareMathOperator{\rg}{rg}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Мы то, что мы едим. Я Милти)}
+\fancyhead[R]{\href{https://t.me/sol_m_07}{Соля}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 9. Квадратичные формы. Критерий Сильвестра. Евклидово пространство
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Продолжение квадратичных форм}
+
+\begin{remark}
+  Вспомним первый пункт теоремы 3.1 с прошлой лекции. $B' = S^TBS$. 
+  Так как $\rg B = \rg B'$, то ранг матрицы квадратичной формы не 
+  зависит от базиса.
+\end{remark}
+
+\begin{remark}
+  Тогда, пользуясь замечанием 1.1, можем сделать вывод, что ранг 
+  квадратичной формы $(\rg k(x))$ равен количеству ненулевых 
+  коэффициентов в каноническом виде (действительно, сместим нулевые 
+  строки вниз и получим матрицу ступенчатого вида).
+\end{remark}
+
+\begin{definition}
+  Пусть квадратичная форма $k$ задана на $L$, $L_1$ -- подпространство 
+  $L$. $k(x)$ положительно определена на $L_1$, если 
+  \[\forall x \neq 0, \ x \in L_1 \ \hookrightarrow \ k(x) > 0\]
+  Аналогично определяется отрицательно определённая форма $(k(x) < 0)$.
+\end{definition}
+
+\begin{definition}
+  Пусть квадратичная форма $k$ задана на $L$, $L_1$ -- подпространство 
+  $L$. $k(x)$ положительно полуопределена на $L_1$, если 
+  \[\forall x \in L_1 \ \hookrightarrow \ k(x) \geq 0\]
+  Аналогично определяется отрицательно полуопределённая форма $(k(x) \leq 0)$.
+\end{definition}
+
+\begin{remark}
+  Все вышеописанные формы называются знакоопределёнными. Остальные -- 
+  знаконеопределёнными. На нулевом подпространстве будем считать, что 
+  каждая форма одновременно положительно и отрицательно определена.
+\end{remark}
+
+\begin{definition}
+  Обозначим за $L^{(-)}$ подпространство максимальной размерности, на 
+  котором $k(x)$ отрицательно определена. Размерность $L^{(-)}$ 
+  назовём отрицательным индексом (инерции). \\
+  Аналогично введём $L^{(+)}$ и положительный индекс (инерции).
+\end{definition}
+
+\begin{theorem}[Закон инерции квадратичных форм]
+  Количество положительных и отрицательных элементов на диагонали 
+  матрицы квадратичной формы в каноническом виде не зависит от базиса. 
+\end{theorem}
+
+\begin{proof}
+  Достаточно доказать, что количество $-1$ (минус единиц) фиксировано. \\
+  Рассмотрим некоторый канонический вид. Без ограничения общности 
+  пусть сначала идут $-1$, потом единицы, а затем нули (если необходимо, 
+  просто переименуем). Рассматриваем мы $L: \ \dim L = n$
+  \[k(x) = -x_1^2 - \ldots - x_k^2 + x_{k + 1}^2 + \ldots + x_m^2 + 
+  0 \cdot x_{m + 1}^2 + \ldots + 0 \cdot x_n^2\]
+  Докажем, что $k = s$, где $s$ -- это отрицательный индекс инерции. 
+  Предположим от противного, что $k < s$ (так как $k$ не может 
+  превысить $s$). \\ \\
+  Рассмотрим $L_1 = \langle e_1, \ldots, e_k \rangle$ и 
+  $L_2 = \langle e_{k + 1}, \ldots, e_n \rangle$. Ясно, что $k(x)$ 
+  отрицательно определена на $L_1$ и положительно полуопределена на 
+  $L_2$. По определению $k(x)$ отрицательно определена на $L^{(-)}$, 
+  причём $\dim L^{(-)} > \dim L_1$. Заметим, что $\dim L^{(-)} + 
+  \dim L_2 > n \implies \dim (L^{(-)} \cap L_2) \geq 1$. Тогда 
+  \[\exists x \neq 0: \ x \in L^{(-)} \ \text{ и } \ x \in L_2\]
+  Но тогда $k(x) < 0$ и $k(x) \geq 0$ одновременно -- противоречие. 
+  Следовательно, $k = s$. Тогда оно в любом базисе постоянно, что и 
+  требовалось.
+\end{proof}
+
+\section{Критерий Сильвестра}
+
+\begin{definition}
+  Пусть 
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\linewidth]{pictures/Главные миноры.png}
+  \end{figure} \leavevmode
+  \\
+  $\Delta_1, \Delta_2, \ldots, \Delta_n$ -- главные миноры.
+\end{definition}
+
+\begin{remark}
+  Иногда наши главные миноры называют угловыми, а главные миноры 
+  определяют как миноры на пересечении каких-то строк $(k_1 
+  \text{-й}, k_2 \text{-й}, \ldots, k_m \text{-й})$ и тех же самых 
+  столбцов $(k_1 \text{-го}, k_2 \text{-го}, \ldots, k_m \text{-го})$.
+\end{remark}
+
+\begin{lemma}
+  Диагональные элементы матрицы полжительно определённой квадратичной 
+  формы положительны в любом базисе.
+\end{lemma}
+
+\begin{proof}
+  $b_{ii} = b(e_i, e_i) = k(e_i) > 0$, так как $e_i \neq 0$
+\end{proof}
+
+\begin{theorem}[Критерий Сильвестра 1]
+  $k(x)$ положительно определена $\Longleftrightarrow$ все главные 
+  миноры матрицы квадратичной формы $> 0$.
+\end{theorem}
+
+\begin{proof}
+  ($\Longrightarrow$) Пусть $k(x)$ положительно определена. \\ \\
+  Приводим матрицу к каноническому виду (например по 1-му способу 
+  из доказательства теоремы 3.2 с прошлой лекции). Особых случаев 
+  при этом не встретится, так как нулей на диагонали быть не может в 
+  силу предыдущей леммы. Тогда строки менять местами не придётся 
+  $\implies$ мы всегда вычитаем из нижних строк верхние. \\ \\
+  Вплоть до диагонального вида главные миноры меняться не будут, 
+  так как любой главный минор, захватывающий $i \text{-ую}$ строку, 
+  также включает в себя фрагменты всех вышележащих строк (определитель 
+  квадратной матрицы не меняется при прибавлении к строке линейной 
+  комбинации других строк). \\ \\
+  Далее при сведении диагональной матрицы к единичной (очевидно) знак 
+  у каждого главного минора сохранится (мы просто домножаем на 
+  положительное число). \\ \\
+  ($\Longleftarrow$) \ $B: \quad \Delta_i > 0 \quad 
+  \forall i \in \{1, \ldots, n\}$ 
+  \[\begin{pmatrix}
+    b_{11} & b_{12} & b_{13} & \dots \\
+    b_{21} & b_{22} & b_{23} & \dots \\ 
+    b_{31} & b_{32} & b_{33} & \dots \\
+    \vdots & \vdots & \vdots & \ddots
+  \end{pmatrix}\]
+  $b_{11} = \Delta_1 > 0$. Тогда вычтем из всех нижних строк первую с 
+  нужными коэффициентами, чтоб занулить первый столбец (кроме $b_{11}$). 
+  Далее также вычтем из всех правых столбцов первый с нужными 
+  коэффициентами, чтоб занулить первую строку (кроме $b_{11}$).
+  \[\begin{pmatrix}
+    b_{11} & 0 & 0 & \dots \\
+    0 & b_{22}' & b_{23}' & \dots \\ 
+    0 & b_{32}' & b_{33}' & \dots \\
+    \vdots & \vdots & \vdots & \ddots
+  \end{pmatrix}\]
+  $b_{11} \cdot b_{22}' = \Delta_2 > 0 \ \text{ и } \ b_{11} > 0 \ 
+  \implies b_{22}' > 0$. Хмм... что ж дальше делать... Ах да, точно, 
+  продолжим вычитать из нижних строк верхние и из правых столбцов 
+  левые, чтоб занулять все недиагональные элементы. Так получим 
+  \[\begin{pmatrix}
+    b_{11} & 0 & 0 & \dots \\
+    0 & b_{22}' & 0 & \dots \\ 
+    0 & 0 & b_{33}'' & \dots \\
+    \vdots & \vdots & \vdots & \ddots
+  \end{pmatrix}\]
+  $b_{11} \cdot b_{22}' \cdot b_{33}'' = \Delta_3 > 0 \ \text{ и } \ 
+  b_{11} \cdot b_{22}' > 0 \ \implies b_{33}'' > 0$ (Далее рассуждаем 
+  так же. Особых случаев не боимся -- их не будет). \\ \\
+  Получим $diag(>0, >0, \ldots, >0) \implies k(x) > 0$
+\end{proof}
+
+\begin{remark}
+  Лемма 2.1 не является достаточным условием. Пример:
+   \[\begin{pmatrix}
+    1 & 2 \\
+    2 & 1
+  \end{pmatrix}\]
+\end{remark}
+
+\begin{theorem}[Критерий Сильвестра 2]
+  $k(x)$ отрицательно определена $\Longleftrightarrow$ знаки главных 
+  миноров матрицы квадратичной формы чередуются, начиная с "$-$".
+\end{theorem}
+
+\begin{proof}
+  Пусть $k(x)$ отрицательно определена. Тогда определим $g(x) = - 
+  k(x)$ -- положительно определена. По критерию Сильвестра 1 все 
+  главные миноры её матрицы $(G)$ $> 0$. $G = -K$. Осталось лишь 
+  вспомнить, что 
+  \[\det (-M) = (-1)^{\text{порядок}} \det M\]
+\end{proof}
+
+\begin{theorem}
+  Пусть у \ $k(x)$ матрица $B$ в некотором базисе и \ $\Delta_2 < 0$. 
+  Тогда $k(x)$ знаконеопределена.
+\end{theorem}
+
+\begin{proof}
+  Рассмотрим $L_1 = \langle e_1, e_2 \rangle$ и форму $k(x)$ на $L_1$.
+  Если $k(x)$ знаконеопределена на $L_1$, то она знаконеопределена и 
+  на $L$. \\ \\
+  Пусть $\widetilde{B}$ -- матрица $k(x)$ на $L_1$. Тогда 
+  $\widetilde{B}_{\text{кан}}$ -- это $\widetilde{B}$ в каноническом 
+  виде. \[\widetilde{B}_{\text{кан}} = S^T\widetilde{B}S \implies 
+  \det \widetilde{B}_{\text{кан}} \ = \ (\det S)^2 \cdot \det 
+  \widetilde{B} \ = \ (\det S)^2 \cdot \Delta_2 \ < \ 0\]
+  \[\implies \widetilde{B}_{\text{кан}} = 
+  \begin{pmatrix}
+    1 & 0 \\
+    0 & -1
+  \end{pmatrix} \text{ или } \ \widetilde{B}_{\text{кан}} = 
+  \begin{pmatrix}
+    -1 & 0 \\
+    0 & 1
+  \end{pmatrix} \implies k(x) \text{ знаконеопределена на } L_1\]
+\end{proof}
+
+\section{Евклидово пространство}
+
+\begin{definition}
+  Евклидово пространство -- это линейное пространство + введённое на 
+  нём скалярное произведение.
+\end{definition}
+
+\begin{definition}
+  Скалярное произведение -- функция $\forall x, y \in L \ (x, y) \in 
+  \mathbb{R}$ т.ч. 
+  \begin{enumerate}
+    \item $\forall x, y \in L \hookrightarrow (x, y) = (y, x)$
+    \item $\forall x, y, z \in L \ \forall \alpha, \beta \in \mathbb{R} 
+    \hookrightarrow (\alpha x + \beta y, z) = \alpha (x, z) + \beta 
+    (y, z)$
+    \item $\forall x \neq 0, \ x \in L \hookrightarrow (x, x) > 0 \ 
+    (\Longleftrightarrow \forall x \in L \hookrightarrow (x, x) \geq 
+    0, \ ((x, x) = 0 \Longleftrightarrow x = 0))$
+  \end{enumerate}
+\end{definition}
+
+\begin{remark}
+  Задав скалярное произведение, мы задали симметрическую билинейную 
+  форму, порождающую положительно определённую квадратичную форму.
+\end{remark}
+
+\begin{definition}
+  Длина вектора $x$: \[\left\lvert x \right\rvert = \sqrt{(x, x)}\]
+  Если $x, y \neq 0$, то 
+  \[\cos \varphi = \frac{(x, y)}{\left\lvert x \right\rvert \cdot
+  \left\lvert y \right\rvert}\]
+\end{definition}
+
+\begin{remark}
+  Определение 3.3 корректно, если \[\left\lvert \frac{(x, y)}
+  {\left\lvert x \right\rvert \cdot \left\lvert y \right\rvert} 
+  \right\rvert \leq 1\]
+  Это очевидно следует из неравенства КБШ, которое мы докажем позже 
+  (вы точно удивитесь).
+\end{remark}
+
+\begin{theorem}[Неравенство треугольника]
+  \[\left\lvert x + y \right\rvert \leq \left\lvert x \right\rvert 
+  + \left\lvert y \right\rvert\] 
+\end{theorem}
+
+\begin{proof}
+  Рассмотрим \[\left\lvert x + y \right\rvert^2 = (x + y, x + y) = 
+  (x, x) + (y, y) + 2(x, y) = \left\lvert x \right\rvert^2 + 
+  \left\lvert y \right\rvert^2 + 2(x, y) \leq\]
+  \[\leq [\text{из КБШ знаем, что } \left\lvert (x, y) \right\rvert 
+  \leq \left\lvert x \right\rvert \cdot \left\lvert y \right\rvert] \leq\] 
+  \[\leq \left\lvert x \right\rvert^2 + \left\lvert y \right\rvert^2 
+  + 2\left\lvert x \right\rvert \cdot \left\lvert y \right\rvert = 
+  (\left\lvert x \right\rvert + \left\lvert y \right\rvert)^2\]
+  $\left\lvert x + y \right\rvert \geq 0$ и 
+  $\left\lvert x \right\rvert + \left\lvert y \right\rvert \geq 0$
+  $\implies$ доказали требуемое
+\end{proof}
+
+\begin{definition}
+  \[x \bot y \ \Longleftrightarrow \ (x, y) = 0\]
+\end{definition}
+
+\begin{lemma}
+  Если $x \in L$ таков, что $\forall y \in L \hookrightarrow x 
+  \bot y$, то $x = 0$
+\end{lemma}
+
+\begin{proof}
+  Возьмём $y = x$. Тогда $(x, x) = 0 \implies x = 0$
+\end{proof}
+
+\begin{definition}
+  Пусть в $L$ задан базис $\{e_1, \ldots, e_n\}$. Тогда 
+  \[(x, y) = (x_1, \ldots, x_n) \cdot
+  \begin{pmatrix}
+    (e_1, e_1) & \dots & (e_1, e_n) \\
+    \vdots & \ddots & \vdots \\
+    (e_n, e_1) & \dots & (e_n, e_n)
+  \end{pmatrix} \cdot
+  \begin{pmatrix}
+    y_1 \\
+    \vdots \\
+    y_n
+  \end{pmatrix} = x^T \Gamma y\]
+  $\Gamma$ -- матрица Грама \\ \\
+  $\Gamma' = S^T \Gamma S$. Очевидно, что 
+  \begin{enumerate}
+    \item $\det \Gamma > 0$
+    \item Все главные миноры $> 0$
+  \end{enumerate}
+\end{definition}
+
+\begin{lemma}
+  Рассмотрим произвольный набор $\{f_1, \ldots, f_n\}$ и \[F = 
+  \begin{pmatrix}
+    (f_1, f_1) & \dots & (f_1, f_n) \\
+    \vdots & \ddots & \vdots \\
+    (f_n, f_1) & \dots & (f_n, f_n)
+  \end{pmatrix}\]
+  Тогда $\det F \geq 0$. $\det F > 0$, если $\{f_1, \ldots, f_n\}$ 
+  -- ЛНЗ. $\det F = 0$, если $\{f_1, \ldots, f_n\}$ -- ЛЗ.
+\end{lemma}
+
+\begin{proof}
+  Если $\{f_1, \ldots, f_n\}$ -- ЛНЗ, то $\{f_1, \ldots, f_n\}$ -- 
+  базис $\implies \det F > 0$ \\
+  Если $\{f_1, \ldots, f_n\}$ -- ЛЗ, то $\exists \alpha_1, \ldots, 
+  \alpha_n: \ \alpha_1^2 + \ldots + \alpha_n^2 > 0$ и  
+  \[\alpha_1 f_1 + \ldots + \alpha_n f_n = 0\]
+  Умножим это равенство скалярно на $f_1, f_2, \ldots, f_n$. Получим 
+  ОСЛУ
+  \[\begin{cases}
+    \alpha_1 (f_1, f_1) + \ldots + \alpha_n (f_1, f_n) = 0 \\
+    \vdots \\
+    \alpha_1 (f_n, f_1) + \ldots + \alpha_n (f_n, f_n) = 0
+  \end{cases}\]
+  Из этого получаем, что $\det F = 0$
+\end{proof}
+
+\begin{theorem}[Неравенство КБШ]
+  \[\left\lvert (x, y) \right\rvert \leq \left\lvert x \right\rvert 
+  \cdot \left\lvert y \right\rvert\]
+\end{theorem}
+
+\begin{proof}
+  Время удивляться. Из леммы 3.2
+  \[\begin{vmatrix}
+    (x, x) & (x, y) \\
+    (y, x) & (y, y)
+  \end{vmatrix} \geq 0 \implies (x, x)(y, y) \geq (x, y)^2\]
+  Причём равенство достигается, если $\{x, y\}$ -- ЛЗ.
+\end{proof}
+
+\section{Автор, сбив себе режим, смотрит на количество долгов}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\linewidth]{pictures/Реми.jpg}
+\end{figure}
+
+\end{document}
