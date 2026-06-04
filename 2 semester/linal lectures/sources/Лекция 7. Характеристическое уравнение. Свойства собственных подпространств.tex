@@ -4,6 +4,7 @@
 \DeclareMathOperator{\sign}{sign}
 \DeclareMathOperator{\Imm}{Im}
 \DeclareMathOperator{\rg}{rg}
+\DeclareMathOperator{\Ker}{Ker}
 
 % Настройка колонтитулов
 \pagestyle{fancy}
@@ -74,7 +75,7 @@
 \end{theorem}
 
 \begin{proof}
-    Пусть $h_1, \dots, h_S$ --- собственные вектора, отвечающие различным собственным 
+    Пусть $h_1, \dots, h_S$ --- собственные векторы, отвечающие различным собственным 
     значениям $\lambda_1, \dots, \lambda_s$. Пусть $A$ --- матрица преобразования,
     относительно которого рассматриваются собственные подпространства. Рассмотрим 
     преобразование вида \[B_i = A - \lambda_i E, \quad i \in \{1, \dots, S\}\]
@@ -85,7 +86,7 @@
     общности считаем, что \[h_1 = \alpha_2 \cdot h_2 + \dots + \alpha_S \cdot h_S \label{eq:star1} \tag{*}\]
     Последовательно подействуем на (\ref{eq:star1}) преобразованиями $B_2, \dots, B_S$
     и получим: \[(\lambda_1 - \lambda_2) \cdot (\lambda_1 - \lambda_3) \cdot ... \cdot 
-    (\lambda_1 - \lambda_s) = 0 + ... + 0\]
+    (\lambda_1 - \lambda_s) \cdot h_1 = 0 + ... + 0\]
     Так как в каждом слагаемом в правой части всегда найдется скобка вида $(\lambda_k - \lambda_k)$.
     Получим, что ненулевой вектор равен нулевому $\Longrightarrow$ противоречие.
 \end{proof}
@@ -159,8 +160,8 @@
 
 \begin{proof}
     Зафиксируем $\lambda$ и $\overline{\lambda}$, им соответствует трехчлен \[t^2 + p \cdot t + q\]
-    корнями которого они являются. Рассмотрим преобразование \[B^2 = A^2 + p A + q E\]
-    Пусть подпространство $\mathcal{L}_1 = Ker B$. Из теоремы в предыдущей лекции,
+    корнями которого они являются. Рассмотрим преобразование \[B = A^2 + p A + q E\]
+    Пусть подпространство $\mathcal{L}_1 = \Ker B$. Из теоремы в предыдущей лекции,
     $\mathcal{L}_1$ инвариантно относительно $A$, так как $A$ и $B$ перестановочны.
     Заметим, что \[ B = (A - \lambda E) \cdot (A - \overline{\lambda} E) \Longrightarrow
     \det B = \det (A - \lambda E) \cdot \det (A - \overline{\lambda} E) = 0\]
@@ -168,15 +169,15 @@
     $\det (A - \lambda E) = 0$. Из этого всего великолепия следует, что $B$ имеет 
     ненулевое ядро, то есть $\mathcal{L}_1$ --- ненулевое подпространство. \\
     Предположим, что \[\exists h \in \mathcal{L}_1: A \cdot h = \lambda_1 \cdot h\]
-    то есть в пространстве $\mathcal{L}_1$ (или же в $Ker B$) имеется собственный вектор:
-    \[h \in Ker B \Longrightarrow B \cdot h = (A^2 + p A + q E) \cdot h = 0 
-    \Longrightarrow A^2 + p A + q E = 0 \ (\text{так как } h \ne 0)\]  
-    Но уравнение $A^2 + p A + q E = $ имеет лишь комплексные корни, а $\lambda_1 \in \mathbb{R}$.
+    то есть в пространстве $\mathcal{L}_1$ (или же в $\Ker B$) имеется собственный вектор:
+    \[h \in \Ker B \Longrightarrow B(h) = \lambda_1^2 h + p \lambda_1 h + q h = (\lambda_1^2 + p \lambda_1 + q) \cdot h = 0 
+    \Longrightarrow \lambda_1^2 + p \lambda_1 + q = 0 \ (\text{так как } h \ne 0)\]  
+    Но уравнение $\lambda_1^2 + p \lambda_1 + q = 0$ имеет лишь комплексные корни, а $\lambda_1 \in \mathbb{R}$.
     Следовательно, получаем противоречие. \\
     Пусть теперь $x \ne 0$ и $x \in \mathcal{L}_1$. Рассмотрим $A(x)$. Покажем, что 
     $\mathcal{L}_2 = \ <x, \ A(x)>$ --- инвариантное подпространство. Рассмотрим 
     \[a = \alpha x + \beta A x\] \[A(a) = \alpha A x + \beta A^2 x \label{eq:star2} \tag{*}\]
-    При этом $x \in Ker B$, следовательно, \[(A^2 + p A + q E) x = 0 \ \Longrightarrow
+    При этом $x \in \Ker B$, следовательно, \[(A^2 + p A + q E) x = 0 \ \Longrightarrow
     \ A^2 x = -p A x - q E x\]
     Подставим это в (\ref{eq:star2}): \[A(a) = (\alpha - p) A x - q x \ \Longrightarrow
     \ A(a) \in \ <x, \ A(x)>\]
@@ -215,7 +216,7 @@
 
 \begin{theorem}[Достаточное условие диагонализируемости]
     Преобразование $A$ линейного пространства $\mathcal{L}$ диагонализируемо, если
-    все корни характеристического вещественны и различны.
+    все корни характеристического многочлена вещественны и различны.
 \end{theorem}
 
 \begin{proof}

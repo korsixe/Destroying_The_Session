@@ -101,7 +101,7 @@
 
 \begin{proof}
   Во-первых, ядро непусто, т.к. $\varphi (0) = 0$ \\
-  Во-вторых, покажем линейность: \\
+  Во-вторых, покажем замкнутость: \\
   Пусть $x', x'' \in \Ker \varphi; \ \alpha, \beta \in \mathbb{R}$. Тогда 
   \[
   \begin{cases}
@@ -221,7 +221,7 @@
 
 \begin{remark}
   \[\rg \varphi = \dim \Imm \varphi = \rg A\]
-  Ранг линейной оболочки $<\varphi (e_1), \dots, \varphi (e_n)>$ равен 
+  Размерность линейной оболочки $<\varphi (e_1), \dots, \varphi (e_n)>$ равна 
   столбцовому рангу $A$, то есть рангу $A$
 \end{remark}
 
@@ -236,7 +236,7 @@
 \end{proof}
 
 \begin{remark}
-  У нас есть матрица перехода 
+  Пусть у нас есть матрица линейного отображения $\varphi$
   \[\underset{m \times n}{A} = 
   \begin{pmatrix}
     & & & & \\
@@ -274,11 +274,13 @@
 
 \section{Возвращаемся к матрицам отображений}
 
+\subsection{Изменение матрицы линейного отображения при замене базисов}
+
 \begin{lemma}
   Пусть $\mathcal{L}, \widetilde{\mathcal{L}}$ -- линейные пространства, $e$ -- базис $\mathcal{L}$, $f$ -- базис $\widetilde{\mathcal{L}}$ \\
   $\varphi \colon \mathcal{L} \to \widetilde{\mathcal{L}}$ -- линейное отображение, $\quad A$ -- его матрица \\
   Переходим к новым базисам: $\quad e \to e'$ матрицей перехода $S$, $\quad f \to f'$ матрицей перехода $F$ \\
-  Тогда матрица перехода в паре базисов $e'$ и $f'$ будет выглядеть следующим образом: 
+  Тогда матрица отображения $\varphi$ в паре базисов $e'$ и $f'$ будет выглядеть следующим образом: 
   \[A' = F^{-1}AS\]
 \end{lemma}
 
@@ -293,9 +295,11 @@
   Пусть $\mathcal{L}$ -- линейное пространство, $e$ -- базис \\
   $\varphi \colon \mathcal{L} \to \mathcal{L}$ -- линейное преобразование, $\quad A$ -- его матрица \\
   Переходим к новому базису: $e \to e'$ матрицей перехода $S$ \\
-  Тогда матрица перехода будет выглядеть следующим образом: 
+  Тогда матрица преобразования $\varphi$ в базисе $e$ будет выглядеть следующим образом: 
   \[A' = S^{-1}AS\]
 \end{lemma}
+
+\subsection{Канонический вид матрицы линейного отображения}
 
 \begin{theorem}
   Пусть $\mathcal{L}, \widetilde{\mathcal{L}}$ -- линейные пространства, $e$ -- базис $\mathcal{L}$, $f$ -- базис $\widetilde{\mathcal{L}}$ \\
@@ -318,33 +322,42 @@
   Первые $r$ столбцов по нашему определению представляют собой нулевой столбец, в котором на $i \text{-ом}$ месте стоит единица.
 \end{proof}
 
+\subsection{Сумма и произведение отображений}
+
 \begin{definition}
-  Для фиксированных линейных пространств $\mathcal{L}$ и $\widetilde{\mathcal{L}}$ рассмотрим множество линейных отображений. \\
-  Если $A, B$ -- линейные отображения, то: 
-  \[C = A+B: \quad C(x) = A(x) + B(x)\]
-  \[D = \alpha A: \quad D(x) = \alpha A(x)\]
+  Пусть $A \colon \mathcal{L} \to \widetilde{\mathcal{L}}$ и $B \colon \mathcal{L} \to \widetilde{\mathcal{L}}$ --- два линейных отображения. Мы назовём \textbf{суммой}
+  этих отображений и обозначим $A + B$ отображение $C \colon \mathcal{L} \to \widetilde{\mathcal{L}}$, определяемое равенством $C(x) = A(x) + B(x)$ для любого $x \in \mathcal{L}$. \\
+  Не представляет труда проверить, что $C$ --- линейное отображение, и его матрица равна сумме матриц $A + B$.
 \end{definition}
 
 \begin{definition}
-  Пусть теперь 
-  \[\mathcal{L} \ \xlongrightarrow{A} \ \mathcal{L}' \ \xlongrightarrow{B} \ \mathcal{L}''\]
-  Тогда если $y = Ax$ и $z = By$, то $z = (BA)x$
+  \textbf{Произведение} линейного отображения $A \colon \mathcal{L} \to \widetilde{\mathcal{L}}$ на число $\alpha \in \mathbb{R}$ определяется как отображение $B \colon \mathcal{L} \to \widetilde{\mathcal{L}}$, сопоставляющее вектору $x \in \mathcal{L}$ вектор $\alpha A(x)$. \\
+  Не представляет труда проверить, что $B$ --- линейное отображение, и его матрица равна $\alpha A$.
+\end{definition}
+
+\begin{remark}
+  Из сказанного следует, что по отношению к введённым здесь линейным операциям множество всех линейных отображений $\mathcal{L}$ в $\widetilde{\mathcal{L}}$ представляет собой линейное пространство, которое изоморфно линейному пространству матриц размеров $m \times n$.
+\end{remark}
+
+\begin{definition}
+  Пусть $\mathcal{L}$, $\mathcal{L}'$ и $\mathcal{L}''$ --- линейные пространства. Результат последовательного выполнения отображений $A \colon \mathcal{L} \to \mathcal{L}'$ и $B \colon \mathcal{L}' \to \mathcal{L}''$ называется их \textbf{произведением} и обозначается $BA$. Разумеется, $BA$ отображает $\mathcal{L}$ в $\mathcal{L}''$ и является линейным отображением.
 \end{definition}
 
 \begin{lemma}
-  \[\rg (AB) \leq \rg A, \rg B\]
+  Пусть в пространствах $\mathcal{L}$, $\mathcal{L}'$ и $\mathcal{L}''$ выбраны базисы соответственно $e$, $f$ и $g$. Обозначим через $A$ матрицу отображения $A$ в базисах $e$ и $f$, а через $B$ --- матрицу отображения $B$ в базисах $f$ и $g$. Отображение $BA$ имеет матрицу $BA$ в базисах $e$ и $g$.
 \end{lemma}
 
 \begin{proof}
-  Имеем 
-  \[\mathcal{L} \ \xlongrightarrow{B} \ \mathcal{L}' \ \xlongrightarrow{A} \ \mathcal{L}''\]
-  Ранг отображения есть ранг образа. \\
-  $\rg (AB) \leq \rg A$, так как образ подмножества лежит в образе множества 
-  \[\Imm B \subset \mathcal{L}' \implies A(\Imm B) \subset A(\mathcal{L}')\]
-  Вспомним, что $\rg \varphi := \dim \Imm \varphi$ \\
-  $\rg (AB) \leq \rg B$, так как при линейном отображении размерность не может увеличиться 
-  \[\dim \Imm B \geq \dim \Imm (AB)\]
-\end{proof}
+  Пусть $x \in \mathcal{L}$, $y = Ax \in \mathcal{L}'$, $z = By \in \mathcal{L}''$. Тогда $z = (BA)x$.
+\end{proof} \leavevmode
+\\
+Ранг отображения равен рангу его матрицы, а потому из оценки ранга произведения матриц, показанной во второй лекции, следует
+
+\begin{lemma}
+  Ранг произведения отображения не превосходит рангов этих отображений.
+  \[\rg(AB) \leq \rg A\]
+  \[\rg(AB) \leq \rg B\]
+\end{lemma}
 
 \section{Спокойствие! Только спокойствие}
 
