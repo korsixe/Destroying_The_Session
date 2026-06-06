@@ -1,0 +1,298 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{ulem}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\DIF}{DIF}
+\DeclareMathOperator{\rg}{rg}
+\DeclareMathOperator{\co}{co}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Дамы и господа, конец света отменяется!}
+\fancyhead[R]{\href{https://t.me/sol_m_07}{Соля}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 12. Коперечислимость. T-сводимость. 
+    Теорема Райса. Арифметическая иерархия
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Коперечислимость}
+
+\begin{definition}
+  Пусть есть класс языков $\mathcal{C}$ -- незамкнутый относительно 
+  дополнения. Тогда $\co \mathcal{C}$ -- класс дополнений к языкам из 
+  $\mathcal{C}$.
+  \[A \in \mathcal{C} \ \Longleftrightarrow \ \Sigma^{\ast} \backslash A 
+  \in \co \mathcal{C}\]
+\end{definition}
+
+\begin{remark}
+  Не путаем класс дополнений с дополнением класса:
+  \[2^{\Sigma^{\ast}} \backslash \mathcal{C} \ \neq \ \co \mathcal{C}\]
+\end{remark}
+
+\begin{definition}
+  Язык $A$ называется \textbf{коперечислимым}, если его дополнение 
+  $\Sigma^{\ast} \backslash A$ -- перечислимый язык. Иначе говоря, 
+  $\exists \text{ МТ } M_A$: 
+  \[x \notin A \implies M_A(x) \text{ работает конечное время и останавливается 
+  в } q_{no} \text{ (иначе работает } \infty)\]
+\end{definition}
+
+\begin{example}
+  Мы уже знаем, что $stop$ перечислим, но не разрешим. Поэтому 
+  $\overline{stop}$ коперечислим.
+\end{example}
+
+\section{T-сводимость (сводимость по Тьюрингу)}
+
+\begin{definition}
+  \textbf{Оракул} языка $A$ -- это ``чёрный ящик'', способный ответить 
+  на вопрос, лежит ли рассматриваемое слово в языке $A$.
+\end{definition}
+
+\begin{definition}
+  МТ с оракулом $A$ имеет возможность записать на отдельную специальную 
+  ленту слово и за \textbf{один шаг} получить ответ о том, лежит ли это 
+  слово в $A$.
+\end{definition}
+
+\begin{definition}
+  Сложностный класс задач, решаемых алгоритмом из класса $A$ с оракулом 
+  для задачи класса $B$, обозначается $A^B$.
+\end{definition}
+
+\begin{definition}
+  Язык $A$ $T$-сводится к языку $B$ ($A \leq_T B$), если существует МТ с 
+  оракулом, которая разрешает язык $A$ при условии, что оракул разрешает 
+  язык $B$.
+\end{definition}
+
+\paragraph{Свойства $T$-сводимости ($\forall$ языков $A, B$)}
+
+\begin{enumerate}
+  \item $A \leq_m B \implies A \leq_T B$
+  \item $A \leq_T \overline{A}$ (также конечно $A \leq_T A$)
+  \item $A \leq_T B, \ B \leq_T C \implies A \leq_T C$
+  \item $A \leq_T B$ и $B$ разрешим $\implies A$ разрешим
+\end{enumerate}
+
+\begin{remark}
+  $T$ и $m$-сводимости не эквивалентны. Например любой перечислимый 
+  неразрешимый язык не может $m$-сводиться к своему дополнению.
+\end{remark}
+
+\section{Теорема Райса}
+
+\begin{theorem}[Теорема Райса]
+  Пусть $A$ -- некоторое нетривиальное семейство вычислимых функций (т.е. 
+  $\exists f_1, f_2: f_1 \in A, f_2 \notin A$). Тогда алгоритмически 
+  неразрешима следующая проблема: \\
+  По описанию МТ $M$ решить, принадлежит ли вычисляемая $M$ функция 
+  семейству $A$.
+\end{theorem}
+
+\begin{proof}
+  От противного: пусть $f_{\varnothing}$ -- вычислимая функция с пустой 
+  областью определения. Без ограничения общности, предположим, что 
+  $f_{\varnothing} \in A$. Тогда $\exists f_1 \notin A$, а также МТ $M_1$, 
+  которая вычисляет $f_1$. Пусть $\widetilde{A}$ -- язык кодов МТ, 
+  задающих вычислимые функции, лежащие в $A$. Раз мы идём от противного, 
+  то $\widetilde{A}$ -- разрешимый язык. Тогда зададим $\widetilde{f}$ --
+  способ построить по $(\langle M \rangle, x)$ новую МТ:
+  \begin{enumerate}
+    \item Игнорируя входную ленту ($y$), запускаем на рабочей ленте 
+    эмуляцию $M$ на $x$
+    \item Запускаем $M_1$ на входе ($y$), т.е. вычисляем $f_1(y)$
+  \end{enumerate}
+  $f_1$ вычислима, если $M$ останавливается на $x$ \\
+  $f_{\varnothing}$ вычислима, если $M$ не останавливается на $x$ \\ \\
+  Ура, мы получили \ $stop \ \leq_m \ \widetilde{A}$ \ -- \  противоречие.
+\end{proof}
+
+\section{Арифметическая иерархия}
+
+\begin{definition}
+  Графиком функции $f$ с натуральными аргументами и значениями называется
+  множество
+  \[F = \{<x, y> | \ f(x) \text{ определено и равно } y\}\]
+\end{definition}
+
+\begin{lemma}
+  Функция вычислима \ $\Longleftrightarrow$ \ её график перечислим.
+\end{lemma}
+
+\begin{definition}
+  Проекцией множества $Q$ пар натуральных чисел называется множество $P$:
+  \[x \in P \ \Longleftrightarrow \ \exists y \ (<x, y> \ \in Q)\]
+\end{definition}
+
+\begin{lemma}
+  Множество перечислимо \ $\Longleftrightarrow$ \ оно является проекцией 
+  разрешимого множества.
+\end{lemma}
+
+\begin{lemma}[следствие]
+  Любой перечислимый язык $P$ можно задать, как проекцию некоторого 
+  разрешимого множества $Q$:
+  \[x \in P \ \Longleftrightarrow \ \exists y \ (<x, y> \ \in Q)\]
+\end{lemma}
+
+\begin{lemma}
+  Любой коперечислимый язык $L$ можно задать, как 
+  \[x \in L \ \Longleftrightarrow \ \forall y \ (<x, y> \ \in Q_L)\]
+\end{lemma}
+
+\begin{definition}
+  Свойство (язык, множество) $A$ принадлежит классу $\Sigma_n$, если его 
+  можно представить в виде:
+  \[A(x) \ \Longleftrightarrow \ \exists y_1 \forall y_2 \ldots Q y_n \
+  B(x, y_1, y_2, \ldots, y_n),\]
+  где $B$ -- вычислимое свойство, а кванторы чередуются.
+\end{definition}
+
+\begin{definition}
+  Свойство (язык, множество) $A$ принадлежит классу $\Pi_n$, если его 
+  можно представить в виде:
+  \[A(x) \ \Longleftrightarrow \ \forall y_1 \exists y_2 \ldots Q y_n \
+  B(x, y_1, y_2, \ldots, y_n),\]
+  где $B$ -- вычислимое свойство, а кванторы чередуются.
+\end{definition}
+
+\begin{remark}
+  Из предыдущих лемм получаем, что $\Sigma_1$ задаёт перечислимые языки, 
+  а $\Pi_1$ -- коперечислимые.
+\end{remark}
+
+\paragraph{Свойства классов}
+
+\begin{enumerate}
+  \item $\Sigma_1 \cap \Pi_1$ -- множество разрешимых языков
+  \item $\Sigma_n$ замкнуто относительно объединения и пересечения
+  \item $\Pi_n$ замкнуто относительно объединения и пересечения
+  \item $\Sigma_n \cup \Pi_n \subseteq \Sigma_{n + 1} \cap \Pi_{n + 1}$
+  \item Классы $\Sigma_n$ и $\Pi_n$ наследственны вниз относительно 
+  $m$-сводимости
+  \item Вложение $\Sigma_n \subset \Sigma_{n + 1} \ (\Pi_n \subset 
+  \Pi_{n + 1})$ -- строгое
+  \item $L \in \Sigma_n \ \Longleftrightarrow \ \overline{L} \in \Pi_n$
+\end{enumerate}
+
+\begin{proof}
+  Пройдёмся по пунктам: \\
+  \textbf{Первый} очевиден из замечания 4.1. \\
+  \textbf{Второй и третий}: пусть у нас есть $A$ и $C$ -- языки из 
+  $\Sigma_n$. Тогда имеем
+  \[A(x) \ \Longleftrightarrow \ \exists y_1 \forall y_2 \ldots Q y_n \
+  B(x, y_1, y_2, \ldots, y_n)\]
+  \[C(x) \ \Longleftrightarrow \ \exists z_1 \forall z_2 \ldots Q z_n \
+  B(x, z_1, z_2, \ldots, z_n)\]
+  Перегруппируем в силу независимости $y_i$ от $z_j$ и получим
+  \[x \in A \cap C \ \Longleftrightarrow \ \exists y_1 \exists z_1 
+  \forall y_2 \forall z_2 \ldots Q y_n Q z_n \ B(x, y_1, y_2, \ldots, 
+  y_n) \wedge B(x, z_1, z_2, \ldots, z_n)\]
+  \[x \in A \cup C \ \Longleftrightarrow \ \exists y_1 \exists z_1 
+  \forall y_2 \forall z_2 \ldots Q y_n Q z_n \ B(x, y_1, y_2, \ldots, 
+  y_n) \vee B(x, z_1, z_2, \ldots, z_n)\]
+  Очевидно, что наши $B(x, y_1, y_2, \ldots, y_n) \wedge B(x, z_1, z_2, 
+  \ldots, z_n)$ и $B(x, y_1, y_2, \ldots, y_n) \vee B(x, z_1, z_2, 
+  \ldots, z_n)$ являются вычислимыми свойствами как конъюнкция и 
+  дизъюнкция вычислимых. Доказательство третьего аналогично второму. \\
+  \textbf{Четвёртый}: пусть $A \in \Sigma_n$. По определению
+  \[A(x) \ \Longleftrightarrow \ \exists y_1 \forall y_2 \ldots Q y_n \
+  B(x, y_1, y_2, \ldots, y_n)\]
+  Тогда можем добавить фиктивную переменную как в начало, так и в конец 
+  нашей кванторной приставки. Получим 
+  \[A(x) \ \Longleftrightarrow \ \exists y_1 \forall y_2 \ldots Q y_n 
+  \overline{Q} y_{n + 1} \ B(x, y_1, y_2, \ldots, y_n, y_{n + 1})\]
+  \[A(x) \ \Longleftrightarrow \ \forall y_{n + 1} \exists y_1 \forall 
+  y_2 \ldots Q y_n \ B(x, y_{n + 1}, y_1, y_2, \ldots, y_n)\]
+  $\implies A \in \Sigma_{n + 1} \cap \Pi_{n + 1} \implies \forall A \in 
+  \Sigma_n \hookrightarrow A \in \Sigma_{n + 1} \cap \Pi_{n + 1}$ \\
+  Аналогично получим $\forall C \in \Pi_n \hookrightarrow C \in \Sigma_{n + 1} 
+  \cap \Pi_{n + 1}$. Тогда заключаем, что $\Sigma_n \cup \Pi_n \subseteq 
+  \Sigma_{n + 1} \cap \Pi_{n + 1}$ \\
+  \textbf{Пятый} пункт идёт без доказательства. Стоит лишь пояснить 
+  формулировку: если $A \leq_m B$ и например $B \in \Sigma_n$, то и 
+  $A \in \Sigma_n$. Также важно заметить, что для $T$-сводимости это 
+  неверно. \\
+  \textbf{Шестой} пункт остаётся без доказательства, так как мы не стали 
+  проходить универсальные функции.
+  \textbf{Седьмой} очевиден из определений.
+\end{proof}
+
+\section{Разрешимость и предикаты}
+
+\begin{remark}
+  Из того, что мы уже знаем, можно утверждать, что множества формул, 
+  аксиом, правил вывода и выводов разрешимы (естественно мы берём эти 
+  множества по отдельности). Несмотря на это, оказывается верно 
+  утверждение из следующей леммы.
+\end{remark}
+
+\begin{lemma}
+  Множество общезначимых формул ИП перечислимо, но неразрешимо.
+\end{lemma}
+
+\begin{theorem}
+  Для произвольной ФС (формальной системы): если множество аксиом и 
+  правила вывода ФС разрешимы, то множество выводимых в этой ФС формул 
+  перечислимо.
+\end{theorem}\leavevmode
+\\
+Из неперечислимости множества формул следует невозможность построения 
+ФС с разрешимыми множествами аксиом и правил вывода, которая выводила 
+бы в точности формулы из этого множества.
+
+\begin{definition}
+  Стандартная модель формальной арифметики: $(\mathbb{N}, E, 0, v, +, 
+  \times)$. Здесь слева направо: натуральные числа, равенство (equality), 
+  ноль, следующий элемент, сложение и умножение.
+\end{definition}
+
+\begin{theorem}[Тарского]
+  Множество формул формальной арифметики (ФА), истинных в стандартной 
+  интерпретации, неперечислимо.
+\end{theorem}
+
+\begin{theorem}[Гёделя]
+  Формальная арифметика не полна.
+\end{theorem}
+
+\section{Последняя картинка за первый курс}
+
+Автор получает билет 11-го числа, не имея 30-ти брс:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\linewidth]{pictures/Поньо.jpg}
+\end{figure} \leavevmode
+\\
+Но как бы... ``Знаешь, Соскэ, есть такая штука -- судьба. Плачь -- не 
+плачь, с ней ничего не сделать...''
+
+\end{document}

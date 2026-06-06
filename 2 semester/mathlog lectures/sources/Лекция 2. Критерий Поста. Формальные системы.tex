@@ -1,0 +1,223 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Ах, Дюдюка! Ух, Дюдюка! Бяка, привередина}
+\fancyhead[R]{\href{https://t.me/sol_m_07}{Соля}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 2. Критерий Поста. Формальные системы
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Классы Поста (из прошлой лекции)}
+
+\paragraph{Функции, сохраняющие ноль}
+\[T_0 = \{f(x_1, \ldots, x_n) \mid f(0, \ldots, 0) = 0\}\]
+\paragraph{Функции, сохраняющие единицу}
+\[T_1 = \{f(x_1, \ldots, x_n) \mid f(1, \ldots, 1) = 1\}\]
+\paragraph{Линейные функции}
+\[L \text{ --- множество всех таких функций } f(x_1, \ldots, x_n) \text{, что для них}\]
+\[\text{полином Жегалкина имеет не более, чем первую степень}\]
+\paragraph{Самодвойственные функции}
+\[S = \{f(x_1, \ldots, x_n) \mid f(\overline{x_1}, \ldots, \overline{x_n}) = \overline{f(x_1, \ldots, x_n)}\}\]
+\paragraph{Монотонные функции}
+\[M = \{f(x_1, \ldots, x_n) \mid \alpha \succeq \beta \implies f(\alpha) > f(\beta)\}\]
+Здесь $"\succeq"$ --- частичный порядок, заданный на множестве всех $n$-ок из нулей и единиц. При этом 
+\[\alpha \succeq \beta \iff \alpha_i \geq \beta_i \quad \forall i \in \{1, \ldots, n\}\]
+
+\section{Критерий Поста}
+
+\begin{theorem}[Критерий Поста]
+    Множество функций полно тогда и только тогда, когда оно не содержится 
+    целиком ни в одном из классов Поста.
+\end{theorem}
+
+\begin{proof}
+    $(\Longrightarrow)$: Пусть множество функций $\mathcal{E}$ полно. \\ 
+    Учтём тот факт, что все классы Поста замкнуты \textbf{($\ast$)} и не совпадают с множеством 
+    всех функций алгебры логики \textbf{($\ast\ast$)} (автор докажет это, когда будет время). \\ 
+    От противного предположим, что $\mathcal{E}$ содержится в одном из 
+    классов Поста. \\ Из \textbf{($\ast$)} получаем, что из $\mathcal{E}$ 
+    можно получить только функции из того же класса Поста. \\ 
+    Тогда из \textbf{($\ast\ast$)} получаем, что замыкание $\mathcal{E}$ 
+    не совпадает со множеством всех функций алгебры логики $\implies \mathcal{E}$ 
+    не полно -- противоречие. \\ \\
+    $(\Longleftarrow)$: Пусть множество функций $\mathcal{E}$ не содержится 
+    целиком ни в одном из классов Поста. Распишем это условие в следующем виде: \\
+    \[\exists f_{\overline{0}} \notin T_0, \ f_{\overline{1}} \notin T_1, \ 
+    f_{\overline{S}} \notin S, \ f_{\overline{L}} \notin L, \ f_{\overline{M}} \notin M\] 
+
+    \begin{remark}
+        Эти функции (по умолчанию лежащие в $\mathcal{E}$) могут совпадать. 
+        Это ничего не изменит. Главное, заметить, что переписанное условие равносильно исходному.
+    \end{remark}
+
+    \paragraph{Шаг 1}
+    Рассмотрим $f_{\overline{0}}(x_1, x_2, ..., x_k)$. Отождествим все переменные с 
+    иксом и получим $f_{\overline{0}}(x, x, ..., x)$, что можно представить, как 
+    функцию от одного переменного $\varphi_{\overline{0}}(x)$. Вспоминаем, что 
+    $f_{\overline{0}} \notin T_0 \implies f_{\overline{0}}(0, 0, ..., 0) = 
+    \varphi_{\overline{0}}(0) = 1$. Тогда \[\varphi_{\overline{0}}(x) = 1 
+    \text{ или } \varphi_{\overline{0}}(x) = \overline{x}\] \\ Аналогично, для 
+    $f_{\overline{1}}(x_1, x_2, ..., x_k)$ получим ситуацию $f_{\overline{1}}(1, 1, 
+    ..., 1) = \varphi_{\overline{1}}(1) = 0$. Тогда \[\varphi_{\overline{1}}(x) = 0 
+    \text{ или } \varphi_{\overline{1}}(x) = \overline{x}\]
+    \paragraph{Шаг 2}
+    Рассмотрим все варианты продолжения событий:
+    \subparagraph{Вариант 1} 
+    Пусть получили $\overline{x}$ и константу. Тогда путём суперпозиции получим 
+    вторую константу ($\overline{0} = 1 \text{ или } \overline{1} = 0$).
+    \subparagraph{Вариант 2} 
+    Пусть получили только $\overline{x}$. Рассмотрим $f_{\overline{S}}$. Так как 
+    $f_{\overline{S}} \notin S$, то \[\exists \alpha \text{ - набор переменных: } 
+    f_{\overline{S}}(\alpha) = f_{\overline{S}}(\overline{\alpha})\] 
+    Определим "степень": \[x^\sigma = \begin{cases}
+        x, \ \sigma = 1 \\
+        \overline{x}, \ \sigma = 0
+    \end{cases}\]
+    Тогда можем образовать функцию от одного переменного: 
+    \[f_{\overline{S}}(x^{\alpha_1}, x^{\alpha_2}, ..., x^{\alpha_k}) = 
+    \varphi_{\overline{S}}(x)\]
+    Получаем \[\varphi_{\overline{S}}(x) = \varphi_{\overline{S}}(\overline{x}) 
+    \implies \varphi_{\overline{S}}(x) = 0 \text{ или } \varphi_{\overline{S}}(x) = 1\] 
+    \subparagraph{Вариант 3}
+    Пусть получили 0 и 1. Рассмотрим $f_{\overline{M}}$. Так как 
+    $f_{\overline{M}} \notin M$, то \[\exists \alpha \succcurlyeq \beta: 
+    f_{\overline{M}}(\alpha) = 0 \text{ и } f_{\overline{M}}(\beta) = 1 \ \textbf{($\ast$)}\]
+    От набора $\beta$ к набору $\alpha$ можно перейти, последовательно меняя нули 
+    на единицы (тогда соседние наборы будут различаться только в одном элементе). 
+    Порядок изменения нам не важен. Пример:
+
+    \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\linewidth]{pictures/Переход от одного набора к другому.png}
+    \end{figure} \leavevmode
+    \\
+    Заметим, что из \textbf{($\ast$)} следует, что $\exists \widetilde{\alpha}, 
+    \widetilde{\beta}: (\widetilde{\alpha} \succcurlyeq \widetilde{\beta}) 
+    \wedge (f_{\overline{M}}(\widetilde{\alpha}) = 0 \text{ и } 
+    f_{\overline{M}}(\widetilde{\beta}) = 1)$, где $\widetilde{\alpha}$ и 
+    $\widetilde{\beta}$ -- соседние наборы в переходе выше. Раз они различаются 
+    только в одном элементе, то отождествим его с иксом и получим функцию от одного 
+    переменного: \[f_{\overline{M}}(\widetilde{\alpha}_1, ..., \widetilde{\alpha}_{i - 1}, 
+    x, \widetilde{\alpha}_{i + 1}, ..., \widetilde{\alpha}_k) = \varphi_{\overline{M}}(x)\]
+    Получаем: \[\begin{cases}
+        \varphi_{\overline{M}}(0) = 1 \\
+        \varphi_{\overline{M}}(1) = 0
+    \end{cases} \implies \ \varphi_{\overline{M}}(x) = \overline{x}\]
+
+    \paragraph{Шаг 4}
+    Во всех вариантах в итоге получили набор функций $\overline{x}, 0, 1$. Теперь 
+    рассмотрим $f_{\overline{L}}$. Раз она не линейна, то в полиноме Жегалкина 
+    найдётся слагаемое степени $> 1$. Тогда рассмотрим слагаемое наименьшей степени 
+    в \textbf{нелинейной части} полинома Жегалкина (можно воспринимать как самое левое). 
+    Оно будет вида $x_{i_1}x_{i_2}...x_{i_t}$. 
+    \begin{enumerate}
+        \item Отождествим $x_{i_1}$ с $x$;
+        \item Отождествим $x_{i_2}$ с $y$;
+        \item Заединичим $x_{i_3},...,x_{i_t}$ (ничего не сделаем, если иксов всего два);
+        \item Остальные (не входящие в наше слагаемое) занулим.
+    \end{enumerate}
+    Получим $\varphi_{\overline{L}}(x, y) = 1 + x + y + xy$, где каждое из первых трёх 
+    слагаемых может не входить. \\
+    Избавимся от всего лишнего: 
+    \begin{enumerate}
+        \item Если есть 1, то рассмотрим $\lnot \varphi(x, y)$, так как 
+        $\varphi(x, y) + 1 = \urcorner \varphi(x, y)$
+        \item Если есть $x$, то рассмотрим $\varphi(x, \overline{y})$, так как 
+        $x + xy = x(1 + y) = x \overline{y}$
+        \item Аналогично если есть $y$, то рассмотрим $\varphi(\overline{x}, y)$
+    \end{enumerate}
+    Таким образом мы избавимся от всего и оставим только конъюнкцию. Тогда имеем 
+    конъюнкцию и отрицание $\implies$ можем получить любую функцию алгебры логики 
+    $\implies$ множество функций полно.
+\end{proof}
+
+\section{Формальные системы}
+
+\begin{definition}
+    Формальная система -- это набор из четырёх множеств $\{\Sigma, \mathcal{F}, 
+    \mathcal{A}, \mathcal{R}\}$, где \begin{itemize}
+        \item $\Sigma$ -- алфавит (счётное множество);
+        \item $\mathcal{F}$ -- формулы ($\mathcal{F} \subseteq \Sigma^*$ -- все 
+        конечные слова в алфавите $\Sigma$);
+        \item $\mathcal{A}$ -- аксиомы ($\mathcal{A} \subseteq \mathcal{F}$);
+        \item $\mathcal{R}$ -- правила вывода (о них чуть поподробнее)
+    \end{itemize}
+    Пусть $\mathcal{R}_i \in \mathcal{R}$. Для него зафиксировано $k_i \in \mathbb{N}:$ 
+    \[\mathcal{R}_i \colon \mathcal{F}^{k_i} \to \mathcal{F}\] 
+    При этом $\mathcal{R}_i$ -- частично заданная функция, т.е. некоторой формуле 
+    длины $k_i$ из $\mathcal{F}^{k_i}$ может быть не сопоставлена формула.
+    \begin{example}
+        Можем преобразовать \ $(x + 1)(x + y) = 25$ \ в \ $x^2 + xy + x + y = 25$ \ 
+        (здесь мы работаем с синтаксисом)
+    \end{example}
+\end{definition}
+
+\subsection{Исчисление высказываний}
+
+\paragraph{Алфавит ($\Sigma$)} 
+\begin{enumerate}
+    \item счётное количество символов переменных
+    \item $\lnot, \ \to, \ (, \ )$
+\end{enumerate}
+
+\paragraph{Формулы ($\mathcal{F}$)}
+\begin{itemize}
+    \item Если $A$ -- символ переменной, то $A$ -- формула.
+    \item Если $A = (\lnot B)$, где $B$ -- формула, то $A$ -- формула.
+    \item Если $A = (B \to C)$, где $B$ и $C$ -- формулы, то $A$ -- формула.
+    \item Других формул нет (не всегда уточняют, но мы это делаем).
+\end{itemize}
+
+\paragraph{Аксиомы ($\mathcal{A}$)} 
+Аксиом бесконечно много, поэтому зададим их схемами:
+\begin{enumerate}
+    \item $(A \to (B \to A))$
+    \item $((A \to (B \to C)) \to ((A \to B) \to (A \to C)))$
+    \item $(((\lnot B) \to (\lnot A)) \to (((\lnot B) \to A) \to B))$
+\end{enumerate}
+Вместо $A, B$ и $C$ можно подставлять любые формулы, но для одинаковых букв 
+должны быть одинаковые формулы.
+
+\paragraph{Правила вывода ($\mathcal{R}$)} 
+modus ponens $A, (A \to B) \vdash B$ \\ \\
+Автор немного почитал в интернете про эту непонятную темку и переводит выше написанное: \\ \\
+\textbf{modus ponens} (с латыни "правило отделения" \ или "утверждающий модус") -- правило, которое 
+говорит нам о том, что истинность $A$ и истинность $(A \to B)$ влекут за собой истинность $B$ 
+($\vdash$ -- знак "выводится"). \\ \\
+На лекции было оговорено, что с помощью \textbf{modus ponens} можно получать тавтологии 
+(формулы, истинные при любых значениях входящих в них переменных). Действительно, 
+заметим, что если $A$ и $(A \to B)$ -- тавтологии, то и $B$ является тавтологией.
+\\ \\ \\
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{pictures/Дюдюка.png}
+\end{figure}
+
+\end{document}

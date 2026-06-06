@@ -1,0 +1,237 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{soul}
+\usepackage{multicol}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\rg}{rg}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{ А не пора ли нам подкрепиться?}
+\fancyhead[R]{\href{ https://www.youtube.com/watch?v=0mKAgFfnzec&t=9m42s}{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 5. Формальные языки.Регулярные языки и выражения.  
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Формальные языки}
+
+\subsection{Определения и обозначения}
+
+\begin{definition}
+    Алфавит --- конечное множество. По умолчанию обозначаем $\Sigma = \{a_1,a_2,...,a_n\} $.
+\end{definition}
+
+\begin{definition}
+    Слово --- конечная последовательность символов алфавита.
+\end{definition}
+
+\begin{itemize}
+    \item $w[i]$ --- i-й элемент слова $w$
+    \item $|w| $ --- количество букв в слове $w$
+    \item $|w|_a $ --- количество букв $a$ в слове $w$
+    \item $\varepsilon$ --- слово нулевой длины (пустое слово)
+    \item $w^n$ --- слово, получаемое, если записать слово $w$ ровно $n$ раз подряд
+    \item $w^R$ --- слово, получаемое, если записать слово $w$  побуквенно в обратном порядке
+    \item $\Sigma^*$ --- множество всех конечных слов над алфавитом $\Sigma$
+    \item Языком над алфавитом $\Sigma$ называют подмножество $\Sigma^*$
+\end{itemize}
+
+\subsection*{Операции для языков}
+\begin{itemize}
+    \item Конкатенация: $X \cdot Y =\{x\cdot y\ | \ x\in X, y\in Y\} $
+    \item Возведение в степень: $X^n= \underbrace{X \cdot X \cdot \ldots \cdot X}_{n} $ \\
+    \begin{example}
+        $ X=\{a,ab\}, X^3= \{aaa, aaab, aaba, aabab, abaa, abaab, ababa, ababab\} $ 
+    \end{example}
+    \item Объединение: $X|Y=X+Y = X\cup Y$
+    \item Итерация (звезда Клини): $X^* = \varepsilon + X +X^2+ \ldots + X^n+\ldots $
+\end{itemize}
+
+\begin{example}
+    $\Sigma=\{0,1\},\ \Sigma^*$ --- счётное, $2^{\Sigma^*} $---множество всех подмножеств $\Sigma^*$ (несчётно)\\
+    Действительно, рассмотрим подмножество всех языков вида: 1 слово длины 1, 1 слово длины 2 ... \\
+    Каждый такой язык --- это подмножество $\Sigma^*$. Теперь рассмотрим отрезок $[0,1]$ и будем в двоичной системе
+    счисления записывать числа из этого отрезка: 
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\textwidth]{pictures/картиночка хохохо.png}
+        
+    \end{figure}
+    Разбиваем на блоки длины 1,2,3,... Таким образом, получим взаимнооднозначное соответствие между словами и этими десятичными записями.
+    Итого, мы построили некоторое подмножество языков, которое уже имеет мощность континуум, а значит, и всё множество языков несчётно.
+\end{example}
+
+
+
+\section{Регулярные языки и выражения}
+
+\begin{definition}
+    Пусть задан алфавит $\Sigma$. Регулярные языки REG определяются индуктивно:
+    \begin{itemize}
+        \item $\varnothing \in$ REG
+        \item $\{\varepsilon\} \in $ REG
+        \item $\forall a\in \Sigma \quad \{a\} \in $ REG
+        \item $\forall X,Y\in $ REG $\ X\cdot Y\in$ REG
+        \item $\forall X,Y\in $ REG $\ X+ Y\in$ REG
+        \item $\forall X\in$ REG $\ X^*\in$ REG
+    \end{itemize}
+    Иначе говоря, REG --- наименьшее по включению подмножество всех языков,которое содержит $\varnothing$
+    и $\varepsilon$, любое однобуквенное слово $\Sigma$, а также замкнутое относительно конкатенации, объединения и итерации.
+\end{definition}
+
+\subsubsection*{Регулярные выражения}
+\begin{itemize}
+    \item $\varnothing$ --- пустой язык
+    \item $a$ --- язык, состоящий из одного единственного слова из одной единственной буквы $a$
+    \item $X\cdot Y$ или $XY$ --- конкатенация
+    \item $X^*$ --- итерация
+\end{itemize}
+
+\begin{remark}
+    Рассмотрим некоторый фиксированный $\Sigma$ --- алфавит, $\Sigma= \{a,b\} $. Любому
+    регулярному языку в $\Sigma$ будет соответствовать слово в алфавите $\tilde\Sigma= \{ \Sigma, ( ,) , +, \cdot, ^* , \varnothing, \varepsilon \}$. 
+    Таким образом, регулярное выражение --- слово в алфавите $\tilde\Sigma$.
+\end{remark}
+
+\begin{remark}
+    (Отличие декартового произведения от конкатенации).\\
+     Рассмотрим языки: $L_1=\{a, ab\}$ и $L_2=\{b,bb\}$. Тогда 
+     \[ L_1L_2 = \{ab,abb, abbb \} \]
+     \[ L_1 \times L_2= \{ (a,b), (a,bb), (ab,b), (ab,bb) \} \]
+\end{remark}
+
+\begin{example}
+    $a^*$ --- регулярное выражение, задающее язык слов $\{ \varepsilon, a, aa, ... \}$\\
+    \[ ab^* = \{a, ab, abb, abbb, ... \}\]
+    \[ (ab)^* =\{ \varepsilon, ab,abab,ababab, ... \} \]
+    \[ ab^*+ba^* = \{a,b, ab,ba, abb, baa, abbb, baaa, ... \}\]
+\end{example}
+
+\begin{example}
+    \[ (a+b)^* = (a^*\cdot b)^* \cdot a^*= (a^*+b)^*  \]
+    \[ a+b = \{ a,b \} \]
+    \[ (a+b)^2 = \{ aa, ab, ba, bb \} \]
+    \[ (a+b)^{13} \ni abbababaababb \] 
+
+\end{example}
+
+\noindent\textbf{Утверждение.} Не все языки регулярные.
+\begin{proof}
+    \begin{itemize} 
+        \item Счётное объединение конечных множеств конечно или счётно
+        \item Счётное объединение счётных множеств счётно
+        \item Множество всех слов $\Sigma^*$ счётно
+        \item Множество $R_k$ регулярных языков, описываемых регулярными выражениями с ровно $k$
+        операциями конечно для любого $k$
+        \item Множество $2^{\Sigma^*}$ имеет мощность континуум
+    \end{itemize}
+\end{proof}
+
+\subsubsection*{Детерминированный конечный автомат (ДКА)}
+\begin{definition}
+    ДКА --- это набор ($\Sigma, Q, Q_f, \delta, q_0$)\\
+    Синтаксис:
+    \begin{itemize}
+        \item $\Sigma$ ---конечный алфавит, слова над которым обрабатывает ДКА
+        \item $Q$ --- конечное множество состояний автомата
+        \item $Q_f$ --- множество принимающих состояний: $Q_f\subseteq Q$
+        \item $\delta$ --- функция (таблица) переходов $\delta: \Sigma \times Q\to Q$
+        \item $q_0$ --- начальное состояние: $q_0\in Q$
+    \end{itemize}
+    Семантика: 
+    \begin{itemize}
+        \item Читает слово один раз слева направо. 
+        \item Если слово дочитано до конца, и ДКА находится в принимающем состоянии, то слова принято.
+        \item Если слово не дочитано (переход не определён) или дочитано, но ДКА не в принимающем состоянии, то слово отвергнуто.
+    \end{itemize}
+\end{definition}
+
+
+\begin{remark}
+    Набором $(\Sigma,Q, Q_f, \delta, q_0)$ мы задаём функцию, которая принимает $w\in \Sigma^*$ и возвращает да/нет. 
+    Хотим на словах из заданного языка $L$ получать да, если слово из $L$, и нет --- иначе.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\textwidth]{pictures/картинка для понимания.png}
+        
+    \end{figure}
+    Зададим функцию на словах, а не на буквах:
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\textwidth]{pictures/картинка для понимания 2.0.png}
+    \end{figure}
+
+    \[ \delta^*(q_1,ab) = \delta(\delta(q_1,a),b ) \]
+    Мы считаем, что слово $w$ принимается, если $\delta^*(q_0,w)\in Q_f$.
+\end{remark}
+
+\begin{example}
+    (Пример ДКА)
+     \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\textwidth]{pictures/картинка для понимания 3.0.png}
+    \end{figure}
+
+\end{example}
+
+\subsubsection*{Недетерминированный конечный автомат (НКА)}
+
+\begin{definition}
+    НКА --- это набор ($\Sigma, Q, Q_f, \delta, q_0$)\\
+    Синтаксис:
+    \begin{itemize}
+        \item $\Sigma$ ---конечный алфавит, слова над которым обрабатывает НКА
+        \item $Q$ --- конечное множество состояний автомата
+        \item $Q_f$ --- множество принимающих состояний: $Q_f\subseteq Q$
+        \item $\delta$ --- функция переходов $\delta: \{ \Sigma\cup \varepsilon\} \times Q\to 2^Q$
+        \item $q_0$ --- начальное состояние: $q_0\in Q$
+    \end{itemize}
+    Семантика:
+    \begin{itemize}
+        \item НКА функция переходов неоднозначная.  
+        \item НКА принимает слово, если возможно достижение принимающего состояния при полном считывании этого слова.
+    \end{itemize}
+\end{definition}
+
+
+\section{Диаграмма Мура}
+\begin{itemize}
+    \item Каждому состоянию автомата соответствует вершина графа.
+    \item Вершины соединены направленными дугами, помеченными символами алфавита. Они соответствуют функции $\delta$.
+    \item Начальное состояние обозначают <<входящей стрелкой>>, а принимающее --- двойной обводкой.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+\end{document}

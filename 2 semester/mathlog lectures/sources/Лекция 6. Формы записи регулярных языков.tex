@@ -1,0 +1,301 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\usepackage{ulem}
+\DeclareMathOperator{\REG}{REG}
+
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{БУНТ}
+\fancyhead[R]{\href{https://t.me/sol_m_07}{Соля}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 6. Формы записи регулярных языков
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Блок повторения}
+
+Так как на лекции сначала было повторение материала прошлого конспекта, 
+то автор советует его перечитать перед погружением в доказательство.
+
+\section{Формы записи регулярных языков}
+
+\begin{theorem}
+    Пусть $\Sigma$ -- алфавит. Тогда имеем $2^{\Sigma^{\ast}}$ языков, 
+    заданных над ним. $\REG \subseteq 2^{\Sigma^{\ast}}$. Каждый 
+    регулярный язык может быть записан через
+    \begin{enumerate}
+        \item регулярные выражения
+        \item ДКА
+        \item НКА
+        \item грамматику
+    \end{enumerate}
+    Причём из одной формы записи мы всегда можем получить другую. 
+    Докажем это в следующих пунктах.
+\end{theorem}
+
+\subsection{От регулярного выражения к НКА}
+
+Введём правила для НКА:
+\begin{enumerate}
+    \item НКА имеет ровно одно принимающее состояние
+    \item В начальное состояние не ведёт ни один переход
+    \item Из принимающего состояния нет ни одного перехода
+\end{enumerate}
+
+\begin{lemma}
+    Любой НКА можно подогнать под наши правила.
+\end{lemma}
+
+\begin{proof}
+    Пойдём по порядку. Если у нас изначально одно принимающее 
+    состояние, ничего не делаем. Если же принимающих состояний 
+    несколько, то мы делаем их "обычными" \ и строим из них 
+    $\varepsilon \text{-переходы}$ в единое принимающее состояние.
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.9\linewidth]{pictures/НКА1.png}
+    \end{figure} \leavevmode
+    \\ \\
+    Заметим, что третье правило мы возможно уже выполнили. Если ещё 
+    не выполнили, то по такому же принципу образуем новое принимающее 
+    состояние и $\varepsilon \text{-переход}$ к нему от текущего 
+    (само текущее делаем "обычным"). \\
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.9\linewidth]{pictures/НКА2.png}
+    \end{figure} \leavevmode
+    \\
+    Осталось вернуть долг второму правилу. Здесь в случае невыполнения 
+    мы образуем новое начальное состояние и из него строим 
+    $\varepsilon \text{-переходы}$ в текущие начальные состояния. \\
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=1\linewidth]{pictures/НКА3.png}
+    \end{figure}
+\end{proof} \leavevmode
+\\
+Будем схематично изображать НКА языка $X$ как \\
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\linewidth]{pictures/НКА.png}
+\end{figure} \leavevmode
+\\ \\ \\ \\ \\ \\
+Тогда
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\linewidth]{pictures/Конкатенация.png}
+    \caption{Конкатенация $X \cdot Y$}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.55\linewidth]{pictures/Объединение.png}
+    \caption{Объединение $X + Y$}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.55\linewidth]{pictures/Итерация.png}
+    \caption{Итерация $X^*$}
+\end{figure} \leavevmode 
+\\ \\
+Алгоритм построения будет заключаться в построении дерева по 
+приоритету операций, а затем постепенного объединения результатов 
+снизу вверх с помощью схем, представленных выше. 
+\\
+\begin{example}
+    $\Sigma = \{a, b\}$. Рассмотрим регулярное выражение 
+    $((ab + b^*)aa)^*$. Составим дерево по приоритету выполнения 
+    операций и построим НКА снизу вверх:
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\linewidth]{pictures/Дерево.png}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\linewidth]{pictures/Построение НКА.png}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\linewidth]{pictures/Завершённый НКА.png}
+    \end{figure}
+\end{example} \leavevmode
+\\
+\begin{remark}
+    Нумерация состояний пригодится нам в построении ДКА. Все 
+    дальнейшие примеры будут использовать эту схему.
+\end{remark}
+
+\begin{remark}
+    Очень важно использовать готовые схемы для конкатенации, 
+    объединения и итерации. Они будут приниматься без доказательств. 
+    Собственные схемы необходимо будет доказать (обычно получается 
+    лажа).
+\end{remark}
+
+\subsection{От НКА к ДКА}
+
+Вход: НКА($\Sigma, Q, Q_f, \delta, q_0$) \\
+Выход: ДКА($\Sigma, Q', Q_f', \delta', q_0'$) \\
+Состояния ДКА будут соответствовать подмножествам состояний 
+исходного НКА.
+
+\begin{definition}
+    $\varepsilon \text{-замыканием}$ множества состояний $Q$ будем 
+    называть множество состояний, достижимых из $Q$ по $\varepsilon 
+    \text{-переходам}$, и обозначать $C_{\varepsilon}(Q)$
+\end{definition}
+
+\begin{example}
+    Рассмотрим $\varepsilon \text{-замыкания}$ некоторых множеств 
+    состояний:
+    \begin{itemize}
+        \item $C_{\varepsilon}(\{1\}) = \{1, 2, 6, 7, 9, 5\}$
+        \item $C_{\varepsilon}(\{0, 1\}) = \{1, 2, 6, 7, 9, 5, 0, 12\}$
+    \end{itemize}
+\end{example}
+
+\begin{definition}
+    Определим множество состояний, в которые можно перейти из 
+    $R \subseteq Q$ при считывании одного $a \in \Sigma$:
+    \[move(R, a) := \{q' \ | \ \exists q \in R : \delta (a, q) = q'\}\]
+\end{definition}
+
+\begin{example}
+    $move(\{2, 8\}, a) = \{3\}$
+\end{example} \leavevmode
+\\
+Пора поведать алгоритм построения ДКА. Сначала $Q'$ и $\delta'$ пусты. 
+\begin{enumerate}
+    \item Определим $q_0' = C_{\varepsilon}(q_0)$
+    \item Добавляем $q_0'$ в $Q'$ как непомеченное состояние
+    \item Пока в $Q'$ есть непомеченное $R$:
+    \begin{itemize}
+        \item Пометить $R$
+        \item Для каждого символа $a \in \Sigma$
+        \begin{itemize}
+            \item $S = C_{\varepsilon}(move(R, a))$
+            \item Если $S \neq \varnothing$:
+            \begin{itemize}
+                \item Если $S \notin Q'$:
+                \begin{itemize}
+                    \item Добавить $S$ в $Q'$ как непомеченное состояние
+                \end{itemize}
+                \item Определить $\delta'(a, R) = S$
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+    \item Определить $Q_f' = \{S \ | \ S \in Q', \ S \cap Q_f \neq \varnothing\}$ 
+\end{enumerate} \leavevmode
+\\
+\begin{example}
+    $q_0' = C_{\varepsilon}(0) = \{0, 12, 1, 2, 6, 7, 9, 5\} \longrightarrow Q' = \{q_0'\}$ \\ \\
+    $S = C_{\varepsilon}(move(q_0', a)) = C_{\varepsilon}(\{3, 10\}) = \{3, 10\} = q_1' \longrightarrow Q' = \{q_0', q_1'\}$ \\ \\
+    $S = C_{\varepsilon}(move(q_0', b)) = C_{\varepsilon}(\{8\}) = \{8, 9, 7, 5\} = q_2' \longrightarrow Q' = \{q_0', q_1', q_2'\}$ \\ \\
+    $S = C_{\varepsilon}(move(q_1', a)) = C_{\varepsilon}(\{11\}) = \{11, 12, 1, 2, 6, 7, 9, 5\} = q_3' \longrightarrow Q' = \{q_0', q_1', q_2', q_3'\}$ \\ \\
+    $S = C_{\varepsilon}(move(q_1', b)) = C_{\varepsilon}(\{4\}) = \{5\} = q_4' \longrightarrow Q' = \{q_0', q_1', q_2', q_3', q_4'\}$ \\ \\
+    $S = C_{\varepsilon}(move(q_2', a)) = C_{\varepsilon}(\{10\}) = \{10\} = q_5' \longrightarrow Q' = \{q_0', q_1', q_2', q_3', q_4', q_5'\}$ \\ \\
+    $S = C_{\varepsilon}(move(q_2', b)) = C_{\varepsilon}(\{8\}) = \{8, 9, 5, 7\} = q_2'$ \\ \\
+    $S = C_{\varepsilon}(move(q_3', a)) = C_{\varepsilon}(\{3, 10\}) = \{3, 10\} = q_1'$ \\ \\ 
+    $S = C_{\varepsilon}(move(q_3', b)) = C_{\varepsilon}(\{8\}) = \{8, 9, 7, 5\} = q_2'$ \\ \\
+    $S = C_{\varepsilon}(move(q_4', a)) = C_{\varepsilon}(\{10\}) = \{10\} = q_5'$ \\ \\
+    $S = C_{\varepsilon}(move(q_4', b)) = C_{\varepsilon}(\varnothing) = \varnothing$ \\ \\
+    $S = C_{\varepsilon}(move(q_5', a)) = C_{\varepsilon}(\{11\}) = \{11, 12, 1, 2, 6, 7, 9, 5\} = q_3'$ \\ \\
+    $S = C_{\varepsilon}(move(q_5', b)) = C_{\varepsilon}(\varnothing) = \varnothing$ \\ \\ \\
+    $Q' = \{q_0', q_1', q_2', q_3', q_4', q_5'\}, \quad Q_f' = \{q_0', q_3'\}$ 
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\linewidth]{pictures/ДКА.png}
+    \end{figure}
+\end{example}
+
+\section{Решение системы уравнений с регулярными коэффициентами}
+
+\[\begin{cases}
+    X_1 = \alpha_{11} X_1 + \dots + \alpha_{1n} X_n + \beta_1 \\
+    \vdots \\
+    X_n = \alpha_{n1} X_1 + \dots + \alpha_{nn} X_n + \beta_n
+\end{cases}\]
+
+Здесь $X_i$ -- переменные множества, а $\alpha_{ij}$ и $\beta_i$ -- 
+это регулярные языки, задаваемые регулярными выражениями. Решением 
+будем называть набор языков $A_1, \dots, A_n$ т.ч. для любого набора 
+языков $B_1, \dots, B_n$, удовлетворяющего системе, выполнено $A_i 
+\subseteq B_i$ (решение является минимальным по включению набором).
+\\ \\ 
+Разберём случаи при решении системы:
+
+\paragraph{Случай 1}
+
+Если в системе есть строка вида 
+\[X_i = a_{ii} X_i + \gamma, \ a_{ii} \neq \varnothing,\]
+то заменим всюду $X_i$ на $a_{ii}^* \gamma$, а саму строку удалим.
+
+\begin{example}
+    \[X = aX + b \implies X = a^* b\]
+\end{example}
+
+\paragraph{Случай 2}
+
+Если в системе нет строк, подходящих под первый случай, то переменная 
+$X_n$ не встречается в правой части $n \text{-ой}$ строки. Заменим 
+всюду $X_n$ на правую часть этой строки. Саму строку удалим.
+
+\section{Правые языки}
+
+\begin{definition}
+    По заданному НКА для каждого $q$ определим правый язык:
+    \[R_q := \{x \ | \ q \xrightarrow{x} q_f, \ q_f \in Q_f\}\]
+    То есть все слова, считывая которые, можно попасть из состояния 
+    $q$ в одно из финальных состояний. 
+\end{definition} \leavevmode
+\\
+Именно правые языки мы будем использовать в качестве переменных 
+при составлении системы. \\ \\ 
+Для каждого состояния $q_i$ и каждого сивола $a$: если из состояния 
+$q_i$ есть переход по символу $a$ в $q_j$, то к правой части строки 
+$R_{q_i}$ добавим $+aR_{q_j}$. К правым частям финальных состояний 
+добавим $+ \varepsilon$.
+
+\begin{example}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\linewidth]{pictures/Правые языки.png}
+    \end{figure}
+    \[\begin{cases}
+        R_0 = aR_1 \\
+        R_1 = bR_0 + \varepsilon
+    \end{cases}\]
+    Согласно алгоритму: $R_0 = a(bR_0 + \varepsilon) = abR_0 + a 
+    \implies R_0 = (ab)^* a$
+\end{example}
+
+\section{Мысли вслух}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{pictures/Ёжик.jpg}
+\end{figure}
+
+\end{document}

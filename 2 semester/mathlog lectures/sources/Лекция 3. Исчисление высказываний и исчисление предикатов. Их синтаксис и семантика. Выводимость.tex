@@ -1,0 +1,237 @@
+\documentclass[11pt]{article}
+\input{packages.tex}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Imm}{Im}
+
+% Настройка колонтитулов
+\pagestyle{fancy}
+\fancyhf{} % Очистить все поля
+\fancyhead[L]{Какая гадость...какая гадость \sout{это ваше доказательство} эта ваша заливная рыба!}
+\fancyhead[R]{\href{https://t.me/ceagest}{Автор}}
+\fancyfoot[C]{\thepage}               % Справа внизу
+
+\setlength{\headheight}{13.6pt}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}  % заполняет пространство сверху
+
+    {\Huge Лекция 3. Исчисление высказываний и исчисление предикатов. Их синтаксис и семантика. Выводимость.
+    \par}
+
+    \vspace*{\fill}  % заполняет пространство снизу
+\end{titlepage}
+
+\setcounter{page}{1}
+
+\section{Исчисление высказываний}
+
+\subsection{Синтаксис исчисления высказываний. Выводимость}
+
+\paragraph{Алфавит.} 
+\begin{enumerate}
+    \item Счётное множество символов переменных
+    \item «$\lnot$», «$\to$», «$($», «$)$»
+\end{enumerate}
+
+\paragraph{Формулы.}
+\begin{itemize}
+    \item Если $A$ -- символ переменной, то $A$ -- формула.
+    \item Если $A = (\lnot B)$, где $B$ -- формула, то $A$ -- формула.
+    \item Если $A = (B \to C)$, где $B$ и $C$ -- формулы, то $A$ -- формула.
+    \item Других формул нет (не всегда уточняют, но мы это делаем).
+\end{itemize}
+
+\paragraph{Аксиомы.} 
+Аксиом бесконечно много, поэтому зададим их схемами:
+\begin{enumerate}
+    \item $(A \to (B \to A))$
+    \item $((A \to (B \to C)) \to ((A \to B) \to (A \to C)))$
+    \item $(((\lnot B) \to (\lnot A)) \to (((\lnot B) \to A) \to B))$
+\end{enumerate}
+Вместо $A, B$ и $C$ можно подставлять любые формулы, но для одинаковых букв 
+должны быть одинаковые формулы.
+
+\paragraph{Правила вывода.} 
+\underline{\textit{modus ponens}}: $A, (A \to B) \vdash B$
+
+\begin{definition}[Выводимость]
+    Говорят, что формула $A$ \textbf{выводится} в исчислении высказываний, если 
+    существует последовательность $A_1, A_2, \ldots, A_n = A$ такая, что каждое $A_i$ либо является аксиомой, либо выводится из предыдущих посредством одного применения modus ponens, то есть 
+    \[\exists j, k < i: A_k = A_j \to A_i\]
+    Число $n$ будем называть \textbf{длиной вывода}.
+\end{definition}
+
+\begin{remark}
+    Если в определении выше заменить словосочетания "выводится в исчислении высказываний" $\;$ и "modus ponens" $\;$ на "выводится в формальной системе" $\;$ и "некоторого правила вывода" $\;$ соответственно, 
+    то получим определение выводимости в произвольной формальной системе. Мы воспользуемся этим при формулировке выводимости в исчислении предикатов.
+\end{remark}
+
+\begin{definition}[Условная выводимость]
+    Пусть $\Gamma$ --- множество формул. Будем говорить, что формула $A$ выводится из $\Gamma$, если 
+    существует последовательность $A_1, A_2, \ldots, A_n = A$ такая, что каждое $A_i$ либо является аксиомой, либо является гипотезой, либо выводится из предыдущих посредством одного применения modus ponens, то есть 
+    \[\exists j, k < i: A_k = A_j \to A_i\]
+\end{definition}
+
+\begin{example}
+    Давайте выведем формулу $(A \to A)$. Для этого, согласно определению, построим нужную последовательность, используя схемы аксиом и modus ponens:
+    \begin{enumerate}
+        \item \underline{\textnormal{A1}} \textnormal{:} $A \to ((A \to A) \to A)$
+        \item \underline{\textnormal{A2}} \textnormal{:} $(A \to ((A \to A) \to A)) \to ((A \to (A \to A)) \to (A \to A))$
+        \item \underline{\textnormal{MP 1,2}} \textnormal{:} $(A \to (A \to A)) \to (A \to A)$
+        \item \underline{\textnormal{A1}} \textnormal{:} $A \to (A \to A)$
+        \item \underline{\textnormal{MP 3,4}} \textnormal{:} $A \to A$
+    \end{enumerate}
+\end{example}
+
+\begin{example}
+    Выведем теперь из формулы $A$ формулу $B \to A$, пользуясь определением условной выводимости (то есть здесь полагаем $\Gamma = \{A\}$):
+    \begin{enumerate}
+        \item \underline{\textnormal{A1}} \textnormal{:} $A \to (B \to A)$
+        \item $A$ --- гипотеза
+        \item \underline{\textnormal{MP 1,2}} \textnormal{:} $B \to A$
+    \end{enumerate}
+\end{example}
+
+\subsection{Семантика исчисления высказываний}
+
+Естественной семантикой для исчисления высказываний является \textbf{булева алгебра}: 
+переменным сопоставляется значение из множества $\{0, 1\}$.
+
+\begin{definition}
+    \textbf{Тавтологией} будем называть формулу, принимающую значение $1$ при любом наборе значений переменных.
+\end{definition}
+
+\begin{theorem}[Корректность исчисления высказываний]
+    В исчислении высказываний выводимы (без использования гипотез) только тавтологии.
+\end{theorem}
+
+\begin{theorem}[Полнота исчисления высказываний]
+    В исчислении высказываний выводимы \textbf{все} тавтологии.
+\end{theorem}
+
+\begin{definition}
+    Будем говорить, что формула $A$ \textbf{семантически} следует из множества формул $\Gamma$, и записывать это $\Gamma \vDash A$, если $A$ истинна 
+    на всех наборах значений переменных, на которых истинны \textbf{все} формулы из множества $\Gamma$.
+\end{definition}
+
+\begin{remark}
+    Вообще говоря, на всех тех наборах, для которых истинны не все формулы из $\Gamma$, формула может быть как истинна, так и ложна.
+\end{remark}
+
+\begin{theorem}[Критерий условной выводимости]
+    Пусть $\Gamma$ --- множество формул, $A$ --- формула.
+    \[\Gamma \vdash A \iff \Gamma \vDash A\]
+\end{theorem}
+
+\begin{theorem}[О дедукции]
+    Пусть $\Gamma$ --- множество формул, $A$ и $B$ --- формулы.
+    \[\Gamma \cup \{A\} \vdash B \iff \Gamma \vdash A \to B\]
+\end{theorem}
+
+\section{Исчисление предикатов}
+
+\subsection{Синтаксис исчисления предикатов. Выводимость}
+
+\paragraph{Алфавит.} 
+\begin{enumerate}
+    \item Счётное множество символов переменных $x$
+    \item Счётное множество функциональных символов $\mathcal{F}$
+    \item Счётное множество символов предикатов $\mathcal{P}$
+    \item «$\lnot$», «$\to$», «$($», «$)$», «$\forall$», «$,$»
+\end{enumerate}
+
+\paragraph{Формулы.}
+
+\begin{definition}
+    Определим \textbf{терм} рекурсивно:
+    \begin{itemize}
+        \item Если $t$ --- символ переменной, то $t$ --- терм
+        \item Если $t_1, \ldots, t_k$ --- термы и $f \in \mathcal{F}_k$ (то есть $f$ является $k$-арным (имеющим $k$ аргументов) функциональным символом), то $f(t_1, \ldots, t_k)$ ---  терм
+    \end{itemize}
+\end{definition}
+
+\begin{definition}
+    \textbf{Атомарной формулой} будем называть $A(t_1, \ldots, t_k)$, где $A \in \mathcal{P}_k$ (то есть $A$ является $k$-арным символом предиката), $t_1, \ldots, t_k$ --- термы. 
+\end{definition}
+
+\begin{definition}
+    Определим \textbf{формулу} рекурсивно:
+    \begin{itemize}
+        \item Если $A$ --- атомарная формула, то $A$ --- формула
+        \item Если $A = (\lnot B)$, где $B$ --- формула, то $A$ --- формула
+        \item Если $A = (B \to C)$, где $B$ и $C$ --- формулы, то $A$ --- формула
+        \item Если $A = \forall x B$, где $x$ --- символ переменной, $B$ --- формула, то $A$ --- формула
+        \item Других формул нет
+    \end{itemize}
+\end{definition}
+
+\begin{definition}
+    Пусть $x$ --- символ переменной, $A$ --- формула, $(\forall x A)$. Тогда формула $A$ называется \textbf{областью действия} квантора по переменной $x$.
+\end{definition}
+
+\begin{definition}
+    Вхождение переменной в формулу называется \textbf{свободным}, если оно не лежит в области действия квантора по данной переменной. Если 
+    вхождение переменной не свободно, то его называют \textbf{связанным}.
+\end{definition}
+
+\begin{example}
+    Пусть $x, y$ --- символы переменных, $T \in \mathcal{P}_2$, $f \in \mathcal{F}_2$. Тогда все вхождения переменной $x$ в формулу $\forall x T(f(x, y), x)$ являются связанными, а все вхождения $y$ --- свободные.
+\end{example}
+
+\begin{remark}
+    В формулах, подобных формуле $\displaystyle \mathop{\underline{\forall x}}_{(1)} A \to \mathop{\underline{\forall x}}_{(2)} B$, можно мыслить $(1)$ и $(2)$ как программу, в которой идут два \textbf{не связанных между собой} счётчика по $x$.
+\end{remark}
+
+\paragraph{Аксиомы.} 
+Аксиом бесконечно много, поэтому зададим их схемами:
+\begin{enumerate}
+    \item $(A \to (B \to A))$
+    \item $((A \to (B \to C)) \to ((A \to B) \to (A \to C)))$
+    \item $(((\lnot B) \to (\lnot A)) \to (((\lnot B) \to A) \to B))$
+    \item $\forall x (A \to B) \to (A \to \forall x B)$, при условии, что в $A$ нет свободных вхождений $x$
+    \item $\forall x A \to A[x := t]$, при условии, что ни одно свободное вхождение $x$ в $A$ не лежит в области действия кванторов по переменным, входящим в $t$.
+\end{enumerate}
+Здесь $A, B$, $C$, $t$ --- некоторые формулы, $x$ --- символ переменной. Запись $A[x := t]$ означает результат подстановки $t$ в $A$ вместо всех свободных вхождений $x$. 
+
+\paragraph{Правила вывода.} 
+\begin{enumerate}
+    \item \underline{\textit{modus ponens}}: $A, (A \to B) \vdash B$
+    \item \underline{\textit{generalization}}: $A \vdash \forall x A$
+\end{enumerate}
+
+\begin{definition}[Выводимость]
+    Говорят, что формула $A$ \textbf{выводится} в исчислении предикатов, если 
+    существует последовательность $A_1, A_2, \ldots, A_n = A$ такая, что каждое $A_i$ либо является аксиомой, либо выводится из предыдущих посредством одного применения некоторого правила вывода в исчислении предикатов.
+    Число $n$ будем называть \textbf{длиной вывода}.
+\end{definition}
+
+\begin{definition}[Условная выводимость]
+    Пусть $\Gamma$ --- множество формул. Будем говорить, что формула $A$ выводится из $\Gamma$, если 
+    существует последовательность $A_1, A_2, \ldots, A_n = A$ такая, что каждое $A_i$ либо является аксиомой, либо является гипотезой, либо выводится из предыдущих посредством одного применения некоторого правила вывода в исчислении предикатов.
+\end{definition}
+
+\subsection{Семантика исчисления предикатов}
+
+\begin{definition}
+    \textbf{Сигнатура} --- набор предикатных или функциональных символов с указанием арности.
+\end{definition}
+
+\paragraph{Интерпретация сигнатуры.} Пусть $\mathcal{M}$ --- область интерпретации (проще говоря, множество, из которого берём значения переменных). Каждому функциональному символу сопоставим функцию из $\mathcal{M}^k$ в $\mathcal{M}$.
+Каждому предикатному символу $T \in \mathcal{P}_k$ сопоставим $T_k \subseteq \mathcal{M}^k$.
+
+\begin{definition}
+    Формула называется \textbf{общезначимой}, если она истинна на любой интерпретации при любом наборе значений переменных.
+\end{definition}
+
+\end{document}
